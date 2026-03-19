@@ -573,6 +573,14 @@ input[type="search"] {{ width: 260px; }}
 .text-warn {{ color: var(--warn); }}
 .text-accent {{ color: var(--accent); }}
 .text-green {{ color: var(--accent2); }}
+.friendly-name {{
+  display: block;
+  font-size: 11px;
+  color: var(--purple);
+  font-family: var(--font-sans);
+  font-weight: normal;
+  line-height: 1.3;
+}}
 .empty-state {{
   padding: 60px 24px;
   text-align: center;
@@ -796,8 +804,11 @@ function catBadge(cat) {{
   return `<span class="badge badge-cat">${{escHtml(cat)}}</span>`;
 }}
 
-function signalLink(name) {{
-  return `<a class="signal-link" onclick="navigateGraph('${{escHtml(name)}}')">${{escHtml(name)}}</a>`;
+function signalLink(name, showFriendly) {{
+  const friendly = friendlyName(name);
+  const tip = friendly ? ` title="${{escHtml(friendly)}}"` : '';
+  const sub = (showFriendly && friendly) ? `<span class="friendly-name">${{escHtml(friendly)}}</span>` : '';
+  return `<a class="signal-link" onclick="navigateGraph('${{escHtml(name)}}')"${{tip}}>${{escHtml(name)}}</a>${{sub}}`;
 }}
 
 function srcLink(file, line) {{
@@ -839,6 +850,163 @@ function switchTab(tabId) {{
   tabContents.forEach(c => {{
     c.classList.toggle('active', c.id === 'tab-' + tabId);
   }});
+}}
+
+// =====================================================================
+// Friendly signal names
+// =====================================================================
+const friendlyRules = [
+  // Pixel pipeline clock
+  [/CLKPIPE/i, 'Pixel Shift Clock'],
+  // Rendering control
+  [/RENDERING_LATCH/i, 'Rendering Active (Mode 3)'],
+  [/HBLANK_GATE/i, 'H-Blank Gate (Mode 0)'],
+  [/HBLANKp/i, 'H-Blank Flag'],
+  [/VBLANKp/i, 'V-Blank Flag (LY>=144)'],
+  [/LINE_END/i, 'Scanline End Strobe'],
+  [/FRAME_END/i, 'Frame End Strobe (LY=153)'],
+  [/LINE_RST_TRIG/i, 'Line Reset Trigger'],
+  [/LINE_STROBE/i, 'Line Sync Strobe'],
+  // LCD registers
+  [/LCDC_LCDEN/i, 'LCDC.7 — LCD Enable'],
+  [/LCDC_WINEN/i, 'LCDC.5 — Window Enable'],
+  [/LCDC_SPEN/i, 'LCDC.1 — Sprite Enable'],
+  [/LCDC_SPSIZE/i, 'LCDC.2 — Sprite Size'],
+  [/LCDC_BGMAP/i, 'LCDC.3 — BG Tile Map Select'],
+  [/LCDC_BGTILE/i, 'LCDC.4 — BG Tile Data Select'],
+  [/LCDC_WINMAP/i, 'LCDC.6 — Window Map Select'],
+  [/LCDC_BGEN/i, 'LCDC.0 — BG Enable'],
+  [/STAT_HBI_EN/i, 'STAT.3 — H-Blank IRQ Enable'],
+  [/STAT_VBI_EN/i, 'STAT.4 — V-Blank IRQ Enable'],
+  [/STAT_OAI_EN/i, 'STAT.5 — OAM IRQ Enable'],
+  [/STAT_LYI_EN/i, 'STAT.6 — LY=LYC IRQ Enable'],
+  // LY / LYC
+  [/LY_MATCH_SYNC/i, 'LY=LYC Match (synced)'],
+  [/LYC_MATCH/i, 'LY=LYC Match Latch'],
+  [/LY_MATCH/i, 'LY=LYC Comparator'],
+  [/LYC(\d)/i, (m) => `LY Compare (LYC) bit ${{m[1]}}`],
+  [/LY(\d)p/i, (m) => `Scanline Counter (LY) bit ${{m[1]}}`],
+  // Scroll
+  [/SCX_FINE_MATCH/i, 'Fine Scroll Match'],
+  [/FINE_SCROLL_DONE/i, 'Fine Scroll Complete'],
+  [/FINE_CNT(\d)/i, (m) => `Fine Scroll Counter bit ${{m[1]}}`],
+  [/SCY(\d)/i, (m) => `Scroll Y (SCY) bit ${{m[1]}}`],
+  [/SCX(\d)/i, (m) => `Scroll X (SCX) bit ${{m[1]}}`],
+  // Window
+  [/WY_MATCH/i, 'Window Y Match (LY=WY)'],
+  [/WX_MATCH|WIN_MATCH/i, 'Window X Match (PX=WX)'],
+  [/WIN_HIT/i, 'Window Active (WX+WY met)'],
+  [/WIN_MODE/i, 'Window Rendering Mode'],
+  [/WIN_FETCH/i, 'Window Fetch Request'],
+  [/WIN_TILE_Y/i, 'Window Tile Y Offset'],
+  [/WIN_MAP_X/i, 'Window Map X Column'],
+  [/WY(\d)/i, (m) => `Window Y (WY) bit ${{m[1]}}`],
+  [/WX(\d)/i, (m) => `Window X (WX) bit ${{m[1]}}`],
+  // Pixel counters
+  [/PX(\d)p/i, (m) => `Pixel X Counter bit ${{m[1]}}`],
+  [/LX(\d)p/i, (m) => `Internal Dot Counter (LX) bit ${{m[1]}}`],
+  [/X8_SYNC/i, '8-Pixel Boundary Sync'],
+  // BG tile fetcher
+  [/BFETCH_RST/i, 'BG Tile Fetch Reset'],
+  [/BFETCH_S(\d)/i, (m) => `BG Tile Fetch State ${{m[1]}}`],
+  [/BFETCH_DONE|FETCH_DONE/i, 'Tile Fetch Complete'],
+  [/TFETCH_DONE/i, 'Tile Fetch Done Flag'],
+  [/TFETCHING/i, 'Tile Fetching Active'],
+  [/TILE_DA(\d)/i, (m) => `Tile Data A bit ${{m[1]}}`],
+  [/TILE_DB(\d)/i, (m) => `Tile Data B bit ${{m[1]}}`],
+  // Sprite fetcher
+  [/SFETCH_S(\d)/i, (m) => `Sprite Fetch State ${{m[1]}}`],
+  [/SFETCH_RUNNING/i, 'Sprite Fetch Running'],
+  [/SFETCH_REQ/i, 'Sprite Fetch Request'],
+  [/SFETCH_DONE/i, 'Sprite Fetch Complete'],
+  [/SFETCHING/i, 'Sprite Fetching Active'],
+  // Sprite scanner
+  [/SCAN_DONE/i, 'OAM Scan Complete'],
+  [/SCAN(\d)_odd/i, (m) => `OAM Scan Counter bit ${{m[1]}}`],
+  [/SPRITE_IDX(\d)/i, (m) => `Sprite Store Index bit ${{m[1]}}`],
+  [/SPRITE_COUNT(\d)/i, (m) => `Sprites Found Counter bit ${{m[1]}}`],
+  [/INC_COUNT/i, 'Scan Counter Increment'],
+  [/SPRITES_FULL/i, '10-Sprite Limit Reached'],
+  // Sprite store
+  [/STORE(\d+)_X(\d)/i, (m) => `Sprite ${{m[1]}} X-Position bit ${{m[2]}}`],
+  [/STORE(\d+)_I(\d)/i, (m) => `Sprite Store ${{m[1]}} OAM Index bit ${{m[2]}}`],
+  [/STORE(\d+)_L(\d)/i, (m) => `Sprite Store ${{m[1]}} Line Offset bit ${{m[2]}}`],
+  [/STORE(\d+)_RST/i, (m) => `Sprite Store ${{m[1]}} Reset`],
+  [/STORE_MATCH/i, 'Sprite X Match (any store)'],
+  [/SPRITE_MATCH/i, 'Sprite X-Position Match'],
+  [/SPRITE(\d+)_GET/i, (m) => `Sprite ${{m[1]}} Fetch Trigger`],
+  // Sprite data
+  [/SPR_PIX_SET(\d)/i, (m) => `Sprite Pixel Set bit ${{m[1]}}`],
+  [/SPR_PIX_RST(\d)/i, (m) => `Sprite Pixel Reset bit ${{m[1]}}`],
+  [/SPR_PIPE_A(\d)/i, (m) => `Sprite Pixel Low bit ${{m[1]}}`],
+  [/SPR_PIPE_B(\d)/i, (m) => `Sprite Pixel High bit ${{m[1]}}`],
+  [/SPRITE_MASK(\d)/i, (m) => `Sprite Mask bit ${{m[1]}}`],
+  [/SPRITE_DELTA/i, 'Sprite Position Delta'],
+  // BG pixel pipe
+  [/BGW_PIPE_A(\d)/i, (m) => `BG/Win Pixel Low bit ${{m[1]}}`],
+  [/BGW_PIPE_B(\d)/i, (m) => `BG/Win Pixel High bit ${{m[1]}}`],
+  [/MASK_PIPE_(\d)/i, (m) => `Pixel Valid Mask bit ${{m[1]}}`],
+  [/PAL_PIPE/i, 'Palette/Priority Pipeline'],
+  // Palettes
+  [/BGP_D(\d)/i, (m) => `BG Palette (BGP) bit ${{m[1]}}`],
+  [/OBP0_D(\d)/i, (m) => `Sprite Palette 0 (OBP0) bit ${{m[1]}}`],
+  [/OBP1_D(\d)/i, (m) => `Sprite Palette 1 (OBP1) bit ${{m[1]}}`],
+  // Buses
+  [/BUS_CPU_D(\d+)/i, (m) => `CPU Data Bus bit ${{m[1]}}`],
+  [/BUS_VRAM_A(\d+)/i, (m) => `VRAM Address bit ${{m[1]}}`],
+  [/BUS_VRAM_D(\d+)/i, (m) => `VRAM Data bit ${{m[1]}}`],
+  [/BUS_OAM_DA(\d+)/i, (m) => `OAM Data A bit ${{m[1]}}`],
+  [/BUS_OAM_DB(\d+)/i, (m) => `OAM Data B bit ${{m[1]}}`],
+  [/BUS_OAM_A(\d+)/i, (m) => `OAM Address bit ${{m[1]}}`],
+  // DMA
+  [/DMA_LATCH/i, 'DMA Active'],
+  [/DMA_RUNNING/i, 'DMA Running'],
+  [/DMA_DONE/i, 'DMA Complete'],
+  [/DMA_TRIG/i, 'DMA Trigger'],
+  [/DMA_A(\d+)/i, (m) => `DMA Address bit ${{m[1]}}`],
+  // Interrupts
+  [/FF0F_D0/i, 'IRQ Flag: V-Blank'],
+  [/FF0F_D1/i, 'IRQ Flag: STAT'],
+  [/FF0F_D2/i, 'IRQ Flag: Timer'],
+  [/FF0F_D3/i, 'IRQ Flag: Serial'],
+  [/FF0F_D4/i, 'IRQ Flag: Joypad'],
+  [/FF0F_L/i, 'IRQ Flag Latch'],
+  [/WAKE_CPU/i, 'CPU Wake (IRQ pending)'],
+  // Clock phases
+  [/ABCDxxxx/i, 'Clock Phase ABCD'],
+  [/xBCDExxx/i, 'Clock Phase BCDE'],
+  [/xxCDEFxx/i, 'Clock Phase CDEF'],
+  [/xxxDEFGx/i, 'Clock Phase DEFG'],
+  [/AxCxExGx/i, 'Odd Subcycle Clock'],
+  [/xBxDxFxH/i, 'Even Subcycle Clock'],
+  [/ABxxEFxx/i, 'PPU Clock (AB/EF)'],
+  [/AxxDExxH/i, 'PPU Clock (A/DE/H)'],
+  // Reset chain
+  [/VID_RST/i, 'Video Reset Chain'],
+  [/SYS_RST/i, 'System Reset'],
+  [/POR_DONE/i, 'Power-On Reset Done'],
+  // Timer
+  [/DIV(\d+)/i, (m) => `Divider (DIV) bit ${{m[1]}}`],
+  [/TIMA(\d)/i, (m) => `Timer Counter (TIMA) bit ${{m[1]}}`],
+  [/TMA(\d)/i, (m) => `Timer Modulo (TMA) bit ${{m[1]}}`],
+  [/TAC(\d)/i, (m) => `Timer Control (TAC) bit ${{m[1]}}`],
+  [/TIMER_OVERFLOW/i, 'Timer Overflow'],
+  // LCD output
+  [/LCD_CLOCK/i, 'LCD Pixel Clock'],
+  [/VSYNC_OUT/i, 'VSync Output'],
+  [/PRELOAD_LATCH/i, 'Pipeline Preload'],
+];
+
+function friendlyName(displayName) {{
+  if (!displayName) return '';
+  for (const rule of friendlyRules) {{
+    const [pattern, replacement] = rule;
+    const m = displayName.match(pattern);
+    if (m) {{
+      return typeof replacement === 'function' ? replacement(m) : replacement;
+    }}
+  }}
+  return '';
 }}
 
 // =====================================================================
@@ -932,7 +1100,7 @@ function renderRaceDetail(r) {{
     const role = isLate ? 'LATE' : isEarly ? 'early' : 'mid';
     const delay = inp.depth > 0 ? `${{inp.depth*5}}-${{inp.depth*15}} ns` : '0 ns';
     return `<tr class="${{cls}}">
-      <td>${{signalLink(inp.name)}}</td>
+      <td>${{signalLink(inp.name, true)}}</td>
       <td>${{inp.depth}}</td>
       <td>${{delay}}</td>
       <td>${{escHtml(inp.gate_func || inp.node_type)}}</td>
@@ -996,7 +1164,7 @@ function renderRaces() {{
     const tr = document.createElement('tr');
     tr.className = 'data-row';
     tr.innerHTML = `
-      <td class="mono">${{signalLink(r.display_name)}}</td>
+      <td class="mono">${{signalLink(r.display_name, true)}}</td>
       <td>${{catBadge(r.category)}}</td>
       <td class="mono muted">${{escHtml(r.reg_type)}}</td>
       <td>${{phaseBadge(r.phase)}}</td>
@@ -1095,7 +1263,7 @@ function renderChain(nodes) {{
     return `${{connector}}
       <div class="chain-node">
         <span class="chain-type ${{typeClass}}">${{escHtml(label)}}</span>
-        <span class="chain-name">${{signalLink(nd.display_name)}}</span>
+        <span class="chain-name">${{signalLink(nd.display_name, true)}}</span>
         ${{phase}} ${{fo}}
         <span class="chain-loc">${{nd.source_file ? srcLink(nd.source_file, nd.source_line) : ''}}</span>
       </div>`;
@@ -1125,8 +1293,8 @@ function renderPaths() {{
     tr.className = 'data-row';
     tr.innerHTML = `
       <td>${{depthBadge(p.depth)}}</td>
-      <td class="mono">${{signalLink(p.source)}}</td>
-      <td class="mono">${{signalLink(p.sink)}}</td>
+      <td class="mono">${{signalLink(p.source, true)}}</td>
+      <td class="mono">${{signalLink(p.sink, true)}}</td>
       <td class="mono muted">${{p.min_delay_ns}}-${{p.max_delay_ns}}</td>
       <td class="${{pctClass}} mono">${{p.pct_half_tcycle}}%</td>
       <td>${{phaseStr ? phaseBadge(phaseStr) : ''}}</td>
@@ -1236,9 +1404,10 @@ function runSearch(query) {{
   for (const n of shown) {{
     const pathIdxs = nodeToPathIdx.get(n.display_name) || [];
     const raceIdxs = nodeToRaceIdx.get(n.display_name) || [];
+    const friendly = friendlyName(n.display_name);
 
     html += `<div class="search-result">
-      <h3>${{signalLink(n.display_name)}}</h3>
+      <h3>${{signalLink(n.display_name)}}${{friendly ? ` <span class="friendly-name" style="display:inline;font-size:13px">${{escHtml(friendly)}}</span>` : ''}}</h3>
       <div class="meta">
         <span class="badge badge-cat">${{escHtml(n.node_type)}}</span>
         ${{n.gate_func ? `<span class="badge badge-phase">${{escHtml(n.gate_func)}}</span>` : ''}}
@@ -1315,7 +1484,7 @@ function renderGraphNode(displayName) {{
 
   container.innerHTML = `
     <div class="node-header">
-      <h2>${{escHtml(dn)}}</h2>
+      <h2>${{escHtml(dn)}}${{(() => {{ const f = friendlyName(dn); return f ? ` <span class="friendly-name" style="font-size:14px;display:inline">${{escHtml(f)}}</span>` : ''; }})()}}</h2>
       <div class="node-props">
         <div class="node-prop"><span class="label">Type: </span><span class="value">${{escHtml(node.node_type)}}</span></div>
         ${{node.gate_func ? `<div class="node-prop"><span class="label">Gate: </span><span class="value">${{escHtml(node.gate_func)}}</span></div>` : ''}}
