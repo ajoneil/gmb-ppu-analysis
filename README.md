@@ -91,6 +91,11 @@ Feedback loops (70 edges, mostly async set/reset and sprite pipe writeback) are 
 - [NetworkX](https://networkx.org/) for graph analysis
 - [Graphviz](https://graphviz.org/) (optional, for rendering DOT files)
 
+## Pinned GateBoy Version
+
+This analysis is built against GateBoy commit [`36797ad4`](https://github.com/aappleby/metroboy/tree/36797ad4cf77b3e04ffe45716218a79b5280076a).
+All source file references and line numbers in the reports and explorer link to this commit.
+
 ## Acknowledgments
 
 - **aappleby** for [MetroBoy/GateBoy](https://github.com/aappleby/metroboy) — the gate-level Game Boy simulator this analysis is built on

@@ -9,6 +9,36 @@ import json
 import re
 from pathlib import Path
 
+# GateBoy source: pinned commit for stable source links
+GATEBOY_COMMIT = '36797ad4cf77b3e04ffe45716218a79b5280076a'
+GATEBOY_BASE = f'https://github.com/aappleby/metroboy/blob/{GATEBOY_COMMIT[:12]}/src/GateBoyLib'
+
+# Pan Docs register page mapping
+PANDOCS_BASE = 'https://gbdev.io/pandocs'
+PANDOCS_URLS = {
+    'LCDC': f'{PANDOCS_BASE}/LCDC.html',
+    'STAT': f'{PANDOCS_BASE}/STAT.html',
+    'SCY': f'{PANDOCS_BASE}/Scrolling.html',
+    'SCX': f'{PANDOCS_BASE}/Scrolling.html',
+    'LY': f'{PANDOCS_BASE}/STAT.html',
+    'LYC': f'{PANDOCS_BASE}/STAT.html',
+    'DMA': f'{PANDOCS_BASE}/OAM_DMA_Transfer.html',
+    'BGP': f'{PANDOCS_BASE}/Palettes.html',
+    'OBP0': f'{PANDOCS_BASE}/Palettes.html',
+    'OBP1': f'{PANDOCS_BASE}/Palettes.html',
+    'WY': f'{PANDOCS_BASE}/Scrolling.html',
+    'WX': f'{PANDOCS_BASE}/Scrolling.html',
+    'IF': f'{PANDOCS_BASE}/Interrupt_Sources.html',
+    'FF0F': f'{PANDOCS_BASE}/Interrupt_Sources.html',
+    'OAM': f'{PANDOCS_BASE}/OAM.html',
+    'VRAM': f'{PANDOCS_BASE}/Tile_Data.html',
+    'INT': f'{PANDOCS_BASE}/Interrupt_Sources.html',
+    'SPRITE': f'{PANDOCS_BASE}/OAM.html',
+    'TILE': f'{PANDOCS_BASE}/Tile_Data.html',
+    'WINDOW': f'{PANDOCS_BASE}/Scrolling.html',
+    'PIXEL_FIFO': f'{PANDOCS_BASE}/pixel_fifo.html',
+}
+
 
 def parse_concordance(md_path: Path) -> dict:
     """Parse signal_concordance.md into a lookup dictionary.
@@ -51,7 +81,7 @@ def parse_concordance(md_path: Path) -> dict:
 
 
 def build_html(graph_json: str, paths_json: str, races_json: str,
-               concordance_json: str) -> str:
+               concordance_json: str, config_json: str) -> str:
     """Build the complete HTML page with embedded data."""
 
     return f'''<!DOCTYPE html>
@@ -561,6 +591,9 @@ input[type="search"] {{ width: 260px; }}
     <button class="tab-btn" data-tab="graph">Graph</button>
   </div>
   <div class="header-stats" id="header-stats"></div>
+  <a href="https://github.com/aappleby/metroboy" target="_blank" rel="noopener"
+     style="color:var(--text-muted);font-size:11px;white-space:nowrap"
+     title="Analysis pinned to this GateBoy commit">GateBoy @ {GATEBOY_COMMIT[:8]}</a>
 </div>
 
 <!-- RACE PAIRS TAB -->
@@ -683,6 +716,7 @@ input[type="search"] {{ width: 260px; }}
 <script id="data-paths" type="application/json">{paths_json}</script>
 <script id="data-races" type="application/json">{races_json}</script>
 <script id="data-concordance" type="application/json">{concordance_json}</script>
+<script id="data-config" type="application/json">{config_json}</script>
 
 <script>
 "use strict";
@@ -694,6 +728,7 @@ const graph = JSON.parse(document.getElementById("data-graph").textContent);
 const paths = JSON.parse(document.getElementById("data-paths").textContent);
 const races = JSON.parse(document.getElementById("data-races").textContent);
 const concordance = JSON.parse(document.getElementById("data-concordance").textContent);
+const config = JSON.parse(document.getElementById("data-config").textContent);
 
 // Node lookup by name and display_name
 const nodeMap = new Map();
@@ -767,7 +802,19 @@ function signalLink(name) {{
 
 function srcLink(file, line) {{
   if (!file) return '';
-  return `<span class="muted">${{escHtml(file)}}:${{line}}</span>`;
+  const url = `${{config.gateboy_base}}/${{file}}#L${{line}}`;
+  return `<a href="${{url}}" target="_blank" rel="noopener" class="muted">${{escHtml(file)}}:${{line}}</a>`;
+}}
+
+function pandocsLink(signalName) {{
+  if (!signalName) return '';
+  const upper = signalName.toUpperCase();
+  for (const [key, url] of Object.entries(config.pandocs_urls)) {{
+    if (upper.includes(key)) {{
+      return `<a href="${{url}}" target="_blank" rel="noopener" class="badge badge-phase" style="font-size:10px" title="Pan Docs: ${{key}}">Pan Docs</a>`;
+    }}
+  }}
+  return '';
 }}
 
 // =====================================================================
@@ -931,8 +978,9 @@ function renderRaceDetail(r) {{
         <tbody>${{inputRows}}</tbody>
       </table>
     </div>
-    <div class="detail-section">
-      <p class="muted">${{srcLink(r.source_file, r.source_line)}}</p>
+    <div class="detail-section" style="display:flex;gap:12px;align-items:center">
+      ${{srcLink(r.source_file, r.source_line)}}
+      ${{pandocsLink(r.display_name)}}
     </div>
   </div>`;
 }}
@@ -1049,7 +1097,7 @@ function renderChain(nodes) {{
         <span class="chain-type ${{typeClass}}">${{escHtml(label)}}</span>
         <span class="chain-name">${{signalLink(nd.display_name)}}</span>
         ${{phase}} ${{fo}}
-        <span class="chain-loc">${{escHtml(nd.source_file || '')}}${{nd.source_line ? ':' + nd.source_line : ''}}</span>
+        <span class="chain-loc">${{nd.source_file ? srcLink(nd.source_file, nd.source_line) : ''}}</span>
       </div>`;
   }}).join('');
 }}
@@ -1195,7 +1243,8 @@ function runSearch(query) {{
         <span class="badge badge-cat">${{escHtml(n.node_type)}}</span>
         ${{n.gate_func ? `<span class="badge badge-phase">${{escHtml(n.gate_func)}}</span>` : ''}}
         ${{n.phase ? phaseBadge(n.phase) : ''}}
-        ${{n.source_file ? `<span class="muted" style="font-size:12px">${{escHtml(n.source_file)}}:${{n.source_line}}</span>` : ''}}
+        ${{n.source_file ? srcLink(n.source_file, n.source_line) : ''}}
+        ${{pandocsLink(n.display_name)}}
       </div>
       <div class="related">
         ${{pathIdxs.length > 0 ? `In <strong>${{pathIdxs.length}}</strong> critical paths` : ''}}
@@ -1272,13 +1321,14 @@ function renderGraphNode(displayName) {{
         ${{node.gate_func ? `<div class="node-prop"><span class="label">Gate: </span><span class="value">${{escHtml(node.gate_func)}}</span></div>` : ''}}
         ${{node.reg_type ? `<div class="node-prop"><span class="label">Reg: </span><span class="value">${{escHtml(node.reg_type)}}</span></div>` : ''}}
         ${{node.phase ? `<div class="node-prop"><span class="label">Phase: </span><span class="value">${{phaseBadge(node.phase)}}</span></div>` : ''}}
-        ${{node.source_file ? `<div class="node-prop"><span class="label">Source: </span><span class="value">${{escHtml(node.source_file)}}:${{node.source_line}}</span></div>` : ''}}
+        ${{node.source_file ? `<div class="node-prop"><span class="label">Source: </span><span class="value">${{srcLink(node.source_file, node.source_line)}}</span></div>` : ''}}
         <div class="node-prop"><span class="label">Fan-in: </span><span class="value">${{preds.length}}</span></div>
         <div class="node-prop"><span class="label">Fan-out: </span><span class="value">${{succs.length}}</span></div>
       </div>
       ${{concHits.length > 0 ? `<div style="margin-top:12px;font-size:12px;color:var(--text-muted)">
         <strong>Concordance:</strong> ${{concHits.slice(0,3).map(h => escHtml(h.val)).join(' | ')}}
-      </div>` : ''}}
+        ${{pandocsLink(dn)}}
+      </div>` : pandocsLink(dn)}}
     </div>
 
     <div class="neighbors">
@@ -1374,7 +1424,14 @@ def main():
     concordance = parse_concordance(out_dir / 'signal_concordance.md')
     concordance_json = json.dumps(concordance)
 
-    html = build_html(graph_json, paths_json, races_json, concordance_json)
+    config = {
+        'gateboy_base': GATEBOY_BASE,
+        'gateboy_commit': GATEBOY_COMMIT,
+        'pandocs_urls': PANDOCS_URLS,
+    }
+    config_json = json.dumps(config)
+
+    html = build_html(graph_json, paths_json, races_json, concordance_json, config_json)
 
     output_path = docs_dir / 'index.html'
     output_path.write_text(html)
