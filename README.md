@@ -1,0 +1,82 @@
+# GateBoy PPU Combinatorial Path Analysis
+
+Static analysis of the [GateBoy](https://github.com/aappleby/metroboy) gate-level Game Boy simulator to identify deep combinatorial paths in the PPU that cause propagation delay on real hardware.
+
+## Motivation
+
+Behavioral Game Boy emulators resolve all combinatorial logic instantaneously within a single tick. On real DMG silicon, signals propagate through chains of gates with finite delay (5–15 ns per gate on Sharp's ~5 µm CMOS process). When a signal chain exceeds ~8 gates, the total delay can consume a significant fraction of a half T-cycle (~119 ns at 4.194 MHz), causing the hardware to capture different values than an emulator expects.
+
+This project extracts GateBoy's PPU netlist as a dependency graph, finds the longest combinatorial paths between clocked elements, and ranks them by depth — producing a guide for emulator developers investigating one-dot timing discrepancies.
+
+## Key Results
+
+- **3,141 nodes** (928 registered, 2,213 combinatorial) and **5,573 edges** extracted
+- **1,270 paths** with depth > 8 gates identified (969 operational, 301 reset-only)
+- Deepest operational path: **17 gates** (~255 ns worst-case delay)
+- **547 signal race points** where inputs to a single flip-flop differ by ≥ 3 gate depths
+
+The two dominant sources of late-arriving signals:
+1. **CLKPIPE** (pixel pipe shift clock) — 52 fan-out, depth 16, arrives after every pixel pipeline decision
+2. **Line/fetch reset signals** — depth 15–17, arrive long after the data they reset
+
+See [`output/critical_paths_report.md`](output/critical_paths_report.md) for the full findings.
+
+## Project Structure
+
+```
+parse_gateboy.py              # Parser & graph builder (~2000 lines)
+metroboy/                     # GateBoy source (git submodule / clone)
+docs/
+  gateboy-structure.md        # GateBoy type system & naming conventions
+  graph-stats.md              # Graph extraction statistics
+output/
+  ppu_graph.json              # Full dependency graph (nodes + edges)
+  critical_paths.json         # All ranked critical paths
+  critical_paths_report.md    # Human-readable report with findings
+  critical_paths.dot          # Graphviz DOT of top paths
+  critical_paths.svg          # Rendered graph visualization
+  race_pairs.json             # Signal race pair detection results
+```
+
+## Usage
+
+```bash
+# Clone with GateBoy source
+git clone <this-repo>
+cd gmb-ppu-analysis
+
+# Set up environment
+python -m venv .venv
+source .venv/bin/activate
+pip install networkx
+
+# Run analysis (reads from metroboy/src/GateBoyLib/)
+python parse_gateboy.py
+```
+
+Outputs are written to `output/` and `docs/`.
+
+## How It Works
+
+The parser uses regex-based extraction on GateBoy's C++ source to build a directed graph where:
+
+- **Nodes** are signals — flip-flop outputs, latch outputs, bus lines, combinatorial gate outputs, and wire variables
+- **Edges** represent data dependencies (signal A feeds into gate B)
+- Each node is tagged as **registered** (DFF, latch, bus) or **combinatorial** (wire, gate)
+
+Feedback loops (70 edges, mostly async set/reset and sprite pipe writeback) are broken to form a DAG. Longest-path analysis then ranks all register-to-register paths by combinatorial depth.
+
+## Dependencies
+
+- Python 3.10+
+- [NetworkX](https://networkx.org/) for graph analysis
+- [Graphviz](https://graphviz.org/) (optional, for rendering DOT files)
+
+## Acknowledgments
+
+- **aappleby** for [MetroBoy/GateBoy](https://github.com/aappleby/metroboy) — the gate-level Game Boy simulator this analysis is built on
+- **Furrtek** for [DMG-CPU-Inside](https://github.com/furrtek/DMG-CPU-Inside) — the original die photo tracing that GateBoy implements
+
+## License
+
+This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
