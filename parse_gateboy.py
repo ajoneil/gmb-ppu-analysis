@@ -2260,7 +2260,7 @@ def main():
     export_dot(paths, G, out_dir / "critical_paths.dot")
 
     # Write stats
-    stats_path = Path("docs/graph-stats.md")
+    stats_path = Path("output/graph-stats.md")
     with open(stats_path, 'w') as f:
         f.write("# GateBoy PPU Dependency Graph -- Statistics\n\n")
         f.write(f"| Metric | Value |\n")

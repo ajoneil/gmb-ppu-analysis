@@ -27,11 +27,8 @@ See [`output/critical_paths_report.md`](output/critical_paths_report.md) for the
 parse_gateboy.py              # Parser & graph builder (~2000 lines)
 build_explorer.py             # Builds interactive HTML explorer
 metroboy/                     # GateBoy source (git submodule / clone)
-site/
-  index.html                  # Interactive explorer (GitHub Pages)
 docs/
-  gateboy-structure.md        # GateBoy type system & naming conventions
-  graph-stats.md              # Graph extraction statistics
+  index.html                  # Interactive explorer (GitHub Pages)
 output/
   critical_paths_report.md    # Overview & key findings (start here)
   operational_paths.md        # Operational paths by functional area
@@ -42,6 +39,8 @@ output/
   ppu_graph.json              # Full dependency graph (nodes + edges)
   critical_paths.json         # All ranked critical paths
   race_pairs.json             # Signal race pair detection results
+  gateboy-structure.md        # GateBoy type system & naming conventions
+  graph-stats.md              # Graph extraction statistics
   critical_paths.dot/.svg     # Graphviz visualization of top paths
 ```
 
@@ -70,7 +69,7 @@ pip install networkx
 # Run analysis (reads from metroboy/src/GateBoyLib/)
 python parse_gateboy.py
 
-# Build interactive explorer (writes site/index.html)
+# Build interactive explorer (writes docs/index.html)
 python build_explorer.py
 ```
 

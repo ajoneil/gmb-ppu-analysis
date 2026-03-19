@@ -1365,7 +1365,7 @@ renderPaths();
 
 def main():
     out_dir = Path('output')
-    site_dir = Path('site')
+    docs_dir = Path('docs')
 
     graph_json = (out_dir / 'ppu_graph.json').read_text()
     paths_json = (out_dir / 'critical_paths.json').read_text()
@@ -1376,7 +1376,7 @@ def main():
 
     html = build_html(graph_json, paths_json, races_json, concordance_json)
 
-    output_path = site_dir / 'index.html'
+    output_path = docs_dir / 'index.html'
     output_path.write_text(html)
     print(f'Built {output_path} ({len(html) / 1024 / 1024:.1f} MB)')
 
