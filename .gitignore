@@ -1,0 +1,10 @@
+# Cloned external repos
+metroboy/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
