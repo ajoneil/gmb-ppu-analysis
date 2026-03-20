@@ -1,12 +1,12 @@
-# GateBoy PPU Combinatorial Path Analysis
+# Game Boy PPU Propagation Delay Analysis
 
-Static analysis of the [GateBoy](https://github.com/aappleby/metroboy) gate-level Game Boy simulator to identify deep combinatorial paths in the PPU that cause propagation delay on real hardware.
+Static analysis of the Game Boy (DMG) PPU's gate-level netlist to identify deep combinatorial paths that cause propagation delay on real hardware. The analysis is derived from [aappleby's GateBoy](https://github.com/aappleby/metroboy) simulator, which models the actual silicon gates traced from Furrtek's die photos.
 
 ## Motivation
 
 Behavioral Game Boy emulators resolve all combinatorial logic instantaneously within a single tick. On real DMG silicon, signals propagate through chains of gates with finite delay (5–15 ns per gate on Sharp's ~5 µm CMOS process). When a signal chain exceeds ~8 gates, the total delay can consume a significant fraction of a half T-cycle (~119 ns at 4.194 MHz), causing the hardware to capture different values than an emulator expects.
 
-This project extracts GateBoy's PPU netlist as a dependency graph, finds the longest combinatorial paths between clocked elements, and ranks them by depth — producing a guide for emulator developers investigating one-dot timing discrepancies.
+This project extracts the PPU's netlist as a dependency graph, finds the longest combinatorial paths between clocked elements, and ranks them by depth — producing a guide for emulator developers investigating one-dot timing discrepancies.
 
 ## Key Results
 
@@ -26,7 +26,7 @@ See [`output/critical_paths_report.md`](output/critical_paths_report.md) for the
 ```
 parse_gateboy.py              # Parser & graph builder (~2000 lines)
 build_explorer.py             # Builds interactive HTML explorer
-metroboy/                     # GateBoy source (git submodule / clone)
+metroboy/                     # GateBoy source (analysis input)
 docs/
   index.html                  # Interactive explorer (GitHub Pages)
 output/
@@ -35,7 +35,7 @@ output/
   race_pairs_report.md        # Signal race pairs with observable effects
   reset_paths.md              # Reset-only paths (LCDC toggle / sys reset)
   depth_distribution.md       # Path depth histogram
-  signal_concordance.md       # GateBoy ↔ Pan Docs signal name mapping
+  signal_concordance.md       # Signal name ↔ Pan Docs register mapping
   ppu_graph.json              # Full dependency graph (nodes + edges)
   critical_paths.json         # All ranked critical paths
   race_pairs.json             # Signal race pair detection results
@@ -51,13 +51,13 @@ Browse the analysis interactively at **[ajoneil.github.io/gmb-ppu-analysis](http
 Features:
 - **Race Pairs** — sortable/filterable table with expandable detail panels showing observable effects
 - **Critical Paths** — browse all 1,270 paths by category, depth, phase; click to see full gate chain trace
-- **Search** — find any signal by GateBoy cell name or Pan Docs register name
+- **Search** — find any signal by cell name or Pan Docs register name (LCDC, SCX, LY, etc.)
 - **Graph Explorer** — click any signal to see its inputs, outputs, and all paths flowing through it
+- **External links** — each signal links to the [GateBoy source](https://github.com/aappleby/metroboy), [die photo viewer](https://iceboy.a-singer.de/dmg_cpu_b_map/), [netlist](https://iceboy.a-singer.de/doc/dmg_cpu_b_netlist.html), and [Pan Docs](https://gbdev.io/pandocs/)
 
 ## Usage
 
 ```bash
-# Clone with GateBoy source
 git clone <this-repo>
 cd gmb-ppu-analysis
 
@@ -98,8 +98,14 @@ All source file references and line numbers in the reports and explorer link to 
 
 ## Acknowledgments
 
-- **aappleby** for [MetroBoy/GateBoy](https://github.com/aappleby/metroboy) — the gate-level Game Boy simulator this analysis is built on
-- **Furrtek** for [DMG-CPU-Inside](https://github.com/furrtek/DMG-CPU-Inside) — the original die photo tracing that GateBoy implements
+This project builds on the remarkable work of several people in the Game Boy reverse engineering community:
+
+- **[aappleby](https://github.com/aappleby)** for [MetroBoy/GateBoy](https://github.com/aappleby/metroboy) — the gate-level Game Boy simulator whose C++ source is the primary input to this analysis
+- **[Furrtek](https://github.com/furrtek)** for [DMG-CPU-Inside](https://github.com/furrtek/DMG-CPU-Inside) — the original die photo tracing of the DMG-CPU B that GateBoy implements
+- **[Michael Singer (msinger)](https://github.com/msinger)** for the [interactive die photo viewer](https://iceboy.a-singer.de/dmg_cpu_b_map/), [cell netlist documentation](https://iceboy.a-singer.de/doc/dmg_cpu_b_netlist.html), and [cleaned-up KiCad schematics](https://github.com/msinger/dmg-schematics) — the explorer links directly to these resources
+- **[Régis Galland](https://github.com/msinger/dmg-schematics)** for contributions to the floorplan and cell/wire data
+- **[mcmaster / siliconpr0n](https://siliconpr0n.org/)** for the high-resolution die imagery
+- The [Pan Docs](https://gbdev.io/pandocs/) contributors for the Game Boy technical reference that the signal concordance maps to
 
 ## License
 

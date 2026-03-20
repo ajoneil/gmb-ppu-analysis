@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the interactive GateBoy PPU Explorer HTML page.
+"""Build the interactive Game Boy PPU Explorer HTML page.
 
 Reads the analysis JSON outputs and signal concordance, then generates
 a single self-contained HTML file at docs/index.html for GitHub Pages.
@@ -89,7 +89,7 @@ def build_html(graph_json: str, paths_json: str, races_json: str,
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GateBoy PPU Explorer</title>
+<title>Game Boy PPU Explorer</title>
 <style>
 :root {{
   --bg: #0d1117;
@@ -607,7 +607,7 @@ input[type="search"] {{ width: 260px; }}
 <body>
 
 <div class="header">
-  <h1>GateBoy PPU Explorer</h1>
+  <h1>Game Boy PPU Explorer</h1>
   <div class="tabs">
     <button class="tab-btn active" data-tab="races">Race Pairs</button>
     <button class="tab-btn" data-tab="paths">Critical Paths</button>

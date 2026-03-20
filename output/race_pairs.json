@@ -8307,294 +8307,6 @@
     "category": "PPU Registers"
   },
   {
-    "node": "SYRY_LYC0p",
-    "display_name": "SYRY_LYC0p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 46,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D00p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "VUCE_LYC1p",
-    "display_name": "VUCE_LYC1p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 47,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D01p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "SEDY_LYC2p",
-    "display_name": "SEDY_LYC2p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 48,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D02p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "SALO_LYC3p",
-    "display_name": "SALO_LYC3p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 49,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D03p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "SOTA_LYC4p",
-    "display_name": "SOTA_LYC4p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 50,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D04p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "VAFA_LYC5p",
-    "display_name": "VAFA_LYC5p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 51,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D05p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "VEVO_LYC6p",
-    "display_name": "VEVO_LYC6p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 52,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D06p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
-    "node": "RAHA_LYC7p",
-    "display_name": "RAHA_LYC7p",
-    "node_type": "registered",
-    "reg_type": "dff9",
-    "phase": "",
-    "source_file": "GateBoyLCD.cpp",
-    "source_line": 53,
-    "depth_diff": 10,
-    "max_depth": 10,
-    "min_depth": 0,
-    "inputs": [
-      {
-        "name": "WANE_FF45_WRp_new",
-        "depth": 10,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "WESY_SYS_RSTn",
-        "depth": 6,
-        "gate_func": "not1",
-        "node_type": "combinatorial",
-        "phase": ""
-      },
-      {
-        "name": "BUS_CPU_D07p@old",
-        "depth": 0,
-        "gate_func": "",
-        "node_type": "registered",
-        "phase": ""
-      }
-    ],
-    "category": "LYC Register"
-  },
-  {
     "node": "NESO_WY0p",
     "display_name": "NESO_WY0p",
     "node_type": "registered",
@@ -9421,6 +9133,294 @@
       }
     ],
     "category": "PPU Registers"
+  },
+  {
+    "node": "SYRY_LYC0p",
+    "display_name": "SYRY_LYC0p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 46,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D00p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "VUCE_LYC1p",
+    "display_name": "VUCE_LYC1p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 47,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D01p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "SEDY_LYC2p",
+    "display_name": "SEDY_LYC2p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 48,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D02p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "SALO_LYC3p",
+    "display_name": "SALO_LYC3p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 49,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D03p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "SOTA_LYC4p",
+    "display_name": "SOTA_LYC4p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 50,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D04p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "VAFA_LYC5p",
+    "display_name": "VAFA_LYC5p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 51,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D05p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "VEVO_LYC6p",
+    "display_name": "VEVO_LYC6p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 52,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D06p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
+  },
+  {
+    "node": "RAHA_LYC7p",
+    "display_name": "RAHA_LYC7p",
+    "node_type": "registered",
+    "reg_type": "dff9",
+    "phase": "",
+    "source_file": "GateBoyLCD.cpp",
+    "source_line": 53,
+    "depth_diff": 10,
+    "max_depth": 10,
+    "min_depth": 0,
+    "inputs": [
+      {
+        "name": "WANE_FF45_WRp_new",
+        "depth": 10,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "WESY_SYS_RSTn",
+        "depth": 6,
+        "gate_func": "not1",
+        "node_type": "combinatorial",
+        "phase": ""
+      },
+      {
+        "name": "BUS_CPU_D07p@old",
+        "depth": 0,
+        "gate_func": "",
+        "node_type": "registered",
+        "phase": ""
+      }
+    ],
+    "category": "LYC Register"
   },
   {
     "node": "ROXE_STAT_HBI_ENp",

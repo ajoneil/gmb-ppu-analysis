@@ -1,4 +1,4 @@
-# GateBoy PPU Dependency Graph -- Statistics
+# Game Boy PPU Dependency Graph — Statistics
 
 | Metric | Value |
 |--------|-------|

@@ -1,6 +1,6 @@
-# GateBoy PPU Critical Combinatorial Paths
+# Game Boy PPU Critical Combinatorial Paths
 
-Static analysis of the GateBoy gate-level simulator identifying deep
+Static analysis of the Game Boy (DMG) PPU's gate-level netlist identifying deep
 combinatorial paths that may cause propagation delay on real hardware.
 
 ## Timing Reference

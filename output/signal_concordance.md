@@ -1,4 +1,4 @@
-# GateBoy PPU Signal Concordance
+# Game Boy PPU Signal Concordance
 
 Cross-reference between GateBoy's internal cell names and standard Game Boy
 documentation (Pan Docs, Gekkio's gb-ctr, Furrtek's DMG-CPU-Inside).

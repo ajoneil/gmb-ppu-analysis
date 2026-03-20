@@ -19,9 +19,9 @@ the VID_RST inverter chain prefix (8 gates from AFER_SYS_RSTp through XAPO/ATAR/
 | LX Counter | 7 | 10 | `SAXO_LX0p_odd` |
 | LY Counter | 9 | 10 | `MUWY_LY0p_odd` |
 | DMA | 14 | 7 | `NAKY_DMA_A00p_odd` |
+| PPU Registers | 39 | 6 | `NESO_WY0p` |
 | STAT/LY Match | 5 | 6 | `ROPO_LY_MATCH_SYNCp` |
 | LYC Register | 8 | 6 | `SYRY_LYC0p` |
-| PPU Registers | 39 | 6 | `NESO_WY0p` |
 | VRAM Bus | 1 | 4 | `SOTO_DBG_VRAMp` |
 | Timer | 1 | 2 | `MOBA_TIMER_OVERFLOWp` |
 | Joypad | 4 | 2 | `BATU_JP_GLITCH0` |

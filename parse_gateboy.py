@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GateBoy PPU Combinatorial Path Analysis — Parser & Graph Builder
+Game Boy PPU Combinatorial Path Analysis — Parser & Graph Builder
 
 Extracts a signal dependency graph from the GateBoy gate-level simulator source.
 Identifies registered (clocked) vs combinatorial nodes and builds a directed graph
@@ -1567,8 +1567,8 @@ def format_report_sections(paths, G, races=None, max_paths=30):
     # OVERVIEW & KEY FINDINGS
     # =========================================================================
     lines = []
-    lines.append("# GateBoy PPU Critical Combinatorial Paths\n")
-    lines.append("Static analysis of the GateBoy gate-level simulator identifying deep")
+    lines.append("# Game Boy PPU Critical Combinatorial Paths\n")
+    lines.append("Static analysis of the Game Boy (DMG) PPU's gate-level netlist identifying deep")
     lines.append("combinatorial paths that may cause propagation delay on real hardware.\n")
 
     lines.append("## Timing Reference\n")
@@ -2164,7 +2164,7 @@ def export_dot(paths, G, filepath: Path, max_paths=20):
 # ============================================================================
 
 def main():
-    print("GateBoy PPU Signal Dependency Parser")
+    print("Game Boy PPU Signal Dependency Parser")
     print("=" * 50)
 
     result = ParseResult()
@@ -2262,7 +2262,7 @@ def main():
     # Write stats
     stats_path = Path("output/graph-stats.md")
     with open(stats_path, 'w') as f:
-        f.write("# GateBoy PPU Dependency Graph -- Statistics\n\n")
+        f.write("# Game Boy PPU Dependency Graph — Statistics\n\n")
         f.write(f"| Metric | Value |\n")
         f.write(f"|--------|-------|\n")
         f.write(f"| Total nodes | {stats['total_nodes']} |\n")
