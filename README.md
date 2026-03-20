@@ -102,7 +102,7 @@ This project builds on the remarkable work of several people in the Game Boy rev
 
 - **[aappleby](https://github.com/aappleby)** for [MetroBoy/GateBoy](https://github.com/aappleby/metroboy) — the gate-level Game Boy simulator whose C++ source is the primary input to this analysis
 - **[Furrtek](https://github.com/furrtek)** for [DMG-CPU-Inside](https://github.com/furrtek/DMG-CPU-Inside) — the original die photo tracing of the DMG-CPU B that GateBoy implements
-- **[Michael Singer (msinger)](https://github.com/msinger)** and **Régis Galland** for the [interactive die photo viewer](https://iceboy.a-singer.de/dmg_cpu_b_map/), [cell netlist documentation](https://iceboy.a-singer.de/doc/dmg_cpu_b_netlist.html), and [cleaned-up KiCad schematics](https://github.com/msinger/dmg-schematics) — the explorer links directly to these resources
+- **[Michael Singer (msinger)](https://github.com/msinger)** and **[Régis Galland](https://github.com/rgalland)** for the [interactive die photo viewer](https://iceboy.a-singer.de/dmg_cpu_b_map/), [cell netlist documentation](https://iceboy.a-singer.de/doc/dmg_cpu_b_netlist.html), and [cleaned-up KiCad schematics](https://github.com/msinger/dmg-schematics) — the explorer links directly to these resources
 - **[siliconpr0n](https://siliconpr0n.org/)** for the high-resolution die imagery
 - The [Pan Docs](https://gbdev.io/pandocs/) contributors for the Game Boy technical reference that the signal concordance maps to
 
