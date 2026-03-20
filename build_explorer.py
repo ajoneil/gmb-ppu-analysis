@@ -862,12 +862,34 @@ const cellTypeAnchors = {{
   'tp_latchn': 'dlatch', 'tp_latchp': 'dlatch',
 }};
 
+const gateFuncAnchors = {{
+  'not1': 'not_x1',
+  'and2': 'and2', 'and3': 'and3', 'and4': 'and4',
+  'or2': 'or2', 'or3': 'or3',
+  'nand2': 'nand2', 'nand3': 'nand3', 'nand4': 'nand4',
+  'nand5': 'nand5', 'nand6': 'nand6', 'nand7': 'nand7',
+  'nor2': 'nor2', 'nor3': 'nor3', 'nor4': 'nor4',
+  'nor5': 'nor5', 'nor6': 'nor6', 'nor8': 'nor8',
+  'xor2': 'xor', 'xnor2': 'xnor',
+  'mux2n': 'muxi', 'mux2p': 'mux', 'amux2': 'mux', 'amux4': 'mux',
+  'and_or3': 'ao21', 'or_and3': 'oa21', 'not_or_and3': 'oai21',
+  'tri6_nn': 'not_if', 'tri6_pn': 'not_if', 'tri10_np': 'not_if', 'tri_pp': 'buf_if0',
+}};
+
 function cellTypeLink(regType) {{
   if (!regType) return '';
   const anchor = cellTypeAnchors[regType];
   if (!anchor) return '';
   const url = `https://iceboy.a-singer.de/doc/dmg_cells.html#${{anchor}}`;
   return `<a href="${{url}}" target="_blank" rel="noopener" class="badge badge-celltype" title="Cell type: ${{regType}}">${{escHtml(regType)}}</a>`;
+}}
+
+function gateFuncLink(gateFunc) {{
+  if (!gateFunc) return '';
+  const anchor = gateFuncAnchors[gateFunc];
+  if (!anchor) return '';
+  const url = `https://iceboy.a-singer.de/doc/dmg_cells.html#${{anchor}}`;
+  return `<a href="${{url}}" target="_blank" rel="noopener" class="badge badge-celltype" title="Gate: ${{gateFunc}}">${{escHtml(gateFunc)}}</a>`;
 }}
 
 function pandocsLink(signalName) {{
@@ -1156,7 +1178,7 @@ function renderRaceDetail(r) {{
       <td>${{signalLink(inp.name, true)}}</td>
       <td>${{inp.depth}}</td>
       <td>${{delay}}</td>
-      <td>${{escHtml(inp.gate_func || inp.node_type)}}</td>
+      <td>${{gateFuncLink(inp.gate_func) || escHtml(inp.gate_func || inp.node_type)}}</td>
       <td>${{phaseBadge(inp.phase)}}</td>
       <td>${{role}}</td>
     </tr>`;
@@ -1464,7 +1486,7 @@ function runSearch(query) {{
       <h3>${{signalLink(n.display_name)}}${{friendly ? ` <span class="friendly-name" style="display:inline;font-size:13px">${{escHtml(friendly)}}</span>` : ''}}</h3>
       <div class="meta">
         <span class="badge badge-cat">${{escHtml(n.node_type)}}</span>
-        ${{n.gate_func ? `<span class="badge badge-phase">${{escHtml(n.gate_func)}}</span>` : ''}}
+        ${{n.gate_func ? (gateFuncLink(n.gate_func) || `<span class="badge badge-phase">${{escHtml(n.gate_func)}}</span>`) : ''}}
         ${{n.phase ? phaseBadge(n.phase) : ''}}
         ${{n.source_file ? srcLink(n.source_file, n.source_line) : ''}}
         ${{dieLink(n.display_name)}}
@@ -1542,7 +1564,7 @@ function renderGraphNode(displayName) {{
       <h2>${{escHtml(dn)}}${{(() => {{ const f = friendlyName(dn); return f ? ` <span class="friendly-name" style="font-size:14px;display:inline">${{escHtml(f)}}</span>` : ''; }})()}}</h2>
       <div class="node-props">
         <div class="node-prop"><span class="label">Type: </span><span class="value">${{escHtml(node.node_type)}}</span></div>
-        ${{node.gate_func ? `<div class="node-prop"><span class="label">Gate: </span><span class="value">${{escHtml(node.gate_func)}}</span></div>` : ''}}
+        ${{node.gate_func ? `<div class="node-prop"><span class="label">Gate: </span><span class="value">${{gateFuncLink(node.gate_func) || escHtml(node.gate_func)}}</span></div>` : ''}}
         ${{node.reg_type ? `<div class="node-prop"><span class="label">Reg: </span><span class="value">${{cellTypeLink(node.reg_type) || escHtml(node.reg_type)}}</span></div>` : ''}}
         ${{node.phase ? `<div class="node-prop"><span class="label">Phase: </span><span class="value">${{phaseBadge(node.phase)}}</span></div>` : ''}}
         ${{node.source_file ? `<div class="node-prop"><span class="label">Source: </span><span class="value">${{srcLink(node.source_file, node.source_line)}}</span></div>` : ''}}
