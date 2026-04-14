@@ -54,7 +54,7 @@
               [full_add] byca  — BG Scroll
                 [full_add] acul  — BG Scroll
                   [not_if0] ajan  — BG Scroll
-                    [BUS:] bus:~ma4
+                    [BUS:] bus:~ma4  — VRAM addr bus MA4
 ```
 
 ### Path 2: depth 32 (160-480 ns, 403% half T-cycle)
@@ -69,7 +69,7 @@
               [full_add] efyk  — BG Scroll
                 [full_add] ejok  — BG Scroll
                   [not_if0] dafe  — BG Scroll
-                    [BUS:] bus:~ma9
+                    [BUS:] bus:~ma9  — VRAM addr bus MA9
 ```
 
 ### Path 3: depth 29 (145-435 ns, 365% half T-cycle)
@@ -93,7 +93,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] zaro  — Sprite Store
-                                      [BUS:] bus:oam_render_a2 fan-out=11
+                                      [BUS:] bus:oam_render_a2  — Sprite render data bit 2 fan-out=11
 ```
 
 ### Path 4: depth 29 (145-435 ns, 365% half T-cycle)
@@ -117,7 +117,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] zojy  — Sprite Store
-                                      [BUS:] bus:oam_render_a3 fan-out=11
+                                      [BUS:] bus:oam_render_a3  — Sprite render data bit 3 fan-out=11
 ```
 
 ### Path 5: depth 29 (145-435 ns, 365% half T-cycle)
@@ -141,7 +141,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] ynev  — Sprite Store
-                                      [BUS:] bus:oam_render_a4 fan-out=11
+                                      [BUS:] bus:oam_render_a4  — Sprite render data bit 4 fan-out=11
 ```
 
 ### Path 6: depth 29 (145-435 ns, 365% half T-cycle)
@@ -165,7 +165,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] xyra  — Sprite Store
-                                      [BUS:] bus:oam_render_a5 fan-out=11
+                                      [BUS:] bus:oam_render_a5  — Sprite render data bit 5 fan-out=11
 ```
 
 ### Path 7: depth 29 (145-435 ns, 365% half T-cycle)
@@ -189,7 +189,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] yrad  — Sprite Store
-                                      [BUS:] bus:oam_render_a6 fan-out=11
+                                      [BUS:] bus:oam_render_a6  — Sprite render data bit 6 fan-out=11
 ```
 
 ### Path 8: depth 29 (145-435 ns, 365% half T-cycle)
@@ -213,7 +213,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] yhal  — Sprite Store
-                                      [BUS:] bus:oam_render_a7 fan-out=11
+                                      [BUS:] bus:oam_render_a7  — Sprite render data bit 7 fan-out=11
 ```
 
 ### Path 9: depth 29 (145-435 ns, 365% half T-cycle)
@@ -237,7 +237,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] byme  — Sprite Store
-                                      [BUS:] bus:sprite_y_store0 fan-out=11
+                                      [BUS:] bus:sprite_y_store0  — Sprite Y store bit 0 fan-out=11
 ```
 
 ### Path 10: depth 29 (145-435 ns, 365% half T-cycle)
@@ -261,7 +261,7 @@
                                 [nor2] guze  — Sprite X Priority
                                   [not_x2] fado  — Sprite X Priority x2 fan-out=10
                                     [not_if0] gate  — Sprite Store
-                                      [BUS:] bus:sprite_y_store1 fan-out=11
+                                      [BUS:] bus:sprite_y_store1  — Sprite Y store bit 1 fan-out=11
 ```
 
 
@@ -1413,7 +1413,7 @@
 
 ### Path 1: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma0
+[BUS:] bus:~ma0  — VRAM addr bus MA0
   [not_x1] myfu  — VRAM
     [not_x2] lexe  — VRAM x2
       [PAD:pad_out] ma0  — VRAM
@@ -1421,7 +1421,7 @@
 
 ### Path 2: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma1
+[BUS:] bus:~ma1  — VRAM addr bus MA1
   [not_x1] masa  — VRAM
     [not_x2] lozu  — VRAM x2
       [PAD:pad_out] ma1  — VRAM
@@ -1429,7 +1429,7 @@
 
 ### Path 3: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma10
+[BUS:] bus:~ma10  — VRAM addr bus MA10
   [not_x1] ruky  — VRAM
     [not_x2] nuva  — VRAM x2
       [PAD:pad_out] ma10  — VRAM
@@ -1437,7 +1437,7 @@
 
 ### Path 4: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma11
+[BUS:] bus:~ma11  — VRAM addr bus MA11
   [not_x1] ruma  — VRAM
     [not_x2] pedu  — VRAM x2
       [PAD:pad_out] ma11  — VRAM
@@ -1445,7 +1445,7 @@
 
 ### Path 5: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma12
+[BUS:] bus:~ma12  — VRAM addr bus MA12
   [not_x1] reho  — VRAM
     [not_x2] pony  — VRAM x2
       [PAD:pad_out] ma12  — VRAM
@@ -1453,7 +1453,7 @@
 
 ### Path 6: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma2
+[BUS:] bus:~ma2  — VRAM addr bus MA2
   [not_x1] myre  — VRAM
     [not_x2] laca  — VRAM x2
       [PAD:pad_out] ma2  — VRAM
@@ -1461,7 +1461,7 @@
 
 ### Path 7: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma3
+[BUS:] bus:~ma3  — VRAM addr bus MA3
   [not_x1] mavu  — VRAM
     [not_x2] luvo  — VRAM x2
       [PAD:pad_out] ma3  — VRAM
@@ -1469,7 +1469,7 @@
 
 ### Path 8: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma4
+[BUS:] bus:~ma4  — VRAM addr bus MA4
   [not_x1] mepa  — VRAM
     [not_x2] loly  — VRAM x2
       [PAD:pad_out] ma4  — VRAM
@@ -1477,7 +1477,7 @@
 
 ### Path 9: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma5
+[BUS:] bus:~ma5  — VRAM addr bus MA5
   [not_x1] mysa  — VRAM
     [not_x2] lalo  — VRAM x2
       [PAD:pad_out] ma5  — VRAM
@@ -1485,7 +1485,7 @@
 
 ### Path 10: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:~ma6
+[BUS:] bus:~ma6  — VRAM addr bus MA6
   [not_x1] mewy  — VRAM
     [not_x2] lefa  — VRAM x2
       [PAD:pad_out] ma6  — VRAM
@@ -1507,7 +1507,7 @@
 
 ### Path 1: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:d0 fan-out=46
+[BUS:] bus:d0  — CPU data bus D0 fan-out=46
   [or2] sato
     [REGISTERED:dffr] tepu
 ```

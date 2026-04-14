@@ -141,15 +141,15 @@ combinatorial depth means the signal arrives late at many destinations simultane
 | `keba` | APU Master Enable | 100 | 8 ge | not_x6 | APU Control |
 | `sacu` | Pixel Shift Clock (CLKPIPE) | 53 | 19 ge | or2 | BG/Win Cycles |
 | `alur` | System Clock Inv | 48 | 3 ge | not_x2 | Clock Distribution |
-| `bus:d0` |  | 46 | 0 ge |  | Bus |
-| `bus:d1` |  | 44 | 0 ge |  | Bus |
-| `bus:d2` |  | 43 | 0 ge |  | Bus |
+| `bus:d0` | CPU data bus D0 | 46 | 0 ge |  | Bus |
+| `bus:d1` | CPU data bus D1 | 44 | 0 ge |  | Bus |
+| `bus:d2` | CPU data bus D2 | 43 | 0 ge |  | Bus |
 | `cpu` |  | 42 | 9 ge | sm83 |  |
-| `bus:d6` |  | 41 | 0 ge |  | Bus |
-| `bus:d7` |  | 41 | 0 ge |  | Bus |
-| `bus:d4` |  | 40 | 0 ge |  | Bus |
-| `bus:d3` |  | 39 | 0 ge |  | Bus |
-| `bus:d5` |  | 39 | 0 ge |  | Bus |
+| `bus:d6` | CPU data bus D6 | 41 | 0 ge |  | Bus |
+| `bus:d7` | CPU data bus D7 | 41 | 0 ge |  | Bus |
+| `bus:d4` | CPU data bus D4 | 40 | 0 ge |  | Bus |
+| `bus:d3` | CPU data bus D3 | 39 | 0 ge |  | Bus |
+| `bus:d5` | CPU data bus D5 | 39 | 0 ge |  | Bus |
 | `bogy` | APU Clock Gate | 37 | 16 ge | not_x6 | APU Control |
 | `unor` | Test Mode Gate | 34 | 3 ge | and2 | Test Mode |
 | `tova` | Ext Bus Enable | 32 | 4 ge | not_x1 | Address Bus |
@@ -157,7 +157,7 @@ combinatorial depth means the signal arrives late at many destinations simultane
 | `adad` | CH1 Freq Clock | 29 | 1 ge | not_x4 | APU CH1 (Square+Sweep) |
 | `cunu` | System Reset Inv | 24 | 5 ge | not_x2 | PPU Control |
 | `xymu` | Rendering Active (Mode 3) | 23 | 0 ge | nor_latch | STAT/LY |
-| `bus:a1` |  | 23 | 0 ge |  | Bus |
+| `bus:a1` | CPU addr bus A1 | 23 | 0 ge |  | Bus |
 
 ## APU Timing
 

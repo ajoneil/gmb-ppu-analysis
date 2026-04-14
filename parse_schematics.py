@@ -1206,6 +1206,33 @@ def build_friendly_names(G):
         'cunu': 'System Reset Inv', 'tova': 'Ext Bus Enable',
         'unor': 'Test Mode Gate', 'adad': 'CH1 Freq Clock',
     }
+    # Bus nodes
+    for n in G.nodes():
+        if not n.startswith('bus:'):
+            continue
+        bus = n[4:]  # strip "bus:"
+        if re.match(r'^d\d$', bus):
+            names[n] = f'CPU data bus D{bus[1]}'
+        elif re.match(r'^a\d+$', bus):
+            names[n] = f'CPU addr bus A{bus[1:]}'
+        elif re.match(r'^~ma\d+$', bus):
+            names[n] = f'VRAM addr bus MA{bus[3:]}'
+        elif re.match(r'^md\d$', bus):
+            names[n] = f'VRAM data bus MD{bus[2]}'
+        elif 'oam_a_d' in bus:
+            bit = bus.split('d')[-1]
+            names[n] = f'OAM data A bus D{bit} (Y/tile)'
+        elif 'oam_b_d' in bus:
+            bit = bus.split('d')[-1]
+            names[n] = f'OAM data B bus D{bit} (X/attr)'
+        elif 'oam_render' in bus:
+            bit = bus.split('a')[-1]
+            names[n] = f'Sprite render data bit {bit}'
+        elif 'sprite_y' in bus:
+            bit = bus[-1]
+            names[n] = f'Sprite Y store bit {bit}'
+        elif 'clk' in bus or 'phase' in bus:
+            names[n] = f'Clock bus ({bus})'
     # Category-based fallback for cells not in the map
     cat_labels = {
         'ppu-bgfifo': 'BG FIFO', 'ppu-bgscroll': 'BG Scroll',
