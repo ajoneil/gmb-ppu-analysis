@@ -1381,16 +1381,17 @@ function getFilteredRaces() {{
     return true;
   }});
 
-  // Group races with same functional role:
-  // Same friendly name pattern (with bit number stripped) + same depth_diff.
-  // e.g. "Sprite OAM data bit 2" and "bit 7" group together,
-  // but "Sprite Y offset" stays separate from "Sprite OAM data".
+  // Group races that are the same signal repeated across multiple stores/instances.
+  // Key: full friendly name + depth_diff. This groups the 10 instances of
+  // "Sprite store line offset bit 1" but keeps bit 1 separate from bit 2,
+  // and keeps "Sprite store OAM X flip" separate from "OAM Y flip".
+  // For cells without friendly names, each race is its own group.
   const groupMap = new Map();
   for (const r of filtered) {{
-    const fname = friendlyName(r.display_name) || r.display_name;
-    // Strip trailing bit/store numbers to get the pattern
-    const pattern = fname.replace(/\s*(?:bit\s*)?\d+(?:\s*\(.*\))?\s*$/, '').trim();
-    const key = `${{pattern}}|${{r.depth_diff}}`;
+    const fname = friendlyName(r.display_name);
+    // Only group cells that have a friendly name (otherwise they're unique signals)
+    const key = fname ? `${{fname}}|${{r.depth_diff}}` : `_${{r.display_name}}`;
+    const pattern = fname || r.display_name;
     if (!groupMap.has(key)) {{
       groupMap.set(key, {{ representative: r, members: [], key, pattern }});
     }}
