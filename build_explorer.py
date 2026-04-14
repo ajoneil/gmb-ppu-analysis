@@ -161,24 +161,63 @@ def build_graph_friendly(graph_path: Path) -> dict:
             if src.get('node_type') == 'bus':
                 cell_to_bus[e['dst']] = e['src']
 
-    # Generate descriptions from bus names
+    # Generate descriptions from bus names (sprite store internals)
     bus_descs = {
         'oam_render_a': 'Sprite OAM data bit {} (tile/attr)',
         'sprite_y_store': 'Sprite Y offset bit {}',
-        'oam_a': 'OAM address bit {}',
-        'oam_b': 'OAM data B bit {}',
-        'd': 'CPU data bus bit {}',
     }
     for cell, bus in cell_to_bus.items():
         bus_name = bus.replace('bus:', '')
         for prefix, template in bus_descs.items():
             if bus_name.startswith(prefix):
                 suffix = bus_name[len(prefix):]
-                # Extract trailing digit(s)
                 digits = re.search(r'(\d+)$', suffix)
                 if digits:
                     friendly[cell] = template.format(digits.group(1))
                 break
+
+    # For cells fed by the CPU data bus, use category + bit for a useful name
+    cat_labels = {
+        'apu-ch1': 'CH1 (square+sweep)',
+        'apu-ch2': 'CH2 (square)',
+        'apu-ch3': 'CH3 (wave)',
+        'apu-ch4': 'CH4 (noise)',
+        'apu-control': 'APU control (NR50-NR52)',
+        'apu-decode': 'APU address decode',
+        'timer': 'Timer',
+        'serial': 'Serial link',
+        'int': 'Interrupt flags (FF0F)',
+        'joypad': 'Joypad (FF00)',
+        'test': 'Test mode (FF60)',
+        'bootrom': 'Boot ROM',
+        'bus-data': 'Data bus',
+        'bus-adr': 'Address bus',
+    }
+    for cell, bus in cell_to_bus.items():
+        if cell in friendly:
+            continue  # already mapped above
+        bus_name = bus.replace('bus:', '')
+        # CPU data bus: d0-d7
+        m = re.match(r'^d(\d)$', bus_name)
+        if m:
+            bit = m.group(1)
+            node = nodes.get(cell, {})
+            cat = node.get('category', '')
+            label = cat_labels.get(cat, cat)
+            if label:
+                friendly[cell] = f'{label} register bit {bit}'
+
+    # For registered cells with no bus source, use category as fallback
+    for n in graph['nodes']:
+        name = n['name']
+        if name in friendly:
+            continue
+        if n.get('node_type') != 'registered':
+            continue
+        cat = n.get('category', '')
+        label = cat_labels.get(cat)
+        if label:
+            friendly[name] = f'{label} counter/state'
 
     return friendly
 
