@@ -892,111 +892,118 @@ def is_path_terminator(G, node_name):
     return nt in ('registered', 'bus', 'boundary', 'pad')
 
 
-def build_dag(G):
-    """Build DAG by iteratively removing back-edges from cycles."""
-    import networkx as nx
+def compute_depths(G):
+    """Compute longest combinatorial depth to each node without building a DAG.
 
-    DAG = G.copy()
-    removed = []
-    while True:
-        try:
-            cycle_edges = nx.find_cycle(DAG)
-            edge = cycle_edges[-1]
-            DAG.remove_edge(edge[0], edge[1])
-            removed.append((edge[0], edge[1]))
-        except nx.NetworkXNoCycle:
-            break
-    return DAG, removed
+    Registered/bus/boundary/pad nodes have depth 0 (they're path boundaries).
+    Combinatorial nodes get depth = max(predecessor depths) + gate_equiv.
+
+    Uses iterative relaxation with cycle detection: if a node appears in its
+    own predecessor path, that's a combinatorial feedback loop and we skip it.
+    This handles SR latch feedback and other cycles without needing to remove
+    edges from the graph.
+    """
+    depth = {}
+    path = {}
+
+    for n in G.nodes():
+        if is_path_terminator(G, n):
+            depth[n] = 0
+            path[n] = [n]
+        else:
+            depth[n] = -1
+            path[n] = []
+
+    changed = True
+    iterations = 0
+    while changed and iterations < 50:
+        changed = False
+        iterations += 1
+        for n in G.nodes():
+            if is_path_terminator(G, n):
+                continue
+
+            best_d = -1
+            best_path = []
+            for pred in G.predecessors(n):
+                edge_data = G.edges[pred, n]
+                if edge_data.get('edge_type') in ('clock', 'reset'):
+                    continue
+                pd = depth.get(pred, -1)
+                pp = path.get(pred, [])
+                # Skip if this would create a cycle (n is already in the path)
+                if n in pp:
+                    continue
+                if pd > best_d:
+                    best_d = pd
+                    best_path = pp
+
+            if best_d >= 0:
+                ge = G.nodes[n].get('gate_equiv', 1)
+                new_d = best_d + ge
+                if new_d > depth[n]:
+                    depth[n] = new_d
+                    path[n] = best_path + [n]
+                    changed = True
+
+    return depth, path
 
 
-def find_critical_paths(DAG, G):
+def find_critical_paths(G):
     """Find longest combinatorial paths between registered nodes.
 
-    Uses gate_equiv for depth counting — AND gates count as 2 (NAND+INV),
-    MUX counts as 3, etc., giving more realistic delay estimates than
-    simple gate counting.
+    Uses iterative depth computation on the original graph — no DAG needed.
     """
-    import networkx as nx
-
-    topo_order = list(nx.topological_sort(DAG))
-
-    # dist[n] = (depth, path) where depth counts gate_equiv stages
-    dist = {}
-    for n in topo_order:
-        if is_path_terminator(DAG, n):
-            dist[n] = (0, [n])
-        else:
-            best_depth = -1
-            best_path = []
-            for pred in DAG.predecessors(n):
-                if pred in dist:
-                    d, p = dist[pred]
-                    if d > best_depth:
-                        best_depth = d
-                        best_path = p
-            if best_depth >= 0:
-                gate_equiv = DAG.nodes[n].get('gate_equiv', 1)
-                dist[n] = (best_depth + gate_equiv, best_path + [n])
-            else:
-                gate_equiv = DAG.nodes[n].get('gate_equiv', 1)
-                dist[n] = (gate_equiv, [n])
+    depth, path = compute_depths(G)
 
     # Collect paths terminating at registered sinks
     paths = []
-    for n in topo_order:
-        if not is_path_terminator(DAG, n):
+    for n in G.nodes():
+        if not is_path_terminator(G, n):
             continue
-        for pred in DAG.predecessors(n):
-            if pred in dist:
-                depth, path = dist[pred]
-                if depth >= 1:
-                    paths.append((depth, path + [n]))
+        for pred in G.predecessors(n):
+            edge_data = G.edges[pred, n]
+            if edge_data.get('edge_type') in ('clock', 'reset'):
+                continue
+            d = depth.get(pred, 0)
+            p = path.get(pred, [])
+            if d >= 1:
+                paths.append((d, p + [n]))
 
     paths.sort(key=lambda x: -x[0])
 
     # Deduplicate by (start, end, depth)
     seen = set()
     unique = []
-    for depth, path in paths:
-        key = (path[0], path[-1], depth)
+    for d, p in paths:
+        key = (p[0], p[-1], d)
         if key not in seen:
             seen.add(key)
-            unique.append((depth, path))
+            unique.append((d, p))
     return unique
 
 
-def find_race_pairs(DAG, G):
+def find_race_pairs(G):
     """Find signal races: registered nodes where inputs arrive at different depths.
 
-    Returns list of race dicts sorted by depth differential.
+    Considers ALL predecessor edges (data, clock, reset) for race detection,
+    because the race is between ANY inputs that must settle before the register
+    captures. For example, a latch's enable signal (classified as 'clock')
+    races against its data input.
     """
-    import networkx as nx
-
-    topo_order = list(nx.topological_sort(DAG))
-
-    # Compute depth to each node using gate_equiv
-    dist = {}
-    for n in topo_order:
-        if is_path_terminator(DAG, n):
-            dist[n] = 0
-        else:
-            best = -1
-            for pred in DAG.predecessors(n):
-                if pred in dist and dist[pred] > best:
-                    best = dist[pred]
-            gate_equiv = DAG.nodes[n].get('gate_equiv', 1)
-            dist[n] = best + gate_equiv if best >= 0 else 0
+    depth, _ = compute_depths(G)
 
     races = []
-    for n in topo_order:
-        if not is_path_terminator(DAG, n):
+    for n in G.nodes():
+        if not is_path_terminator(G, n):
             continue
 
-        preds = list(DAG.predecessors(n))
+        preds = list(G.predecessors(n))
+
         if len(preds) < 2:
             continue
 
-        pred_depths = [(p, dist.get(p, 0)) for p in preds]
+        pred_depths = [(p, depth.get(p, 0)) for p in preds]
         pred_depths.sort(key=lambda x: -x[1])
 
         max_d = pred_depths[0][1]
@@ -1007,11 +1014,11 @@ def find_race_pairs(DAG, G):
             races.append({
                 'node': n,
                 'display_name': n,
-                'node_type': DAG.nodes[n].get('node_type', ''),
-                'reg_type': DAG.nodes[n].get('reg_type', ''),
-                'cell_type': DAG.nodes[n].get('cell_type', ''),
-                'category': DAG.nodes[n].get('category', ''),
-                'source_file': DAG.nodes[n].get('source_file', ''),
+                'node_type': G.nodes[n].get('node_type', ''),
+                'reg_type': G.nodes[n].get('reg_type', ''),
+                'cell_type': G.nodes[n].get('cell_type', ''),
+                'category': G.nodes[n].get('category', ''),
+                'source_file': G.nodes[n].get('source_file', ''),
                 'depth_diff': diff,
                 'max_depth': max_d,
                 'min_depth': min_d,
@@ -1019,10 +1026,10 @@ def find_race_pairs(DAG, G):
                     {
                         'name': p,
                         'depth': d,
-                        'gate_func': DAG.nodes[p].get('gate_func', ''),
-                        'cell_type': DAG.nodes[p].get('cell_type', ''),
-                        'node_type': DAG.nodes[p].get('node_type', ''),
-                        'category': DAG.nodes[p].get('category', ''),
+                        'gate_func': G.nodes[p].get('gate_func', ''),
+                        'cell_type': G.nodes[p].get('cell_type', ''),
+                        'node_type': G.nodes[p].get('node_type', ''),
+                        'category': G.nodes[p].get('category', ''),
                     }
                     for p, d in pred_depths
                 ],
@@ -1346,12 +1353,13 @@ def main():
     G = build_networkx_graph(nodes, edges)
     print(f"  {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
-    print("Breaking feedback cycles...")
-    DAG, removed = build_dag(G)
-    print(f"  Removed {len(removed)} back-edges to create DAG")
+    print("Computing combinatorial depths...")
+    depth, _ = compute_depths(G)
+    max_depth = max(depth.values())
+    print(f"  Max depth: {max_depth} gate-equivalents")
 
     print("Finding critical paths...")
-    paths = find_critical_paths(DAG, G)
+    paths = find_critical_paths(G)
     print(f"  {len(paths)} critical paths found")
     if paths:
         print(f"  Deepest: {paths[0][0]} gate-equivalents")
@@ -1361,7 +1369,7 @@ def main():
         print(f"  Reset-only: {len(rst_paths)} (max depth {rst_paths[0][0] if rst_paths else 0})")
 
     print("Finding signal race pairs...")
-    races = find_race_pairs(DAG, G)
+    races = find_race_pairs(G)
     print(f"  {len(races)} race pairs found")
     ppu_races = [r for r in races if r.get('category', '').startswith('ppu-')]
     print(f"  PPU-related: {len(ppu_races)}")
