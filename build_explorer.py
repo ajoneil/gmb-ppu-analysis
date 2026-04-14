@@ -151,12 +151,10 @@ def build_graph_friendly(graph_path: Path) -> dict:
     nodes = {n['name']: n for n in graph['nodes']}
     friendly = {}
 
-    # Map registered cells to their data bus source
-    registered = {n['name'] for n in graph['nodes']
-                  if n.get('node_type') == 'registered'}
+    # Map all cells (registered and combinatorial) to their data bus source
     cell_to_bus = {}
     for e in graph['edges']:
-        if e['dst'] in registered and e['edge_type'] == 'data':
+        if e['edge_type'] == 'data':
             src = nodes.get(e['src'], {})
             if src.get('node_type') == 'bus':
                 cell_to_bus[e['dst']] = e['src']
@@ -1921,8 +1919,13 @@ def main():
 
     extra_friendly = build_friendly_map(out_dir / 'signal_concordance.md')
     graph_friendly = build_graph_friendly(out_dir / 'ppu_graph.json')
-    # Graph-derived names are lower priority — don't overwrite concordance
-    merged = {**graph_friendly, **extra_friendly}
+    # Graph-derived sprite/register labels override concordance when the
+    # concordance entry is generic (e.g. "Same pattern", "Reset depth...")
+    merged = {**extra_friendly}
+    for k, v in graph_friendly.items():
+        existing = merged.get(k, '')
+        if not existing or existing.startswith('Reset depth') or existing == 'Same pattern':
+            merged[k] = v
     extra_friendly_json = json.dumps(merged)
     print(f'  {len(extra_friendly)} from concordance + {len(graph_friendly)} from graph = {len(merged)} friendly names')
 
