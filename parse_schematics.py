@@ -651,7 +651,7 @@ def build_graph(cell_types: dict, cells: list, wires: list):
             for snk in sink_cells:
                 if snk == bus_node_name:
                     continue
-                snk_edge_type = _pin_edge_type(snk, wire.sinks, edge_type)
+                snk_edge_type = _pin_edge_type(snk, wire.sinks, edge_type, nodes.get(snk))
                 edges.append(Edge(src=bus_node_name, dst=snk, edge_type=snk_edge_type))
         else:
             # Single-driver wire: direct edges
@@ -659,14 +659,24 @@ def build_graph(cell_types: dict, cells: list, wires: list):
                 for snk in sink_cells:
                     if drv == snk:
                         continue
-                    snk_edge_type = _pin_edge_type(snk, wire.sinks, edge_type)
+                    snk_edge_type = _pin_edge_type(snk, wire.sinks, edge_type, nodes.get(snk))
                     edges.append(Edge(src=drv, dst=snk, edge_type=snk_edge_type))
 
     return nodes, edges
 
 
-def _pin_edge_type(sink_cell: str, sink_pin_refs: list, default_type: str) -> str:
-    """Determine edge type based on the destination pin name."""
+def _pin_edge_type(sink_cell: str, sink_pin_refs: list, default_type: str,
+                   sink_node: Node = None) -> str:
+    """Determine edge type based on the destination pin name.
+
+    Only registered cells have clock/reset pins. Combinatorial cells treat
+    all inputs as data, even if the wire's signal type is 'clk' — a clock
+    signal passing through a buffer is still a data dependency for timing.
+    """
+    # Combinatorial/bus/pad cells: all inputs are data
+    if sink_node and sink_node.node_type not in ('registered',):
+        return "data"
+
     for pin_ref in sink_pin_refs:
         if _extract_cell_name(pin_ref) == sink_cell:
             pin_name = _extract_pin_name(pin_ref)

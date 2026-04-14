@@ -28,6 +28,6 @@ simulator analysis:
 
 | Category | Count | Max Depth | Worst-case Delay |
 |----------|-------|-----------|-----------------|
-| **Operational** (per-dot/scanline) | 1005 | 39 | 585 ns (491% half T-cycle) |
-| Reset-only | 17 | 45 | 675 ns |
-| **Total** | 1022 | 45 | |
+| **Operational** (per-dot/scanline) | 788 | 39 | 585 ns (491% half T-cycle) |
+| Reset-only | 20 | 45 | 675 ns |
+| **Total** | 808 | 45 | |

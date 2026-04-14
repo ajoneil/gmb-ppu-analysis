@@ -285,7 +285,7 @@
 ```
 
 
-## bus (649 paths, max depth 32)
+## bus (432 paths, max depth 32)
 
 ### Path 1: depth 32 (160-480 ns, 403% half T-cycle)
 ```
@@ -317,106 +317,196 @@
                     [BUS:] bus:~ma4 (bus)
 ```
 
-### Path 3: depth 28 (140-420 ns, 352% half T-cycle)
+### Path 3: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [half_add] fafo (ppu-bgscroll)
-    [full_add] emux (ppu-bgscroll)
-      [full_add] ecab (ppu-bgscroll)
-        [full_add] etam (ppu-bgscroll)
-          [full_add] doto (ppu-bgscroll)
-            [full_add] daba (ppu-bgscroll)
-              [full_add] efyk (ppu-bgscroll)
-                [not_if0] ceta (ppu-bgscroll)
-                  [BUS:] bus:~ma8 (bus)
-```
-
-### Path 4: depth 28 (140-420 ns, 352% half T-cycle)
-```
-[REGISTERED:dffr] xeho (ppu-stat)
-  [half_add] atad (ppu-bgscroll)
-    [full_add] behu (ppu-bgscroll)
-      [full_add] apyh (ppu-bgscroll)
-        [full_add] babe (ppu-bgscroll)
-          [full_add] abod (ppu-bgscroll)
-            [full_add] bewy (ppu-bgscroll)
-              [full_add] byca (ppu-bgscroll)
-                [not_if0] coly (ppu-bgscroll)
-                  [BUS:] bus:~ma3 (bus)
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] zaro (ppu-objreg)
+                                      [BUS:] bus:oam_render_a2 (bus) fan-out=11
 ```
 
-### Path 5: depth 24 (120-360 ns, 302% half T-cycle)
+### Path 4: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [half_add] fafo (ppu-bgscroll)
-    [full_add] emux (ppu-bgscroll)
-      [full_add] ecab (ppu-bgscroll)
-        [full_add] etam (ppu-bgscroll)
-          [full_add] doto (ppu-bgscroll)
-            [full_add] daba (ppu-bgscroll)
-              [not_if0] cypo (ppu-bgscroll)
-                [BUS:] bus:~ma7 (bus)
-```
-
-### Path 6: depth 24 (120-360 ns, 302% half T-cycle)
-```
-[REGISTERED:dffr] xeho (ppu-stat)
-  [half_add] atad (ppu-bgscroll)
-    [full_add] behu (ppu-bgscroll)
-      [full_add] apyh (ppu-bgscroll)
-        [full_add] babe (ppu-bgscroll)
-          [full_add] abod (ppu-bgscroll)
-            [full_add] bewy (ppu-bgscroll)
-              [not_if0] alel (ppu-bgscroll)
-                [BUS:] bus:~ma2 (bus)
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] zojy (ppu-objreg)
+                                      [BUS:] bus:oam_render_a3 (bus) fan-out=11
 ```
 
-### Path 7: depth 20 (100-300 ns, 252% half T-cycle)
+### Path 5: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [half_add] fafo (ppu-bgscroll)
-    [full_add] emux (ppu-bgscroll)
-      [full_add] ecab (ppu-bgscroll)
-        [full_add] etam (ppu-bgscroll)
-          [full_add] doto (ppu-bgscroll)
-            [not_if0] case (ppu-bgscroll)
-              [BUS:] bus:~ma6 (bus)
-```
-
-### Path 8: depth 20 (100-300 ns, 252% half T-cycle)
-```
-[REGISTERED:dffr] xeho (ppu-stat)
-  [half_add] atad (ppu-bgscroll)
-    [full_add] behu (ppu-bgscroll)
-      [full_add] apyh (ppu-bgscroll)
-        [full_add] babe (ppu-bgscroll)
-          [full_add] abod (ppu-bgscroll)
-            [not_if0] afeb (ppu-bgscroll)
-              [BUS:] bus:~ma1 (bus)
-```
-
-### Path 9: depth 19 (95-285 ns, 239% half T-cycle)
-```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [not_x1] ebos (ppu-ycomp)
-    [full_add] eruc (ppu-ycomp)
-      [full_add] enef (ppu-ycomp)
-        [full_add] feco (ppu-ycomp)
-          [full_add] gyky (ppu-ycomp)
-            [not_x1] gysa (ppu-ycomp)
-              [not_if0] wenu (ppu-ycomp)
-                [BUS:] bus:sprite_y_store3 (bus) fan-out=11
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] ynev (ppu-objreg)
+                                      [BUS:] bus:oam_render_a4 (bus) fan-out=11
 ```
 
-### Path 10: depth 16 (80-240 ns, 201% half T-cycle)
+### Path 6: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [half_add] fafo (ppu-bgscroll)
-    [full_add] emux (ppu-bgscroll)
-      [full_add] ecab (ppu-bgscroll)
-        [full_add] etam (ppu-bgscroll)
-          [not_if0] duho (ppu-bgscroll)
-            [BUS:] bus:~ma5 (bus)
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] xyra (ppu-objreg)
+                                      [BUS:] bus:oam_render_a5 (bus) fan-out=11
+```
+
+### Path 7: depth 29 (145-435 ns, 365% half T-cycle)
+```
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] yrad (ppu-objreg)
+                                      [BUS:] bus:oam_render_a6 (bus) fan-out=11
+```
+
+### Path 8: depth 29 (145-435 ns, 365% half T-cycle)
+```
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] yhal (ppu-objreg)
+                                      [BUS:] bus:oam_render_a7 (bus) fan-out=11
+```
+
+### Path 9: depth 29 (145-435 ns, 365% half T-cycle)
+```
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] byme (ppu-objreg)
+                                      [BUS:] bus:sprite_y_store0 (bus) fan-out=11
+```
+
+### Path 10: depth 29 (145-435 ns, 365% half T-cycle)
+```
+[REGISTERED:dffr] ceno (ppu-objctl)
+  [not_x2] ceha (ppu-objctl) x2
+    [not_x1] byjo (ppu-objctl)
+      [and2] azem (ppu-objctl)
+        [and2] aror (ppu-xprio) fan-out=10
+          [nand3] ydug (ppu-xprio)
+            [not_x1] wefu (ppu-xprio)
+              [or2] geze (ppu-xprio)
+                [or2] fuma (ppu-xprio)
+                  [or2] gede (ppu-xprio)
+                    [or2] wuto (ppu-xprio)
+                      [or2] xyla (ppu-xprio)
+                        [or2] weja (ppu-xprio)
+                          [or2] wyla (ppu-xprio)
+                            [or2] favo (ppu-xprio)
+                              [or2] gyga (ppu-xprio)
+                                [nor2] guze (ppu-xprio)
+                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
+                                    [not_if0] gate (ppu-objreg)
+                                      [BUS:] bus:sprite_y_store1 (bus) fan-out=11
 ```
 
 
@@ -1304,14 +1394,13 @@
                           [REGISTERED:tffnl] eryc (apu-ch2)
 ```
 
-### Path 7: depth 4 (20-60 ns, 50% half T-cycle)
+### Path 7: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[REGISTERED:dffr] gyko (apu-ch2)
-  [not_x1] etuk (apu-ch2)
-    [not_x1] davu (apu-ch2)
-      [nor2] duju (apu-ch2)
-        [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] cyvo (apu-ch2)
+[REGISTERED:dffr_cc] cagy (apu-ch2)
+  [and2] dymu (apu-ch2)
+    [and2] egog (apu-ch2)
+      [ao2222] exes (apu-ch2)
+        [REGISTERED:dffr] dome (apu-ch2)
 ```
 
 ### Path 8: depth 4 (20-60 ns, 50% half T-cycle)
@@ -1321,7 +1410,7 @@
     [not_x1] davu (apu-ch2)
       [nor2] duju (apu-ch2)
         [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] done (apu-ch2)
+          [REGISTERED:tffnl] cyvo (apu-ch2)
 ```
 
 ### Path 9: depth 4 (20-60 ns, 50% half T-cycle)
@@ -1331,7 +1420,7 @@
     [not_x1] davu (apu-ch2)
       [nor2] duju (apu-ch2)
         [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] dynu (apu-ch2)
+          [REGISTERED:tffnl] done (apu-ch2)
 ```
 
 ### Path 10: depth 4 (20-60 ns, 50% half T-cycle)
@@ -1341,11 +1430,11 @@
     [not_x1] davu (apu-ch2)
       [nor2] duju (apu-ch2)
         [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] ezof (apu-ch2)
+          [REGISTERED:tffnl] dynu (apu-ch2)
 ```
 
 
-## apu-ch1 (39 paths, max depth 15)
+## apu-ch1 (41 paths, max depth 15)
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
@@ -1455,7 +1544,16 @@
                           [REGISTERED:tffnl] eram (apu-ch1)
 ```
 
-### Path 7: depth 4 (20-60 ns, 50% half T-cycle)
+### Path 7: depth 6 (30-90 ns, 76% half T-cycle)
+```
+[REGISTERED:dffr_cc] dape (apu-ch1)
+  [and2] ezoz (apu-ch1)
+    [and2] enek (apu-ch1)
+      [ao2222] duna (apu-ch1)
+        [REGISTERED:dffr] duwo (apu-ch1)
+```
+
+### Path 8: depth 4 (20-60 ns, 50% half T-cycle)
 ```
 [REGISTERED:dffr] comy (apu-ch1)
   [not_x1] cyte (apu-ch1)
@@ -1465,7 +1563,7 @@
           [REGISTERED:tffnl] copu (apu-ch1)
 ```
 
-### Path 8: depth 4 (20-60 ns, 50% half T-cycle)
+### Path 9: depth 4 (20-60 ns, 50% half T-cycle)
 ```
 [REGISTERED:drlatch_ee] avaf (apu-ch1)
   [not_x3] aryl (apu-ch1) x3 fan-out=14
@@ -1473,22 +1571,12 @@
       [REGISTERED:dffr_cc_q] deva (apu-ch1)
 ```
 
-### Path 9: depth 4 (20-60 ns, 50% half T-cycle)
+### Path 10: depth 4 (20-60 ns, 50% half T-cycle)
 ```
 [REGISTERED:drlatch_ee] avaf (apu-ch1)
   [not_x3] aryl (apu-ch1) x3 fan-out=14
     [xor] cale (apu-ch1)
       [REGISTERED:dffr_cc_q] defa (apu-ch1)
-```
-
-### Path 10: depth 4 (20-60 ns, 50% half T-cycle)
-```
-[REGISTERED:dffr] comy (apu-ch1)
-  [not_x1] cyte (apu-ch1)
-    [not_x1] cope (apu-ch1)
-      [nor2] epyk (apu-ch1)
-        [not_x1] dega (apu-ch1)
-          [REGISTERED:tffnl] ekov (apu-ch1)
 ```
 
 
@@ -1620,7 +1708,7 @@
 
 ### Path 9: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] gone (apu-ch4) fan-out=14
+[REGISTERED:dffr] fosy (apu-ch4)
   [nor2] enec (apu-ch4)
     [not_x1] dapy (apu-ch4)
       [REGISTERED:tffnl] cuna (apu-ch4)
@@ -1628,7 +1716,7 @@
 
 ### Path 10: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] gone (apu-ch4) fan-out=14
+[REGISTERED:dffr] fosy (apu-ch4)
   [nor2] enec (apu-ch4)
     [not_x1] dapy (apu-ch4)
       [REGISTERED:tffnl] cofe (apu-ch4)
@@ -1937,53 +2025,7 @@
 ```
 
 
-## Sprite Y Compare (3 paths, max depth 14)
-
-### Path 1: depth 14 (70-210 ns, 176% half T-cycle)
-```
-[REGISTERED:dffr] nopa (ppu-cycles)
-  [and2] nuny (ppu-cycles)
-    [nor2] puku (ppu-cycles)
-      [nor3] rydy (ppu-cycles)
-        [not_x1] sylo (ppu-cycles)
-          [nand2] tuxy (ppu-cycles)
-            [not_x2] suzu (ppu-cycles) x2
-              [or3] tevo (ppu-cycles)
-                [nor3] nyxu (ppu-cycles)
-                  [nand3] moce (ppu-cycles)
-                    [not_x1] lyry (ppu-cycles)
-                      [and4] teky (ppu-ycomp)
-                        [REGISTERED:dffr] sobu (ppu-ycomp)
-```
-
-### Path 2: depth 8 (40-120 ns, 101% half T-cycle)
-```
-[REGISTERED:dffr] toxe (ppu-ycomp)
-  [not_x1] tytu (ppu-ycomp)
-    [nand2] tacu (ppu-ycomp)
-      [and2] vape (ppu-oam)
-        [not_x1] xujy (ppu-oam)
-          [nand3] bycu (ppu-oam)
-            [not_x2] cota (ppu-oam) x2
-              [not_x2] wovu (ppu-oam) x2
-                [BOUNDARY:oam] oam_a ()
-```
-
-### Path 3: depth 8 (40-120 ns, 101% half T-cycle)
-```
-[REGISTERED:dffr] toxe (ppu-ycomp)
-  [not_x1] tytu (ppu-ycomp)
-    [nand2] tacu (ppu-ycomp)
-      [and2] vape (ppu-oam)
-        [not_x1] xujy (ppu-oam)
-          [nand3] bycu (ppu-oam)
-            [not_x2] cota (ppu-oam) x2
-              [not_x2] wovu (ppu-oam) x2
-                [BOUNDARY:oam] oam_b ()
-```
-
-
-## LCD Output (11 paths, max depth 14)
+## LCD Output (10 paths, max depth 14)
 
 ### Path 1: depth 14 (70-210 ns, 176% half T-cycle)
 ```
@@ -2026,17 +2068,7 @@
             [PAD:pad_out] fr (ppu-lcd)
 ```
 
-### Path 4: depth 5 (25-75 ns, 63% half T-cycle)
-```
-[REGISTERED:dffr] rutu (ppu-lcd)
-  [not_x3] pure (ppu-lcd) x3
-    [not_x1] kasa (ppu-lcd)
-      [ao22] kahe (ppu-lcd)
-        [not_x3] kymo (ppu-lcd) x3
-          [PAD:pad_out] cpl (ppu-lcd)
-```
-
-### Path 5: depth 3 (15-45 ns, 38% half T-cycle)
+### Path 4: depth 3 (15-45 ns, 38% half T-cycle)
 ```
 [REGISTERED:dffr] taha (ppu-lcd)
   [not_x1] tafy (ppu-lcd)
@@ -2045,7 +2077,7 @@
         [REGISTERED:dffr] sygu (ppu-lcd)
 ```
 
-### Path 6: depth 3 (15-45 ns, 38% half T-cycle)
+### Path 5: depth 3 (15-45 ns, 38% half T-cycle)
 ```
 [REGISTERED:dffr] rutu (ppu-lcd)
   [or2] ryno (ppu-lcd)
@@ -2053,32 +2085,39 @@
       [PAD:pad_out] cpg (ppu-lcd)
 ```
 
-### Path 7: depth 2 (10-30 ns, 25% half T-cycle)
+### Path 6: depth 2 (10-30 ns, 25% half T-cycle)
 ```
 [REGISTERED:dffr] lydo (ppu-stat)
   [and4] noko (ppu-lcd)
     [REGISTERED:dffr] myta (ppu-lcd)
 ```
 
-### Path 8: depth 2 (10-30 ns, 25% half T-cycle)
+### Path 7: depth 2 (10-30 ns, 25% half T-cycle)
 ```
 [REGISTERED:dffr] lovu (ppu-stat)
   [and2] xyvo (ppu-lcd)
     [REGISTERED:dffr] popu (ppu-lcd)
 ```
 
-### Path 9: depth 2 (10-30 ns, 25% half T-cycle)
+### Path 8: depth 2 (10-30 ns, 25% half T-cycle)
 ```
 [REGISTERED:dffr] saxo (ppu-lcd)
   [and4] sanu (ppu-lcd)
     [REGISTERED:dffr] rutu (ppu-lcd)
 ```
 
-### Path 10: depth 1 (5-15 ns, 13% half T-cycle)
+### Path 9: depth 1 (5-15 ns, 13% half T-cycle)
 ```
 [REGISTERED:dffr] lexa (ppu-stat)
   [nor8] neru (ppu-lcd)
     [REGISTERED:dffr] meda (ppu-lcd)
+```
+
+### Path 10: depth 1 (5-15 ns, 13% half T-cycle)
+```
+[REGISTERED:dffr] meda (ppu-lcd)
+  [not_x3] mure (ppu-lcd) x3
+    [PAD:pad_out] s (ppu-lcd)
 ```
 
 
@@ -2320,6 +2359,19 @@
 ```
 
 
+## Clock Distribution (1 paths, max depth 6)
+
+### Path 1: depth 6 (30-90 ns, 76% half T-cycle)
+```
+[PAD:pad_in] t1 (test)
+  [not_x1] ubet (test)
+    [and2] unor (test) fan-out=34
+      [or3] taba (clocks)
+        [sm83] cpu () fan-out=42
+          [PAD:pad_xtal] ck1_ck2 (clocks)
+```
+
+
 ## apu-control (1 paths, max depth 5)
 
 ### Path 1: depth 5 (25-75 ns, 63% half T-cycle)
@@ -2329,6 +2381,47 @@
     [and2] unor (test) fan-out=34
       [and2] efop (apu-control)
         [REGISTERED:drlatch_ee] fero (apu-control)
+```
+
+
+## Serial (5 paths, max depth 5)
+
+### Path 1: depth 5 (25-75 ns, 63% half T-cycle)
+```
+[REGISTERED:dffr] coty (serial)
+  [muxi] cave (serial)
+    [or2] dawa (serial)
+      [nor2] kujo (serial)
+        [PAD:pad_bidir_pu_latch] sck (serial)
+```
+
+### Path 2: depth 2 (10-30 ns, 25% half T-cycle)
+```
+[REGISTERED:dffr] elys (serial)
+  [muxi] kena (serial)
+    [PAD:pad_out] sout (serial)
+```
+
+### Path 3: depth 2 (10-30 ns, 25% half T-cycle)
+```
+[REGISTERED:dffr] buro (test)
+  [not_x1] jeva (test)
+    [nor2] kywe (test)
+      [PAD:pad_bidir_pu] sin (serial)
+```
+
+### Path 4: depth 1 (5-15 ns, 13% half T-cycle)
+```
+[PAD:pad_bidir_pu] sin (serial)
+  [not_x1] cage (serial)
+    [REGISTERED:dffsr] cuba (serial)
+```
+
+### Path 5: depth 1 (5-15 ns, 13% half T-cycle)
+```
+[REGISTERED:dffr] buro (test)
+  [nand2] kore (test)
+    [PAD:pad_bidir_pu] sin (serial)
 ```
 
 
@@ -2418,38 +2511,6 @@
 [BUS:] bus:d0 (bus) fan-out=46
   [or2] sato (bootrom)
     [REGISTERED:dffr] tepu (bootrom)
-```
-
-
-## Serial (4 paths, max depth 2)
-
-### Path 1: depth 2 (10-30 ns, 25% half T-cycle)
-```
-[REGISTERED:dffr] elys (serial)
-  [muxi] kena (serial)
-    [PAD:pad_out] sout (serial)
-```
-
-### Path 2: depth 2 (10-30 ns, 25% half T-cycle)
-```
-[REGISTERED:dffr] buro (test)
-  [not_x1] jeva (test)
-    [nor2] kywe (test)
-      [PAD:pad_bidir_pu] sin (serial)
-```
-
-### Path 3: depth 1 (5-15 ns, 13% half T-cycle)
-```
-[PAD:pad_bidir_pu] sin (serial)
-  [not_x1] cage (serial)
-    [REGISTERED:dffsr] cuba (serial)
-```
-
-### Path 4: depth 1 (5-15 ns, 13% half T-cycle)
-```
-[REGISTERED:dffr] buro (test)
-  [nand2] kore (test)
-    [PAD:pad_bidir_pu] sin (serial)
 ```
 
 
