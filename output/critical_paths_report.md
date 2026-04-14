@@ -22,10 +22,10 @@ Data source: [msinger/dmg-schematics](https://github.com/msinger/dmg-schematics)
 
 | Category | Paths | Max Depth | Worst-case Delay |
 |----------|-------|-----------|-----------------|
-| **Operational** | 788 | 39 ge | 585 ns (491% half T-cycle) |
-| Reset-only | 20 | 45 ge | 675 ns |
-| **Total paths** | 808 | | |
-| **Race pairs** | 975 (491 PPU) | max diff 51 | |
+| **Operational** | 588 | 39 ge | 585 ns (491% half T-cycle) |
+| Reset-only | 236 | 45 ge | 675 ns |
+| **Total paths** | 824 | | |
+| **Race pairs** | 991 (491 PPU) | max diff 51 | |
 
 ## Key Findings
 
@@ -98,7 +98,7 @@ which is clocked by CLKPIPE (depth 19). The X match output settles
 at a different time than the fetch control signals, causing sprites to
 potentially trigger fetch one dot early or late.
 
-### 6. Window Trigger Races (30 races, max diff=17)
+### 6. Window Trigger Races (30 races, max diff=20)
 
 The WX/WY comparison and window activation signals race against the rendering
 pipeline. Window content may shift one pixel right. Affects games that use the
@@ -109,29 +109,26 @@ window for status bars, dialogue boxes, or HUD overlays.
 | Area | Paths | Max Depth | Max Delay | Key Race |
 |------|-------|-----------|-----------|----------|
 | Sprite Control | 3 | 39 ge | 585 ns | diff=33 (17 races) |
-| Test Mode | 17 | 32 ge | 480 ns | diff=12 (8 races) |
-| Bus | 432 | 32 ge | 480 ns | diff=27 (55 races) |
-| VRAM Interface | 37 | 29 ge | 435 ns | diff=3 (8 races) |
+| Bus | 326 | 32 ge | 480 ns | diff=27 (71 races) |
 | Sprite X Priority | 10 | 27 ge | 405 ns | diff=23 (10 races) |
-| Data Bus | 16 | 19 ge | 285 ns | diff=9 (8 races) |
-| DMA | 2 | 16 ge | 240 ns | diff=17 (21 races) |
-| Timer | 9 | 15 ge | 225 ns | diff=16 (21 races) |
-| APU CH2 (Square) | 22 | 15 ge | 225 ns | diff=17 (56 races) |
-| APU CH1 (Square+Sweep) | 41 | 15 ge | 225 ns | diff=51 (102 races) |
-| APU CH4 (Noise) | 15 | 15 ge | 225 ns | diff=17 (68 races) |
-| APU CH3 (Wave) | 24 | 15 ge | 225 ns | diff=17 (59 races) |
-| Address Bus | 16 | 15 ge | 225 ns | diff=12 (15 races) |
 | LCD Output | 10 | 14 ge | 210 ns | diff=11 (17 races) |
-| STAT/LY | 8 | 13 ge | 195 ns | diff=18 (33 races) |
+| STAT/LY | 8 | 13 ge | 195 ns | diff=21 (33 races) |
+| Address Bus | 15 | 9 ge | 135 ns | diff=15 (15 races) |
 | Sprite Pixel Shifter | 16 | 9 ge | 135 ns | diff=19 (16 races) |
 | BG/Win Cycles | 3 | 8 ge | 120 ns | diff=20 (20 races) |
-| Window Logic | 1 | 7 ge | 105 ns | diff=17 (30 races) |
-| Clock Distribution | 1 | 6 ge | 90 ns | diff=14 (21 races) |
-| APU Control | 1 | 5 ge | 75 ns | diff=16 (27 races) |
-| Serial | 5 | 5 ge | 75 ns | diff=14 (17 races) |
-| Joypad | 12 | 3 ge | 45 ns | diff=12 (11 races) |
-| Boot ROM | 1 | 2 ge | 30 ns | diff=10 (1 races) |
+| Window Logic | 1 | 7 ge | 105 ns | diff=20 (30 races) |
+| APU CH3 (Wave) | 16 | 7 ge | 105 ns | diff=20 (59 races) |
+| APU CH2 (Square) | 16 | 6 ge | 90 ns | diff=20 (56 races) |
+| APU CH1 (Square+Sweep) | 35 | 6 ge | 90 ns | diff=51 (102 races) |
+| APU Control | 1 | 5 ge | 75 ns | diff=19 (27 races) |
+| Serial | 5 | 5 ge | 75 ns | diff=17 (17 races) |
+| APU CH4 (Noise) | 9 | 4 ge | 60 ns | diff=20 (68 races) |
+| Joypad | 12 | 3 ge | 45 ns | diff=15 (11 races) |
+| VRAM Interface | 13 | 2 ge | 30 ns | diff=3 (8 races) |
+| DMA | 1 | 2 ge | 30 ns | diff=20 (21 races) |
+| Boot ROM | 1 | 2 ge | 30 ns | diff=13 (1 races) |
 | Sprite X Match | 80 | 1 ge | 15 ns | diff=43 (112 races) |
+| Timer | 1 | 1 ge | 15 ns | diff=19 (21 races) |
 | OAM Interface | 6 | 1 ge | 15 ns | diff=4 (1 races) |
 
 ## High Fan-out Signals (>= 20 outputs)
@@ -147,16 +144,16 @@ combinatorial depth means the signal arrives late at many destinations simultane
 | `bus:d0` |  | 46 | 0 ge |  | Bus |
 | `bus:d1` |  | 44 | 0 ge |  | Bus |
 | `bus:d2` |  | 43 | 0 ge |  | Bus |
-| `cpu` |  | 42 | 6 ge | sm83 |  |
+| `cpu` |  | 42 | 9 ge | sm83 |  |
 | `bus:d6` |  | 41 | 0 ge |  | Bus |
 | `bus:d7` |  | 41 | 0 ge |  | Bus |
 | `bus:d4` |  | 40 | 0 ge |  | Bus |
 | `bus:d3` |  | 39 | 0 ge |  | Bus |
 | `bus:d5` |  | 39 | 0 ge |  | Bus |
-| `bogy` | APU Clock Gate | 37 | 13 ge | not_x6 | APU Control |
+| `bogy` | APU Clock Gate | 37 | 16 ge | not_x6 | APU Control |
 | `unor` | Test Mode Gate | 34 | 3 ge | and2 | Test Mode |
 | `tova` | Ext Bus Enable | 32 | 4 ge | not_x1 | Address Bus |
-| `aguz` | APU Length Clock | 30 | 10 ge | not_x6 | APU Control |
+| `aguz` | APU Length Clock | 30 | 13 ge | not_x6 | APU Control |
 | `adad` | CH1 Freq Clock | 29 | 1 ge | not_x4 | APU CH1 (Square+Sweep) |
 | `cunu` | System Reset Inv | 24 | 5 ge | not_x2 | PPU Control |
 | `xymu` | Rendering Active (Mode 3) | 23 | 0 ge | nor_latch | STAT/LY |

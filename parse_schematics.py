@@ -618,8 +618,8 @@ def build_graph(cell_types: dict, cells: list, wires: list):
             if cell_name and cell_name in nodes:
                 sink_refs.append((cell_name, pin_ref))
 
-        driver_cells = {c for c, _ in driver_refs}
-        sink_cells = {c for c, _ in sink_refs}
+        driver_cells = sorted({c for c, _ in driver_refs})
+        sink_cells = sorted({c for c, _ in sink_refs})
 
         # Determine base edge type from signal type
         edge_type = "data"
@@ -929,13 +929,14 @@ def compute_depths(G):
     while changed and iterations < 50:
         changed = False
         iterations += 1
-        for n in G.nodes():
+        for n in sorted(G.nodes()):
             if is_path_terminator(G, n):
                 continue
 
             best_d = -1
             best_path = []
-            for pred in G.predecessors(n):
+            best_pred = ''
+            for pred in sorted(G.predecessors(n)):
                 edge_data = G.edges[pred, n]
                 if edge_data.get('edge_type') in ('clock', 'reset'):
                     continue
@@ -944,9 +945,11 @@ def compute_depths(G):
                 # Skip if this would create a cycle (n is already in the path)
                 if n in pp:
                     continue
-                if pd > best_d:
+                # Deterministic tie-breaking: prefer deeper, then alphabetically first
+                if pd > best_d or (pd == best_d and pred < best_pred):
                     best_d = pd
                     best_path = pp
+                    best_pred = pred
 
             if best_d >= 0:
                 ge = G.nodes[n].get('gate_equiv', 1)
@@ -968,10 +971,10 @@ def find_critical_paths(G):
 
     # Collect paths terminating at registered sinks
     paths = []
-    for n in G.nodes():
+    for n in sorted(G.nodes()):
         if not is_path_terminator(G, n):
             continue
-        for pred in G.predecessors(n):
+        for pred in sorted(G.predecessors(n)):
             edge_data = G.edges[pred, n]
             if edge_data.get('edge_type') in ('clock', 'reset'):
                 continue
@@ -1004,17 +1007,17 @@ def find_race_pairs(G):
     depth, _ = compute_depths(G)
 
     races = []
-    for n in G.nodes():
+    for n in sorted(G.nodes()):
         if not is_path_terminator(G, n):
             continue
 
-        preds = list(G.predecessors(n))
+        preds = sorted(G.predecessors(n))
 
         if len(preds) < 2:
             continue
 
         pred_depths = [(p, depth.get(p, 0)) for p in preds]
-        pred_depths.sort(key=lambda x: -x[1])
+        pred_depths.sort(key=lambda x: (-x[1], x[0]))  # depth desc, name asc for ties
 
         max_d = pred_depths[0][1]
         min_d = pred_depths[-1][1]
