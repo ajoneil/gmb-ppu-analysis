@@ -1,0 +1,3 @@
+[submodule "dmg-schematics"]
+	path = dmg-schematics
+	url = https://github.com/msinger/dmg-schematics.git

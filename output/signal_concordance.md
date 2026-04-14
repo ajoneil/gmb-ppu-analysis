@@ -1,22 +1,14 @@
 # Game Boy PPU Signal Concordance
 
-Cross-reference between GateBoy's internal cell names and standard Game Boy
-documentation (Pan Docs, Gekkio's gb-ctr, Furrtek's DMG-CPU-Inside).
+Cross-reference between die cell names (4-char identifiers from the DMG-CPU B
+silicon) and standard Game Boy documentation (Pan Docs, Gekkio's gb-ctr,
+Furrtek's DMG-CPU-Inside).
 
-## How to Read GateBoy Signal Names
+## Die Cell Name Format
 
-```
-MUWY_LY0p_odd
-^^^^          4-char cell name (Furrtek die reference)
-     ^^^      functional name (LY bit 0)
-        ^     polarity: p = positive, n = negative/inverted
-          ^^^ clock phase: odd/evn (which subcycle it's valid)
-```
-
-Additional suffixes: `_D0`-`_D7` (bit index), `_A00n`-`_A15p` (address bit),
-`_CLK`/`_EN`/`_RST` (control role), `_old`/`_new` (temporal phase).
-
-Die page references in comments: `/*#p21.MUWY*/` = page 21, cell MUWY.
+Each cell on the DMG-CPU B die has a unique 4-character name (e.g., `muwy`,
+`vyxe`, `sacu`). These names come from the original Furrtek die tracing and
+are used as-is in the schematics netlist and this analysis.
 
 ---
 
@@ -24,7 +16,7 @@ Die page references in comments: `/*#p21.MUWY*/` = page 21, cell MUWY.
 
 ### LCDC — LCD Control (FF40)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs | Function |
+| Bit | Die Cell | Signal Name | Pan Docs | Function |
 |-----|-------------|-------------|----------|----------|
 | 7 | VYXE | `LCDC_LCDENp` | LCDC.7 | LCD & PPU master enable |
 | 6 | WOKY | `LCDC_WINMAPp` | LCDC.6 | Window tile map select (0=9800, 1=9C00) |
@@ -37,7 +29,7 @@ Die page references in comments: `/*#p21.MUWY*/` = page 21, cell MUWY.
 
 ### STAT — LCD Status (FF41)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs | Function |
+| Bit | Die Cell | Signal Name | Pan Docs | Function |
 |-----|-------------|-------------|----------|----------|
 | 6 | RUGU | `STAT_LYI_ENp` | STAT.6 | LY=LYC interrupt enable |
 | 5 | REFE | `STAT_OAI_ENp` | STAT.5 | Mode 2 (OAM scan) interrupt enable |
@@ -48,13 +40,13 @@ Die page references in comments: `/*#p21.MUWY*/` = page 21, cell MUWY.
 
 ### SCY — Scroll Y (FF42)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | GAVE, FYMO, FEZU, FUJO, DEDE, FOTY, FOHA, FUNY | `SCY_D[0:7]p` | Background Y scroll position |
 
 ### SCX — Scroll X (FF43)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | DATY, DUZU, CYXU, GUBO, BEMY, CUZY, CABU, BAKE | `SCX_D[0:7]p` | Background X scroll position |
 
@@ -62,7 +54,7 @@ Fine scroll uses bits 0-2 of SCX (the sub-tile pixel offset).
 
 ### LY — LCD Y Coordinate (FF44, read-only)
 
-| Bit | GateBoy Cell | Signal Name | Phase | Pan Docs |
+| Bit | Die Cell | Signal Name | Phase | Pan Docs |
 |-----|-------------|-------------|-------|----------|
 | 0 | MUWY | `LY0p_odd` | ODD | Current scanline (0-153) |
 | 1 | MYRO | `LY1p_odd` | ODD | |
@@ -75,44 +67,44 @@ Fine scroll uses bits 0-2 of SCX (the sub-tile pixel offset).
 
 ### LYC — LY Compare (FF45)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | SYRY, VUCE, SEDY, SALO, SOTA, VAFA, VEVO, RAHA | `LYC[0:7]p` | LY comparison value |
 
 ### DMA — DMA Transfer (FF46)
 
-| Byte | GateBoy Cells | Signal Name | Pan Docs |
+| Byte | Die Cells | Signal Name | Pan Docs |
 |------|--------------|-------------|----------|
 | High (A8-15) | NAFA-MARU | `DMA_A[08:15]p` | Source address high byte |
 | Low (A0-7) | NAKY-MUGU | `DMA_A[00:07]p_odd` | Source address low byte |
 
 ### BGP — BG Palette Data (FF47)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | PAVO, NUSY, PYLU, MAXY, MUKE, MORU, MOGY, MENA | `BGP_D[0:7]p` | BG palette (4 x 2-bit colors) |
 
 ### OBP0 — Sprite Palette 0 (FF48)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | XUFU, XUKY, XOVA, XALO, XERU, XYZE, XUPO, XANA | `OBP0_D[0:7]p` | Sprite palette 0 |
 
 ### OBP1 — Sprite Palette 1 (FF49)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | MOXY, LAWO, MOSA, LOSE, LUNE, LUGU, LEPU, LUXO | `OBP1_D[0:7]p` | Sprite palette 1 |
 
 ### WY — Window Y Position (FF4A)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | NESO, NYRO, NAGA, MELA, NULO, NENE, NUKA, NAFU | `WY_D[0:7]p` | Window Y trigger position |
 
 ### WX — Window X Position (FF4B)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0-7 | MYPA, NOFE, NOKE, MEBY, MYPU, MYCE, MUVO, NUKU | `WX_D[0:7]p` | Window X trigger position (WX-7 = screen X) |
 
@@ -122,7 +114,7 @@ Fine scroll uses bits 0-2 of SCX (the sub-tile pixel offset).
 
 ### Timing & Counters
 
-| Signal | GateBoy Cell(s) | Bits | Phase | Pan Docs Equivalent | Role in Critical Paths |
+| Signal | Die Cell(s) | Bits | Phase | Pan Docs Equivalent | Role in Critical Paths |
 |--------|-----------------|------|-------|--------------------|-----------------------|
 | Pixel X Counter | XEHO-SYBE (`PX[0:7]p_odd`) | 8 | ODD | X position (0-159 visible) | Races CLKPIPE at pixel pipe DFFs |
 | Internal X (LX) | SAXO-TYRY (`LX[0:6]p_odd`) | 7 | ODD | Internal dot counter | Drives line-end detection |
@@ -132,7 +124,7 @@ Fine scroll uses bits 0-2 of SCX (the sub-tile pixel offset).
 
 ### Pixel Pipe Shift Clock (CRITICAL)
 
-| Signal | GateBoy Cell | Phase | Fan-out | Depth | Role |
+| Signal | Die Cell | Phase | Fan-out | Depth | Role |
 |--------|-------------|-------|---------|-------|------|
 | CLKPIPE | SACU | ODD/EVN | **52** | **16** | Master shift clock for all pixel pipelines |
 
@@ -144,7 +136,7 @@ data settles.
 
 ### Rendering Mode Control
 
-| Signal | GateBoy Cell | Type | Phase | Pan Docs Mode | Description |
+| Signal | Die Cell | Type | Phase | Pan Docs Mode | Description |
 |--------|-------------|------|-------|---------------|-------------|
 | Rendering Active | XYMU (`RENDERING_LATCHn`) | NorLatch | — | Mode 3 gate | High during pixel output |
 | HBlank Gate | WODU (`HBLANK_GATEp_odd`) | Gate | ODD | Mode 0 indicator | Active during H-blank |
@@ -152,7 +144,7 @@ data settles.
 
 ### Tile Fetcher (Background/Window)
 
-| Signal | GateBoy Cell | Type | Phase | Function |
+| Signal | Die Cell | Type | Phase | Function |
 |--------|-------------|------|-------|----------|
 | Fetch State 0 | LAXU (`BFETCH_S0p_odd`) | DFF17 | ODD | Tile index fetch |
 | Fetch State 1 | MESU (`BFETCH_S1p_odd`) | DFF17 | ODD | Tile data low byte |
@@ -166,7 +158,7 @@ the VID_RST chain and line-end logic before reaching the fetch state machine.
 
 ### Sprite Fetcher
 
-| Signal | GateBoy Cell | Type | Phase | Function |
+| Signal | Die Cell | Type | Phase | Function |
 |--------|-------------|------|-------|----------|
 | Fetch State 0 | TOXE (`SFETCH_S0p_evn`) | DFF17 | EVN | Sprite fetch phase 0 |
 | Fetch State 1 | TULY (`SFETCH_S1p_evn`) | DFF17 | EVN | Sprite fetch phase 1 |
@@ -178,7 +170,7 @@ the VID_RST chain and line-end logic before reaching the fetch state machine.
 
 ### Sprite Scanner (OAM Search — Mode 2)
 
-| Signal | GateBoy Cell | Type | Phase | Function |
+| Signal | Die Cell | Type | Phase | Function |
 |--------|-------------|------|-------|----------|
 | Scan Counter | YFEL-FONY (`SCAN[0:5]_odd`) | DFF17 | ODD | OAM index (0-39) |
 | Sprite Index | XADU-XECU (`SPRITE_IDX[0:5]p_odd`) | DFF17 | ODD | Store slot (0-9) |
@@ -209,7 +201,7 @@ differential means sprites may capture stale X positions at scanline boundaries.
 
 ### Window Control
 
-| Signal | GateBoy Cell | Type | Phase | Function |
+| Signal | Die Cell | Type | Phase | Function |
 |--------|-------------|------|-------|----------|
 | WY Match | ROGE (`WY_MATCHp_odd`) | Gate | ODD | LY matches WY register |
 | WX Match | NUKO (`WX_MATCHp_odd`) | Gate | ODD | Pixel X matches WX register |
@@ -219,7 +211,7 @@ differential means sprites may capture stale X positions at scanline boundaries.
 
 ### Fine Scroll (SCX bits 0-2)
 
-| Signal | GateBoy Cell | Type | Phase | Depth | Function |
+| Signal | Die Cell | Type | Phase | Depth | Function |
 |--------|-------------|------|-------|-------|----------|
 | Fine Count 0 | RYKU (`FINE_CNT0_odd`) | DFF17 | ODD | — | Fine scroll counter bit 0 |
 | Fine Count 1 | ROGA (`FINE_CNT1_odd`) | DFF17 | ODD | — | Fine scroll counter bit 1 |
@@ -247,7 +239,7 @@ All pipelines shift on CLKPIPE. Each stage is 8 bits wide.
 
 ### LY = LYC Match Chain
 
-| Signal | GateBoy Cell | Type | Function |
+| Signal | Die Cell | Type | Function |
 |--------|-------------|------|----------|
 | Per-bit XOR (8x) | RYME-SYFU | Comb | `LY_MATCH[0:7]n_old` — XOR each bit pair |
 | Upper 4 NOR | SOVU (`LY_MATCHA_old`) | Comb | NOR of bits 4-7 match |
@@ -259,7 +251,7 @@ All pipelines shift on CLKPIPE. Each stage is 8 bits wide.
 
 ### Interrupt Flags (FF0F)
 
-| Bit | GateBoy Cell | Signal Name | Pan Docs |
+| Bit | Die Cell | Signal Name | Pan Docs |
 |-----|-------------|-------------|----------|
 | 0 | LOPE | `FF0F_D0p` | INT_VBLANK |
 | 1 | LALU | `FF0F_D1p` | INT_STAT |
@@ -269,7 +261,7 @@ All pipelines shift on CLKPIPE. Each stage is 8 bits wide.
 
 ### DMA Control
 
-| Signal | GateBoy Cell | Type | Phase | Function |
+| Signal | Die Cell | Type | Phase | Function |
 |--------|-------------|------|-------|----------|
 | DMA Active | LYXE (`DMA_LATCHp`) | NorLatch | — | DMA transfer in progress |
 | DMA Done | MYTE (`DMA_DONE_odd`) | DFF17 | ODD | Transfer complete |
@@ -278,7 +270,7 @@ All pipelines shift on CLKPIPE. Each stage is 8 bits wide.
 
 ### Clock Phases
 
-| Signal | GateBoy Cell | Type | Active Subcycles | Function |
+| Signal | Die Cell | Type | Active Subcycles | Function |
 |--------|-------------|------|-----------------|----------|
 | Phase ABCD | AFUR (`ABCDxxxx`) | DFF9 | A, B, C, D | CPU clock phase generator |
 | Phase BCDE | ALEF (`xBCDExxx`) | DFF9 | B, C, D, E | CPU clock phase generator |
@@ -320,25 +312,25 @@ only fire on system reset or LCDC bit 7 toggle and do not affect per-dot timing.
 
 ### CPU Data Bus
 
-| Bit | GateBoy Node | Direction | Address Decode |
+| Bit | Bus Signal | Direction | Address Decode |
 |-----|-------------|-----------|---------------|
 | 0-7 | `BUS_CPU_D[00:07]p` | Bidirectional | Directly driven by register reads/writes |
 
 ### VRAM Data Bus
 
-| Bit | GateBoy Node | Direction | Usage |
+| Bit | Bus Signal | Direction | Usage |
 |-----|-------------|-----------|-------|
 | 0-7 | `BUS_VRAM_D[0:7]p` | Bidirectional | Tile/map data during fetch |
 
 ### VRAM Address Bus
 
-| Bit | GateBoy Node | Direction | Usage |
+| Bit | Bus Signal | Direction | Usage |
 |-----|-------------|-----------|-------|
 | 0-12 | `BUS_VRAM_A[00:12]p` | Output | Tile/map address during fetch |
 
 ### OAM Data Bus
 
-| Byte | GateBoy Node | Usage |
+| Byte | Bus Signal | Usage |
 |------|-------------|-------|
 | A (Y/Tile) | `BUS_OAM_DA[0:7]n` | Sprite Y position, tile index |
 | B (X/Attr) | `BUS_OAM_DB[0:7]n` | Sprite X position, attributes |

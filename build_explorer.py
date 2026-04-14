@@ -9,9 +9,8 @@ import json
 import re
 from pathlib import Path
 
-# GateBoy source: pinned commit for stable source links
-GATEBOY_COMMIT = '36797ad4cf77b3e04ffe45716218a79b5280076a'
-GATEBOY_BASE = f'https://github.com/aappleby/metroboy/blob/{GATEBOY_COMMIT[:12]}/src/GateBoyLib'
+# dmg-schematics: source netlist repository
+SCHEMATICS_BASE = 'https://github.com/msinger/dmg-schematics/tree/master'
 
 # Pan Docs register page mapping
 PANDOCS_BASE = 'https://gbdev.io/pandocs'
@@ -43,7 +42,7 @@ PANDOCS_URLS = {
 def parse_concordance(md_path: Path) -> dict:
     """Parse signal_concordance.md into a lookup dictionary.
 
-    Returns a dict mapping GateBoy cell names and signal names to their
+    Returns a dict mapping die cell names and signal names to their
     Pan Docs equivalents, and vice versa.
     """
     entries = []
@@ -80,8 +79,113 @@ def parse_concordance(md_path: Path) -> dict:
     return lookup
 
 
+def build_friendly_map(md_path: Path) -> dict:
+    """Build a die_name -> friendly description map from signal_concordance.md.
+
+    Extracts 4-char cell names from table rows and pairs them with the most
+    descriptive column (function, Pan Docs reference, or signal name).
+    """
+    friendly = {}
+    text = md_path.read_text()
+
+    for line in text.split('\n'):
+        if not line.startswith('|') or '---' in line:
+            continue
+        cols = [c.strip().strip('`') for c in line.split('|')[1:-1]]
+        if len(cols) < 3:
+            continue
+
+        # Find 4-char cell names and their descriptions
+        cell_names = []
+        for col in cols:
+            for word in col.replace(',', ' ').replace('-', ' ').split():
+                word = word.strip()
+                if re.match(r'^[A-Z]{4}$', word):
+                    cell_names.append(word)
+
+        if not cell_names:
+            continue
+
+        # Find the best description: prefer Function column, then Pan Docs, then Signal Name
+        desc = ''
+        for col in reversed(cols):
+            col = col.strip()
+            if not col or col == '—' or re.match(r'^[A-Z]{4}$', col):
+                continue
+            if re.match(r'^\d+$', col):  # skip bit numbers
+                continue
+            if re.match(r'^(ODD|EVN|—|DFF\d+|Gate|Comb|NorLatch|NandLatch)$', col):
+                continue
+            # Skip columns that are just cell ranges like "XEHO-SYBE"
+            if re.match(r'^[A-Z]{4}-[A-Z]{4}$', col):
+                continue
+            desc = col
+            break
+
+        if desc:
+            # Clean up
+            desc = desc.strip('`').strip()
+            desc = desc.strip('*')  # remove markdown bold
+            # Skip useless descriptions
+            if desc in ('Same pattern', 'Same pattern '):
+                continue
+            if re.match(r'^[A-Z]{4}_', desc):  # signal suffix like "LY1p_odd"
+                continue
+            if re.match(r'^NOT of [A-Z]{4}$', desc):  # "NOT of RAPE" etc.
+                continue
+            if len(desc) < 3:
+                continue
+            for name in cell_names:
+                friendly[name.lower()] = desc
+
+    return friendly
+
+
+def build_graph_friendly(graph_path: Path) -> dict:
+    """Derive friendly names from graph structure for cells that lack concordance entries.
+
+    Uses bus node names and category annotations to describe what each cell does.
+    """
+    import json
+    graph = json.loads(graph_path.read_text())
+    nodes = {n['name']: n for n in graph['nodes']}
+    friendly = {}
+
+    # Map registered cells to their data bus source
+    registered = {n['name'] for n in graph['nodes']
+                  if n.get('node_type') == 'registered'}
+    cell_to_bus = {}
+    for e in graph['edges']:
+        if e['dst'] in registered and e['edge_type'] == 'data':
+            src = nodes.get(e['src'], {})
+            if src.get('node_type') == 'bus':
+                cell_to_bus[e['dst']] = e['src']
+
+    # Generate descriptions from bus names
+    bus_descs = {
+        'oam_render_a': 'Sprite OAM data bit {} (tile/attr)',
+        'sprite_y_store': 'Sprite Y offset bit {}',
+        'oam_a': 'OAM address bit {}',
+        'oam_b': 'OAM data B bit {}',
+        'd': 'CPU data bus bit {}',
+    }
+    for cell, bus in cell_to_bus.items():
+        bus_name = bus.replace('bus:', '')
+        for prefix, template in bus_descs.items():
+            if bus_name.startswith(prefix):
+                suffix = bus_name[len(prefix):]
+                # Extract trailing digit(s)
+                digits = re.search(r'(\d+)$', suffix)
+                if digits:
+                    friendly[cell] = template.format(digits.group(1))
+                break
+
+    return friendly
+
+
 def build_html(graph_json: str, paths_json: str, races_json: str,
-               concordance_json: str, config_json: str) -> str:
+               concordance_json: str, config_json: str,
+               extra_friendly_json: str = '{}') -> str:
     """Build the complete HTML page with embedded data."""
 
     return f'''<!DOCTYPE html>
@@ -625,9 +729,9 @@ input[type="search"] {{ width: 260px; }}
     <button class="tab-btn" data-tab="graph">Graph</button>
   </div>
   <div class="header-stats" id="header-stats"></div>
-  <a href="https://github.com/aappleby/metroboy" target="_blank" rel="noopener"
+  <a href="https://github.com/msinger/dmg-schematics" target="_blank" rel="noopener"
      style="color:var(--text-muted);font-size:11px;white-space:nowrap"
-     title="Analysis pinned to this GateBoy commit">GateBoy @ {GATEBOY_COMMIT[:8]}</a>
+     title="Gate-level netlist from corrected die tracing">dmg-schematics</a>
 </div>
 
 <!-- RACE PAIRS TAB -->
@@ -648,8 +752,7 @@ input[type="search"] {{ width: 260px; }}
         <option value="15">15+</option>
       </select>
     </div>
-    <div class="filter-group">
-      <label>Phase</label>
+    <div class="filter-group" style="display:none">
       <select id="race-phase-filter"><option value="">All</option></select>
     </div>
     <div class="filter-group">
@@ -662,7 +765,6 @@ input[type="search"] {{ width: 260px; }}
       <th data-sort="display_name">Node</th>
       <th data-sort="category">Category</th>
       <th data-sort="reg_type">Type</th>
-      <th data-sort="phase">Phase</th>
       <th data-sort="depth_diff" class="sorted-desc">Diff</th>
       <th data-sort="max_depth">Max</th>
       <th data-sort="min_depth">Min</th>
@@ -709,7 +811,6 @@ input[type="search"] {{ width: 260px; }}
       <th data-sort="sink">Sink</th>
       <th>Delay (ns)</th>
       <th data-sort="pct_half_tcycle">% T/2</th>
-      <th>Phase</th>
       <th data-sort="category">Category</th>
       <th>Reset?</th>
     </tr></thead>
@@ -721,7 +822,7 @@ input[type="search"] {{ width: 260px; }}
 <div class="tab-content" id="tab-search">
   <div class="search-container">
     <input type="search" class="search-input" id="search-input"
-           placeholder="Search by signal name, cell name, or Pan Docs name (LCDC, SCX, LY, CLKPIPE, BESU...)">
+           placeholder="Search by die name, register, or Pan Docs name (sacu, muwy, LCDC, SCX, LY...)">
     <div class="search-results" id="search-results">
       <div class="empty-state">
         Type a signal name to search across the graph, critical paths, and race pairs.
@@ -751,6 +852,7 @@ input[type="search"] {{ width: 260px; }}
 <script id="data-races" type="application/json">{races_json}</script>
 <script id="data-concordance" type="application/json">{concordance_json}</script>
 <script id="data-config" type="application/json">{config_json}</script>
+<script id="data-friendly" type="application/json">{extra_friendly_json}</script>
 
 <script>
 "use strict";
@@ -763,6 +865,7 @@ const paths = JSON.parse(document.getElementById("data-paths").textContent);
 const races = JSON.parse(document.getElementById("data-races").textContent);
 const concordance = JSON.parse(document.getElementById("data-concordance").textContent);
 const config = JSON.parse(document.getElementById("data-config").textContent);
+const extraFriendly = JSON.parse(document.getElementById("data-friendly").textContent);
 
 // Node lookup by name and display_name
 const nodeMap = new Map();
@@ -839,13 +942,15 @@ function signalLink(name, showFriendly) {{
 
 function srcLink(file, line) {{
   if (!file) return '';
-  const url = `${{config.gateboy_base}}/${{file}}#L${{line}}`;
-  return `<a href="${{url}}" target="_blank" rel="noopener" class="muted">${{escHtml(file)}}:${{line}}</a>`;
+  const cleanPath = file.replace(/^dmg-schematics\//, '');
+  const url = `${{config.source_base}}/${{cleanPath}}`;
+  const display = cleanPath.replace(/^netlist\//, '');
+  return `<a href="${{url}}" target="_blank" rel="noopener" class="muted">${{escHtml(display)}}</a>`;
 }}
 
 function dieLink(displayName) {{
   if (!displayName) return '';
-  const m = displayName.match(/^([A-Z]{{4}})/);
+  const m = displayName.match(/^([a-zA-Z]{{4}})/);
   if (!m) return '';
   const cell = m[1].toLowerCase();
   const dieUrl = `https://iceboy.a-singer.de/dmg_cpu_b_map/?view=c:${{cell}}`;
@@ -855,25 +960,29 @@ function dieLink(displayName) {{
 }}
 
 const cellTypeAnchors = {{
-  'dff8': 'dffr', 'dff9': 'dffr', 'dff11': 'dffr', 'dff13': 'dffr',
-  'dff17': 'dffr', 'dff17_any': 'dffr', 'dff20': 'dffr', 'dff22': 'dffsr',
-  'dff22_async': 'dffsr', 'dff_r': 'dffr',
+  'dffr': 'dffr', 'dffr_cc': 'dffr_cc', 'dffr_cc_q': 'dffr_cc_q', 'dffsr': 'dffsr',
+  'tffnl': 'tffnl',
+  'dlatch': 'dlatch', 'dlatch_ee': 'dlatch_ee', 'dlatch_ee_q': 'dlatch_ee_q',
+  'drlatch_ee': 'drlatch_ee',
   'nor_latch': 'nor_latch', 'nand_latch': 'nand_latch',
-  'tp_latchn': 'dlatch', 'tp_latchp': 'dlatch',
 }};
 
 const gateFuncAnchors = {{
-  'not1': 'not_x1',
+  'not_x1': 'not_x1', 'not_x2': 'not_x1', 'not_x3': 'not_x1',
+  'not_x4': 'not_x1', 'not_x6': 'not_x1',
   'and2': 'and2', 'and3': 'and3', 'and4': 'and4',
-  'or2': 'or2', 'or3': 'or3',
+  'or2': 'or2', 'or3': 'or3', 'or4': 'or4',
   'nand2': 'nand2', 'nand3': 'nand3', 'nand4': 'nand4',
   'nand5': 'nand5', 'nand6': 'nand6', 'nand7': 'nand7',
+  'eco_nand2': 'nand2',
   'nor2': 'nor2', 'nor3': 'nor3', 'nor4': 'nor4',
   'nor5': 'nor5', 'nor6': 'nor6', 'nor8': 'nor8',
-  'xor2': 'xor', 'xnor2': 'xnor',
-  'mux2n': 'muxi', 'mux2p': 'mux', 'amux2': 'mux', 'amux4': 'mux',
-  'and_or3': 'ao21', 'or_and3': 'oa21', 'not_or_and3': 'oai21',
-  'tri6_nn': 'not_if', 'tri6_pn': 'not_if', 'tri10_np': 'not_if', 'tri_pp': 'buf_if0',
+  'xor': 'xor', 'xnor': 'xnor',
+  'muxi': 'muxi', 'mux': 'mux',
+  'ao21': 'ao21', 'ao22': 'ao22', 'ao222': 'ao222', 'ao2222': 'ao2222',
+  'oai21': 'oai21', 'oa21': 'oa21',
+  'half_add': 'half_add', 'full_add': 'full_add',
+  'not_if0': 'not_if0', 'not_if1': 'not_if1', 'buf_if0': 'buf_if0',
 }};
 
 function cellTypeLink(regType) {{
@@ -928,196 +1037,264 @@ function switchTab(tabId) {{
 }}
 
 // =====================================================================
-// Friendly signal names
+// Friendly signal names — die name lookup
 // =====================================================================
-const friendlyRules = [
-  // Pixel pipeline clock
-  [/CLKPIPE/i, 'Pixel Shift Clock'],
-  // Rendering control
-  [/RENDERING_LATCH/i, 'Rendering Active (Mode 3)'],
-  [/HBLANK_GATE/i, 'H-Blank Gate (Mode 0)'],
-  [/HBLANKp/i, 'H-Blank Flag'],
-  [/VBLANKp/i, 'V-Blank Flag (LY>=144)'],
-  [/LINE_END/i, 'Scanline End Strobe'],
-  [/FRAME_END/i, 'Frame End Strobe (LY=153)'],
-  [/LINE_RST_TRIG/i, 'Line Reset Trigger'],
-  [/LINE_STROBE/i, 'Line Sync Strobe'],
-  // LCD registers
-  [/LCDC_LCDEN/i, 'LCDC.7 — LCD Enable'],
-  [/LCDC_WINEN/i, 'LCDC.5 — Window Enable'],
-  [/LCDC_SPEN/i, 'LCDC.1 — Sprite Enable'],
-  [/LCDC_SPSIZE/i, 'LCDC.2 — Sprite Size'],
-  [/LCDC_BGMAP/i, 'LCDC.3 — BG Tile Map Select'],
-  [/LCDC_BGTILE/i, 'LCDC.4 — BG Tile Data Select'],
-  [/LCDC_WINMAP/i, 'LCDC.6 — Window Map Select'],
-  [/LCDC_BGEN/i, 'LCDC.0 — BG Enable'],
-  [/STAT_HBI_EN/i, 'STAT.3 — H-Blank IRQ Enable'],
-  [/STAT_VBI_EN/i, 'STAT.4 — V-Blank IRQ Enable'],
-  [/STAT_OAI_EN/i, 'STAT.5 — OAM IRQ Enable'],
-  [/STAT_LYI_EN/i, 'STAT.6 — LY=LYC IRQ Enable'],
-  // LY / LYC
-  [/LY_MATCH_SYNC/i, 'LY=LYC Match (synced)'],
-  [/LYC_MATCH/i, 'LY=LYC Match Latch'],
-  [/LY_MATCH/i, 'LY=LYC Comparator'],
-  [/LYC(\d)/i, (m) => `LY Compare (LYC) bit ${{m[1]}}`],
-  [/LY(\d)p/i, (m) => `Scanline Counter (LY) bit ${{m[1]}}`],
-  // Scroll
-  [/SCX_FINE_MATCH/i, 'Fine Scroll Match'],
-  [/FINE_SCROLL_DONE/i, 'Fine Scroll Complete'],
-  [/FINE_CNT(\d)/i, (m) => `Fine Scroll Counter bit ${{m[1]}}`],
-  [/SCY(\d)/i, (m) => `Scroll Y (SCY) bit ${{m[1]}}`],
-  [/SCX(\d)/i, (m) => `Scroll X (SCX) bit ${{m[1]}}`],
-  // Window
-  [/WY_MATCH/i, 'Window Y Match (LY=WY)'],
-  [/WX_MATCH|WIN_MATCH/i, 'Window X Match (PX=WX)'],
-  [/WIN_HIT/i, 'Window Active (WX+WY met)'],
-  [/WIN_MODE/i, 'Window Rendering Mode'],
-  [/WIN_FETCH/i, 'Window Fetch Request'],
-  [/WIN_TILE_Y/i, 'Window Tile Y Offset'],
-  [/WIN_MAP_X/i, 'Window Map X Column'],
-  [/WY(\d)/i, (m) => `Window Y (WY) bit ${{m[1]}}`],
-  [/WX(\d)/i, (m) => `Window X (WX) bit ${{m[1]}}`],
-  // Pixel counters
-  [/PX(\d)p/i, (m) => `Pixel X Counter bit ${{m[1]}}`],
-  [/LX(\d)p/i, (m) => `Internal Dot Counter (LX) bit ${{m[1]}}`],
-  [/X8_SYNC/i, '8-Pixel Boundary Sync'],
-  // BG tile fetcher
-  [/BFETCH_RST/i, 'BG Tile Fetch Reset'],
-  [/BFETCH_S(\d)/i, (m) => `BG Tile Fetch State ${{m[1]}}`],
-  [/BFETCH_DONE|FETCH_DONE/i, 'Tile Fetch Complete'],
-  [/TFETCH_DONE/i, 'Tile Fetch Done Flag'],
-  [/TFETCHING/i, 'Tile Fetching Active'],
-  [/TILE_DA(\d)/i, (m) => `Tile Data A bit ${{m[1]}}`],
-  [/TILE_DB(\d)/i, (m) => `Tile Data B bit ${{m[1]}}`],
-  // Sprite fetcher
-  [/SFETCH_S(\d)/i, (m) => `Sprite Fetch State ${{m[1]}}`],
-  [/SFETCH_RUNNING/i, 'Sprite Fetch Running'],
-  [/SFETCH_REQ/i, 'Sprite Fetch Request'],
-  [/SFETCH_DONE/i, 'Sprite Fetch Complete'],
-  [/SFETCHING/i, 'Sprite Fetching Active'],
-  // Sprite scanner
-  [/SCAN_DONE/i, 'OAM Scan Complete'],
-  [/SCAN(\d)_odd/i, (m) => `OAM Scan Counter bit ${{m[1]}}`],
-  [/SPRITE_IDX(\d)/i, (m) => `Sprite Store Index bit ${{m[1]}}`],
-  [/SPRITE_COUNT(\d)/i, (m) => `Sprites Found Counter bit ${{m[1]}}`],
-  [/INC_COUNT/i, 'Scan Counter Increment'],
-  [/SPRITES_FULL/i, '10-Sprite Limit Reached'],
-  // Sprite store
-  [/STORE(\d+)_X(\d)/i, (m) => `Sprite ${{m[1]}} X-Position bit ${{m[2]}}`],
-  [/STORE(\d+)_I(\d)/i, (m) => `Sprite Store ${{m[1]}} OAM Index bit ${{m[2]}}`],
-  [/STORE(\d+)_L(\d)/i, (m) => `Sprite Store ${{m[1]}} Line Offset bit ${{m[2]}}`],
-  [/STORE(\d+)_RST/i, (m) => `Sprite Store ${{m[1]}} Reset`],
-  [/STORE_MATCH/i, 'Sprite X Match (any store)'],
-  [/SPRITE_MATCH/i, 'Sprite X-Position Match'],
-  [/SPRITE(\d+)_GET/i, (m) => `Sprite ${{m[1]}} Fetch Trigger`],
-  // Sprite data
-  [/SPR_PIX_SET(\d)/i, (m) => `Sprite Pixel Set bit ${{m[1]}}`],
-  [/SPR_PIX_RST(\d)/i, (m) => `Sprite Pixel Reset bit ${{m[1]}}`],
-  [/SPR_PIPE_A(\d)/i, (m) => `Sprite Pixel Low bit ${{m[1]}}`],
-  [/SPR_PIPE_B(\d)/i, (m) => `Sprite Pixel High bit ${{m[1]}}`],
-  [/SPRITE_MASK(\d)/i, (m) => `Sprite Mask bit ${{m[1]}}`],
-  [/SPRITE_DELTA/i, 'Sprite Position Delta'],
-  // BG pixel pipe
-  [/BGW_PIPE_A(\d)/i, (m) => `BG/Win Pixel Low bit ${{m[1]}}`],
-  [/BGW_PIPE_B(\d)/i, (m) => `BG/Win Pixel High bit ${{m[1]}}`],
-  [/MASK_PIPE_(\d)/i, (m) => `Pixel Valid Mask bit ${{m[1]}}`],
-  [/PAL_PIPE/i, 'Palette/Priority Pipeline'],
-  // Palettes
-  [/BGP_D(\d)/i, (m) => `BG Palette (BGP) bit ${{m[1]}}`],
-  [/OBP0_D(\d)/i, (m) => `Sprite Palette 0 (OBP0) bit ${{m[1]}}`],
-  [/OBP1_D(\d)/i, (m) => `Sprite Palette 1 (OBP1) bit ${{m[1]}}`],
-  // Buses
-  [/BUS_CPU_D(\d+)/i, (m) => `CPU Data Bus bit ${{m[1]}}`],
-  [/BUS_VRAM_A(\d+)/i, (m) => `VRAM Address bit ${{m[1]}}`],
-  [/BUS_VRAM_D(\d+)/i, (m) => `VRAM Data bit ${{m[1]}}`],
-  [/BUS_OAM_DA(\d+)/i, (m) => `OAM Data A bit ${{m[1]}}`],
-  [/BUS_OAM_DB(\d+)/i, (m) => `OAM Data B bit ${{m[1]}}`],
-  [/BUS_OAM_A(\d+)/i, (m) => `OAM Address bit ${{m[1]}}`],
-  // DMA
-  [/DMA_LATCH/i, 'DMA Active'],
-  [/DMA_RUNNING/i, 'DMA Running'],
-  [/DMA_DONE/i, 'DMA Complete'],
-  [/DMA_TRIG/i, 'DMA Trigger'],
-  [/DMA_A(\d+)/i, (m) => `DMA Address bit ${{m[1]}}`],
-  // Interrupts
-  [/FF0F_D0/i, 'IRQ Flag: V-Blank'],
-  [/FF0F_D1/i, 'IRQ Flag: STAT'],
-  [/FF0F_D2/i, 'IRQ Flag: Timer'],
-  [/FF0F_D3/i, 'IRQ Flag: Serial'],
-  [/FF0F_D4/i, 'IRQ Flag: Joypad'],
-  [/FF0F_L/i, 'IRQ Flag Latch'],
-  [/WAKE_CPU/i, 'CPU Wake (IRQ pending)'],
-  // Clock phases
-  [/ABCDxxxx/i, 'Clock Phase ABCD'],
-  [/xBCDExxx/i, 'Clock Phase BCDE'],
-  [/xxCDEFxx/i, 'Clock Phase CDEF'],
-  [/xxxDEFGx/i, 'Clock Phase DEFG'],
-  [/AxCxExGx/i, 'Odd Subcycle Clock'],
-  [/xBxDxFxH/i, 'Even Subcycle Clock'],
-  [/ABxxEFxx/i, 'PPU Clock (AB/EF)'],
-  [/AxxDExxH/i, 'PPU Clock (A/DE/H)'],
-  // Reset chain
-  [/VID_RST/i, 'Video Reset Chain'],
-  [/SYS_RST/i, 'System Reset'],
-  [/POR_DONE/i, 'Power-On Reset Done'],
-  // Timer
-  [/DIV(\d+)/i, (m) => `Divider (DIV) bit ${{m[1]}}`],
-  [/TIMA(\d)/i, (m) => `Timer Counter (TIMA) bit ${{m[1]}}`],
-  [/TMA(\d)/i, (m) => `Timer Modulo (TMA) bit ${{m[1]}}`],
-  [/TAC(\d)/i, (m) => `Timer Control (TAC) bit ${{m[1]}}`],
-  [/TIMER_OVERFLOW/i, 'Timer Overflow'],
-  // LCD output
-  [/LCD_CLOCK/i, 'LCD Pixel Clock'],
-  [/VSYNC_OUT/i, 'VSync Output'],
-  [/PRELOAD_LATCH/i, 'Pipeline Preload'],
-];
+const friendlyMap = {{
+  'sacu': 'Pixel Shift Clock (CLKPIPE)',
+  'xymu': 'Rendering Active (Mode 3)', 'poky': 'Pixel Pipe Done',
+  'roxy': 'Fine Scroll Done', 'nyka': 'BG Fetch Clock', 'atej': 'Line Strobe',
+  'vyxe': 'LCDC.0', 'vogu': 'LCDC.1', 'vyno': 'LCDC.2', 'vyre': 'LCDC.3',
+  'veku': 'LCDC.4', 'vevy': 'LCDC.5', 'voky': 'LCDC.6', 'vapa': 'LCDC.7 LCD Enable',
+  'roxe': 'STAT.3 HBI', 'rufo': 'STAT.4 VBI', 'refe': 'STAT.5 OAM', 'rugu': 'STAT.6 LYC',
+  'muwy': 'LY.0', 'myro': 'LY.1', 'lexa': 'LY.2', 'lydo': 'LY.3',
+  'lovu': 'LY.4', 'lema': 'LY.5', 'mato': 'LY.6', 'lafo': 'LY.7',
+  'syry': 'LYC.0', 'vuce': 'LYC.1', 'sedy': 'LYC.2', 'salo': 'LYC.3',
+  'sota': 'LYC.4', 'vafa': 'LYC.5', 'vevo': 'LYC.6', 'raha': 'LYC.7',
+  'gave': 'SCY.0', 'fymo': 'SCY.1', 'fezu': 'SCY.2', 'fujo': 'SCY.3',
+  'dede': 'SCY.4', 'foty': 'SCY.5', 'foha': 'SCY.6', 'funy': 'SCY.7',
+  'daty': 'SCX.0', 'duzu': 'SCX.1', 'cyxu': 'SCX.2', 'gubo': 'SCX.3',
+  'bemy': 'SCX.4', 'cuzy': 'SCX.5', 'cabu': 'SCX.6', 'bake': 'SCX.7',
+  'neso': 'WY.0', 'nyro': 'WY.1', 'naga': 'WY.2', 'mela': 'WY.3',
+  'nulo': 'WY.4', 'nene': 'WY.5', 'nuka': 'WY.6', 'nafu': 'WY.7',
+  'mypa': 'WX.0', 'nofe': 'WX.1', 'noke': 'WX.2', 'meby': 'WX.3',
+  'mypu': 'WX.4', 'myce': 'WX.5', 'muvo': 'WX.6', 'nuku': 'WX.7',
+  'xeho': 'PX.0', 'savy': 'PX.1', 'xodu': 'PX.2', 'xydo': 'PX.3',
+  'tuhu': 'PX.4', 'tuky': 'PX.5', 'tako': 'PX.6', 'sybe': 'PX.7',
+  'saxo': 'LX.0', 'typo': 'LX.1', 'vyzo': 'LX.2', 'telu': 'LX.3',
+  'sude': 'LX.4', 'taha': 'LX.5', 'tyry': 'LX.6',
+  'laxu': 'BG Fetch S0', 'mesu': 'BG Fetch S1', 'nyva': 'BG Fetch S2',
+  'lovy': 'Tile Fetch Done', 'lony': 'Tile Fetching',
+  'besu': 'OAM Scan Done', 'ceno': 'Scan Active',
+  'taka': 'Sprite Fetch Gate', 'sobu': 'Sprite Fetch Req',
+  'texy': 'Sprite Fetching', 'wuty': 'Sprite Fetch Done',
+  'ryfa': 'Window Y Match', 'rene': 'Window Active',
+  'pyco': 'Window Hit', 'sovy': 'Window Mode', 'nopa': 'Window Fetch Req',
+  'afer': 'System Reset', 'asol': 'POR Done', 'xapo': 'Video Reset',
+  'pavo': 'BGP.0', 'nusy': 'BGP.1', 'pylu': 'BGP.2', 'maxy': 'BGP.3',
+  'muke': 'BGP.4', 'moru': 'BGP.5', 'mogy': 'BGP.6', 'mena': 'BGP.7',
+  // Sprite store X latches (stores 1-9, concordance had "Same pattern")
+  'dany': 'Sprite 1 X latch', 'duze': 'Sprite 1 X latch',
+  'foka': 'Sprite 2 X latch', 'foby': 'Sprite 2 X latch',
+  'xoly': 'Sprite 3 X latch', 'xyba': 'Sprite 3 X latch',
+  'wedu': 'Sprite 4 X latch', 'wafy': 'Sprite 4 X latch',
+  'fusa': 'Sprite 5 X latch', 'feka': 'Sprite 5 X latch',
+  'ycol': 'Sprite 6 X latch', 'yber': 'Sprite 6 X latch',
+  'eraz': 'Sprite 7 X latch', 'enol': 'Sprite 7 X latch',
+  'ezuf': 'Sprite 8 X latch', 'enym': 'Sprite 8 X latch',
+  'caro': 'Sprite 9 X latch', 'cado': 'Sprite 9 X latch',
+  // Memory blocks
+  'high_ram': 'High RAM (HRAM)', 'boot_rom': 'Boot ROM', 'wave_ram': 'Wave RAM (CH3)',
+  // Buses — CPU address
+  'bus:a0': 'CPU addr bus A0', 'bus:a1': 'CPU addr bus A1', 'bus:a2': 'CPU addr bus A2',
+  'bus:a3': 'CPU addr bus A3', 'bus:a4': 'CPU addr bus A4', 'bus:a5': 'CPU addr bus A5',
+  'bus:a6': 'CPU addr bus A6', 'bus:a7': 'CPU addr bus A7', 'bus:a8': 'CPU addr bus A8',
+  'bus:a9': 'CPU addr bus A9', 'bus:a10': 'CPU addr bus A10', 'bus:a11': 'CPU addr bus A11',
+  'bus:a12': 'CPU addr bus A12', 'bus:a13': 'CPU addr bus A13',
+  'bus:a14': 'CPU addr bus A14', 'bus:a15': 'CPU addr bus A15',
+  // Buses — CPU data
+  'bus:d0': 'CPU data bus D0', 'bus:d1': 'CPU data bus D1', 'bus:d2': 'CPU data bus D2',
+  'bus:d3': 'CPU data bus D3', 'bus:d4': 'CPU data bus D4', 'bus:d5': 'CPU data bus D5',
+  'bus:d6': 'CPU data bus D6', 'bus:d7': 'CPU data bus D7',
+  // Buses — VRAM data
+  'bus:md0': 'VRAM data bus MD0', 'bus:md1': 'VRAM data bus MD1',
+  'bus:md2': 'VRAM data bus MD2', 'bus:md3': 'VRAM data bus MD3',
+  'bus:md4': 'VRAM data bus MD4', 'bus:md5': 'VRAM data bus MD5',
+  'bus:md6': 'VRAM data bus MD6', 'bus:md7': 'VRAM data bus MD7',
+  // Buses — VRAM address
+  'bus:~ma0': 'VRAM addr bus MA0', 'bus:~ma1': 'VRAM addr bus MA1',
+  'bus:~ma2': 'VRAM addr bus MA2', 'bus:~ma3': 'VRAM addr bus MA3',
+  'bus:~ma4': 'VRAM addr bus MA4', 'bus:~ma5': 'VRAM addr bus MA5',
+  'bus:~ma6': 'VRAM addr bus MA6', 'bus:~ma7': 'VRAM addr bus MA7',
+  'bus:~ma8': 'VRAM addr bus MA8', 'bus:~ma9': 'VRAM addr bus MA9',
+  'bus:~ma10': 'VRAM addr bus MA10', 'bus:~ma11': 'VRAM addr bus MA11',
+  'bus:~ma12': 'VRAM addr bus MA12',
+  // Buses — OAM data
+  'bus:~oam_a_d0': 'OAM data A bus D0 (Y/tile)', 'bus:~oam_a_d1': 'OAM data A bus D1 (Y/tile)',
+  'bus:~oam_a_d2': 'OAM data A bus D2 (Y/tile)', 'bus:~oam_a_d3': 'OAM data A bus D3 (Y/tile)',
+  'bus:~oam_a_d4': 'OAM data A bus D4 (Y/tile)', 'bus:~oam_a_d5': 'OAM data A bus D5 (Y/tile)',
+  'bus:~oam_a_d6': 'OAM data A bus D6 (Y/tile)', 'bus:~oam_a_d7': 'OAM data A bus D7 (Y/tile)',
+  'bus:~oam_b_d0': 'OAM data B bus D0 (X/attr)', 'bus:~oam_b_d1': 'OAM data B bus D1 (X/attr)',
+  'bus:~oam_b_d2': 'OAM data B bus D2 (X/attr)', 'bus:~oam_b_d3': 'OAM data B bus D3 (X/attr)',
+  'bus:~oam_b_d4': 'OAM data B bus D4 (X/attr)', 'bus:~oam_b_d5': 'OAM data B bus D5 (X/attr)',
+  'bus:~oam_b_d6': 'OAM data B bus D6 (X/attr)', 'bus:~oam_b_d7': 'OAM data B bus D7 (X/attr)',
+  // Buses — OAM address & sprite render
+  'bus:oam_~{{a0}}_tri': 'OAM addr bus A0', 'bus:oam_~{{a1}}_tri': 'OAM addr bus A1',
+  'bus:oam_~{{a2}}_tri': 'OAM addr bus A2', 'bus:oam_~{{a3}}_tri': 'OAM addr bus A3',
+  'bus:oam_~{{a4}}_tri': 'OAM addr bus A4', 'bus:oam_~{{a5}}_tri': 'OAM addr bus A5',
+  'bus:oam_~{{a6}}_tri': 'OAM addr bus A6', 'bus:oam_~{{a7}}_tri': 'OAM addr bus A7',
+  'bus:oam_render_a2': 'Sprite render data bit 2', 'bus:oam_render_a3': 'Sprite render data bit 3',
+  'bus:oam_render_a4': 'Sprite render data bit 4', 'bus:oam_render_a5': 'Sprite render data bit 5',
+  'bus:oam_render_a6': 'Sprite render data bit 6', 'bus:oam_render_a7': 'Sprite render data bit 7',
+  'bus:sprite_y_store0': 'Sprite Y store bit 0', 'bus:sprite_y_store1': 'Sprite Y store bit 1',
+  'bus:sprite_y_store2': 'Sprite Y store bit 2', 'bus:sprite_y_store3': 'Sprite Y store bit 3',
+  // Buses — clock
+  'bus:clk_t4': 'T-cycle clock T4', 'bus:~clk_t4': 'T-cycle clock ~T4',
+  'bus:data_phase': 'CPU data phase', 'bus:~data_phase': 'CPU ~data phase',
+  // Sprite store 0
+  'xepe': 'Sprite 0 X latch', 'xako': 'Sprite 0 X latch',
+  // LY match / reset chain
+  'rape': 'LY=LYC full match (NAND)', 'paly': 'LY=LYC match (inverted)',
+  'nyxu': 'BG fetch reset (depth 17, late arrival)',
+}};
+
+const categoryNames = {{
+  'ppu-bgfifo': 'BG FIFO', 'ppu-bgscroll': 'BG Scroll',
+  'ppu-control': 'PPU Control', 'ppu-cycles': 'BG/Win Cycles',
+  'ppu-decode': 'PPU Decode', 'ppu-dma': 'DMA',
+  'ppu-lcd': 'LCD', 'ppu-mux': 'Pixel Mux',
+  'ppu-oam': 'OAM', 'ppu-objctl': 'Sprite Control',
+  'ppu-objfifo': 'Sprite FIFO', 'ppu-objreg': 'Sprite Store',
+  'ppu-pal': 'Palettes', 'ppu-stat': 'STAT/LY',
+  'ppu-vram': 'VRAM', 'ppu-window': 'Window',
+  'ppu-xcomp': 'Sprite X Match', 'ppu-xprio': 'Sprite X Priority',
+  'ppu-ycomp': 'Sprite Y Compare',
+  'clocks': 'Clocks', 'int': 'Interrupts', 'timer': 'Timer',
+}};
 
 function friendlyName(displayName) {{
   if (!displayName) return '';
-  for (const rule of friendlyRules) {{
-    const [pattern, replacement] = rule;
-    const m = displayName.match(pattern);
-    if (m) {{
-      return typeof replacement === 'function' ? replacement(m) : replacement;
-    }}
+  const name = displayName.toLowerCase();
+  // Hand-curated die name map (highest priority)
+  if (friendlyMap[name]) return friendlyMap[name];
+  // Auto-extracted from signal_concordance.md
+  if (extraFriendly[name]) return extraFriendly[name];
+  // Fall back to raw concordance lookup
+  const upper = displayName.toUpperCase();
+  if (concordance[upper]) return concordance[upper];
+  // Show category as fallback for nodes in the graph
+  const node = nodeByDisplay.get(displayName);
+  if (node && node.category && categoryNames[node.category]) {{
+    return categoryNames[node.category];
   }}
   return '';
 }}
 
 // =====================================================================
-// Observable effects (matching parse_gateboy.py logic)
+// Observable effects — maps races to emulator-visible symptoms
 // =====================================================================
 function observableEffect(r) {{
-  const name = r.display_name.toUpperCase();
+  const name = r.display_name.toLowerCase();
   const cat = r.category || '';
+  const diff = r.depth_diff;
+  const maxD = r.max_depth;
+  const minD = r.min_depth;
 
-  if (name.includes('STORE') && name.includes('_X'))
-    return 'Sprite store X-position off by one dot';
-  if (name.includes('STORE') && (name.includes('_I') || name.includes('_L')))
-    return 'Sprite store index/line data stale at reset';
-  if (['BFETCH_S0','BFETCH_S1','BFETCH_S2','LAXU','MESU','NYVA'].some(x => name.includes(x)))
-    return 'Tile fetch runs one extra cycle before reset';
-  if (['TFETCH_DONE','LOVY','TFETCHING','LONY'].some(x => name.includes(x)))
-    return 'Tile fetch pipeline active one dot too long';
-  if (['SCAN_DONE','BESU','CENO'].some(x => name.includes(x)))
-    return 'OAM scan extends one dot past boundary';
-  if (['PIPE_A','PIPE_B','PAL_PIPE','MASK_PIPE','CLKPIPE'].some(x => name.includes(x)))
-    return 'Pixel data shifted one dot late (CLKPIPE race)';
-  if (['FINE','SCX_FINE','PUXA','NYZE','ROXY'].some(x => name.includes(x)))
-    return 'Fine scroll match applies one dot late';
-  if (['WIN_','RYFA','RENE','NUKO','ROGE','PYCO','NOPA','SOVY'].some(x => name.includes(x)))
-    return 'Window trigger fires one dot late';
-  if (['PX','XEHO','SAVY','XODU','XYDO'].some(x => name.includes(x)))
-    return 'Pixel counter races pipe clock';
-  if (['STAT','RUPO','ROPO','LY_MATCH'].some(x => name.includes(x)))
-    return 'STAT interrupt one dot early/late';
-  if (['HBLANK','VBLANK','VOGA','WODU','XYMU','RENDERING'].some(x => name.includes(x)))
-    return 'Mode transition shifted one dot';
-  if (['SFETCH','TAKA','SOBU','TEXY','WUTY'].some(x => name.includes(x)))
-    return 'Sprite fetch timing shifted one dot';
-  if (['DMA','MATU','LARA','LOKY'].some(x => name.includes(x)))
-    return 'DMA timing off by one cycle';
-  return cat + ' timing race';
+  // === Specific die-name matches (known critical signals) ===
+
+  // Tile fetch state machine — reset arrives late
+  if (['laxu','mesu','nyva'].some(x => name === x))
+    return `Tile fetch state machine runs one extra cycle before reset. The fetch counter reset arrives at depth ${{maxD}} while the fetch clock arrives at depth ${{minD}}. The state machine advances one extra state before resetting, causing a corrupted tile at the left screen edge or at window/BG boundary transitions.`;
+  if (['lovy','lony'].some(x => name === x))
+    return `Tile fetch pipeline stays active one dot too long. The fetch-done/fetching flag reset (depth ${{maxD}}) arrives late, consuming an additional VRAM cycle. This shifts the mode 3/mode 0 boundary by one dot, affecting H-blank timing and any mid-scanline register writes.`;
+
+  // OAM scan done — extends past boundary
+  if (['besu','ceno'].some(x => name === x))
+    return `OAM scan extends one dot past expected boundary. The scan-done signal (depth ${{maxD}}) races against line-end (depth ${{minD}}), potentially including one extra sprite in the scanline buffer. Affects the mode 2→3 transition timing, most visible with exactly 10 sprites on a line.`;
+
+  // Window control — late activation
+  if (['ryfa','roge'].some(x => name === x))
+    return `Window Y match fires one dot late. The WY comparison (depth ${{maxD}}) races against rendering control, potentially delaying window activation by one dot. Affects games with split-screen effects using the window.`;
+  if (['rene','nuko','pyco','nopa','sovy'].some(x => name === x))
+    return `Window trigger fires one dot late (${{diff}}-gate differential). Window content may shift one pixel right, affecting status bars and dialogue boxes in games that use the window layer.`;
+
+  // Sprite fetcher
+  if (['taka','sobu','texy','wuty'].some(x => name === x))
+    return `Sprite fetch timing shifted by one dot (${{diff}}-gate differential). May cause sprite fetch to start or complete one dot off, affecting mode 3 duration and sprite X positioning.`;
+
+  // Pixel counter vs CLKPIPE
+  if (['xeho','savy','xodu','xydo','tuhu','tuky','tako','sybe'].some(x => name === x))
+    return `Pixel counter races CLKPIPE (${{diff}}-gate differential). The pixel X counter increments late relative to the pipe shift clock, shifting the X coordinate at which sprite/window comparisons trigger by one dot.`;
+
+  // Mode transitions
+  if (['xymu'].includes(name))
+    return `Rendering mode latch (mode 3) transitions one dot off. Affects when the CPU can access VRAM/OAM and when H-blank begins. Games using mid-scanline STAT tricks are most affected.`;
+  if (['voga','wodu'].some(x => name === x))
+    return `H-blank/mode flag transitions one dot off (${{diff}}-gate differential). Shifts when the CPU regains VRAM/OAM access.`;
+
+  // DMA
+  if (['matu','lara','loky'].some(x => name === x))
+    return `DMA transfer timing off by one cycle. May affect when DMA releases the OAM bus back to the PPU.`;
+
+  // LY match
+  if (['ropo','rupo'].some(x => name === x))
+    return `LY=LYC match fires one dot early/late (${{diff}}-gate differential). The STAT interrupt may trigger at a different dot than expected, affecting raster effects (palette changes, wobble).`;
+
+  // === Category-based matches with detailed descriptions ===
+
+  if (cat === 'ppu-objreg') {{
+    const what = friendlyName(name) || 'sprite store latch';
+    return `${{what}} — reset arrives late at line boundary. Line-end reset (depth ${{maxD}}) arrives long after OAM data (depth ${{minD}}). At scanline boundaries, the latch may hold stale data instead of clearing. Visible as wrong sprite position, tile, or attributes at the start of a scanline.`;
+  }}
+  if (cat === 'ppu-xcomp')
+    return `Sprite X match off by one dot (${{diff}}-gate differential). The X comparison that triggers sprite fetching settles at a different time than CLKPIPE, causing the sprite to appear one pixel left or right of its correct position.`;
+  if (cat === 'ppu-bgfifo')
+    return `BG pixel data shifted one dot late relative to CLKPIPE. The pixel pipe effectively shifts one propagation delay after data settles. BG pixels may appear one dot to the right.`;
+  if (cat === 'ppu-objfifo')
+    return `Sprite pixel data shifted one dot late relative to CLKPIPE. Sprite pixels may appear one dot offset from their correct position.`;
+  if (cat === 'ppu-bgscroll')
+    return `Scroll address computation delayed (${{diff}}-gate differential). The BG scroll adder (LY+SCY or pixel+SCX) carry chain propagates through ${{maxD}} gate-equivalents. VRAM address may be ready late.`;
+  if (cat === 'ppu-stat')
+    return `STAT/LY timing off by one dot (${{diff}}-gate differential). May affect STAT interrupt timing or LY match flag, causing raster effects to trigger at the wrong position.`;
+  if (cat === 'ppu-window')
+    return `Window trigger fires one dot late (${{diff}}-gate differential). Window content may shift one pixel right, affecting games with status bars or dialogue boxes.`;
+  if (cat === 'ppu-cycles')
+    return `BG/window fetch cycle timing race (${{diff}}-gate differential). May cause one extra or one fewer fetch cycle, shifting all subsequent pixel output timing.`;
+  if (cat === 'ppu-objctl')
+    return `Sprite control timing race (${{diff}}-gate differential). May affect which sprite store slot captures OAM data, or when sprite fetch begins.`;
+  if (cat === 'ppu-ycomp')
+    return `Sprite Y comparison delayed (${{diff}}-gate differential). The 8-bit Y comparator carry chain takes ${{maxD}} gate-equivalents. At line boundaries, the wrong sprites may pass the Y test.`;
+  if (cat === 'ppu-vram')
+    return `VRAM interface timing race (${{diff}}-gate differential). May affect VRAM address/data bus timing during tile fetch.`;
+  if (cat === 'ppu-oam')
+    return `OAM access timing race (${{diff}}-gate differential). May affect OAM data latch timing during sprite scan.`;
+  if (cat === 'ppu-dma')
+    return `DMA timing off by one cycle (${{diff}}-gate differential). May affect when DMA releases the OAM bus back to the PPU.`;
+  if (cat === 'ppu-lcd')
+    return `LCD pixel output timing race (${{diff}}-gate differential). May affect the LCD data/clock signal timing.`;
+  if (cat === 'ppu-pal')
+    return `Palette latch timing race (${{diff}}-gate differential). May affect which palette value is applied to the current pixel.`;
+  if (cat === 'ppu-mux')
+    return `Pixel mux timing race (${{diff}}-gate differential). May affect sprite/BG priority decision for the current pixel.`;
+  if (cat === 'ppu-xprio')
+    return `Sprite X priority timing race (${{diff}}-gate differential). May affect which sprite wins when multiple sprites overlap at the same X position.`;
+  if (cat === 'ppu-decode')
+    return `PPU address decode timing race (${{diff}}-gate differential). May affect register read/write timing.`;
+
+  // Bus node races — these are real: the address/data must settle before the bus is sampled
+  if (cat === 'bus' || name.startsWith('bus:')) {{
+    if (name.includes('ma') || name.includes('~ma'))
+      return `VRAM address bus bit — carry chain from scroll adder (depth ${{maxD}}) means the address may not settle within one dot. The VRAM may read from the wrong tile/map address for one cycle.`;
+    if (name.includes('oam'))
+      return `OAM bus — data arrives at different depths (${{diff}}-gate differential). May affect which sprite data is latched during OAM scan.`;
+    if (name.startsWith('bus:d'))
+      return `CPU data bus — register read data from multiple sources arrives at different depths (${{diff}}-gate differential). May affect CPU read timing for memory-mapped registers.`;
+    return `Bus timing race (${{diff}}-gate differential). Multiple drivers settle at different times.`;
+  }}
+
+  // Non-PPU categories
+  if (cat.startsWith('apu-'))
+    return `APU timing race (${{diff}}-gate differential). Audio channel register/counter may sample stale data.`;
+  if (cat === 'clocks')
+    return `Clock distribution timing race (${{diff}}-gate differential). Clock phase signal may arrive late relative to the data it gates.`;
+  if (cat === 'timer')
+    return `Timer timing race (${{diff}}-gate differential). DIV/TIMA counter may increment or overflow one cycle off.`;
+  if (cat === 'serial')
+    return `Serial link timing race (${{diff}}-gate differential). Shift clock or data may be sampled one cycle off.`;
+  if (cat === 'int')
+    return `Interrupt flag timing race (${{diff}}-gate differential). IRQ flag may be set or cleared one cycle off, affecting interrupt timing.`;
+  if (cat === 'joypad')
+    return `Joypad read timing race (${{diff}}-gate differential). Button state may be sampled one cycle off.`;
+  if (cat === 'bus-adr')
+    return `Address bus timing race (${{diff}}-gate differential). Address decode may settle late, affecting which register is accessed.`;
+  if (cat === 'bus-data')
+    return `Data bus timing race (${{diff}}-gate differential). Read data from multiple sources settles at different times.`;
+  if (cat === 'test')
+    return `Test mode register timing race (${{diff}}-gate differential). Only affects debug/test hardware.`;
+  if (cat === 'bootrom')
+    return `Boot ROM timing race (${{diff}}-gate differential). Only affects the boot sequence.`;
+
+  const catName = categoryNames[cat] || cat;
+  return catName ? catName + ` timing race (${{diff}}-gate differential)` : `timing race (${{diff}}-gate differential)`;
 }}
 
 // =====================================================================
@@ -1179,7 +1356,6 @@ function renderRaceDetail(r) {{
       <td>${{inp.depth}}</td>
       <td>${{delay}}</td>
       <td>${{gateFuncLink(inp.gate_func) || escHtml(inp.gate_func || inp.node_type)}}</td>
-      <td>${{phaseBadge(inp.phase)}}</td>
       <td>${{role}}</td>
     </tr>`;
   }}).join('');
@@ -1217,7 +1393,7 @@ function renderRaceDetail(r) {{
     <div class="detail-section">
       <h4>Inputs</h4>
       <table class="inputs-table">
-        <thead><tr><th>Signal</th><th>Depth</th><th>Delay</th><th>Gate</th><th>Phase</th><th>Role</th></tr></thead>
+        <thead><tr><th>Signal</th><th>Depth</th><th>Delay</th><th>Gate</th><th>Role</th></tr></thead>
         <tbody>${{inputRows}}</tbody>
       </table>
     </div>
@@ -1243,7 +1419,6 @@ function renderRaces() {{
       <td class="mono">${{signalLink(r.display_name, true)}}</td>
       <td>${{catBadge(r.category)}}</td>
       <td class="mono">${{cellTypeLink(r.reg_type) || escHtml(r.reg_type)}}</td>
-      <td>${{phaseBadge(r.phase)}}</td>
       <td>${{depthBadge(r.depth_diff)}}</td>
       <td class="mono muted">${{r.max_depth}}</td>
       <td class="mono muted">${{r.min_depth}}</td>
@@ -1252,7 +1427,7 @@ function renderRaces() {{
     const detailTr = document.createElement('tr');
     detailTr.className = 'detail-row';
     detailTr.style.display = 'none';
-    detailTr.innerHTML = `<td colspan="8">${{renderRaceDetail(r)}}</td>`;
+    detailTr.innerHTML = `<td colspan="7">${{renderRaceDetail(r)}}</td>`;
 
     tr.addEventListener('click', (e) => {{
       if (e.target.closest('.signal-link')) return;
@@ -1334,14 +1509,14 @@ function renderChain(nodes) {{
     const typeClass = nd.node_type || 'combinatorial';
     const label = nd.gate_func || nd.node_type || '?';
     const connector = i === 0 ? '' : '<div class="chain-connector">\\u2193</div>';
-    const phase = nd.phase ? `<span class="chain-phase">@${{escHtml(nd.phase)}}</span>` : '';
     const fo = nd.fan_out >= 10 ? `<span class="chain-fanout">(fan-out: ${{nd.fan_out}})</span>` : '';
+    const ds = nd.drive_strength > 1 ? `<span class="badge badge-cat" style="font-size:9px">x${{nd.drive_strength}}</span>` : '';
+    const ge = nd.gate_equiv > 1 ? `<span class="chain-fanout">ge=${{nd.gate_equiv}}</span>` : '';
     return `${{connector}}
       <div class="chain-node">
         <span class="chain-type ${{typeClass}}">${{escHtml(label)}}</span>
         <span class="chain-name">${{signalLink(nd.display_name, true)}}</span>
-        ${{dieLink(nd.display_name)}} ${{phase}} ${{fo}}
-        <span class="chain-loc">${{nd.source_file ? srcLink(nd.source_file, nd.source_line) : ''}}</span>
+        ${{dieLink(nd.display_name)}} ${{ds}} ${{ge}} ${{fo}}
       </div>`;
   }}).join('');
 }}
@@ -1364,7 +1539,6 @@ function renderPaths() {{
 
   for (const p of filtered) {{
     const pctClass = p.pct_half_tcycle > 100 ? 'text-warn' : p.pct_half_tcycle > 50 ? 'text-accent' : 'muted';
-    const phaseStr = [p.source_phase, p.sink_phase].filter(Boolean).join('\\u2192');
     const tr = document.createElement('tr');
     tr.className = 'data-row';
     tr.innerHTML = `
@@ -1373,14 +1547,13 @@ function renderPaths() {{
       <td class="mono">${{signalLink(p.sink, true)}}</td>
       <td class="mono muted">${{p.min_delay_ns}}-${{p.max_delay_ns}}</td>
       <td class="${{pctClass}} mono">${{p.pct_half_tcycle}}%</td>
-      <td>${{phaseStr ? phaseBadge(phaseStr) : ''}}</td>
       <td>${{catBadge(p.category)}}</td>
       <td>${{p.is_reset ? '<span class="badge badge-reset">reset</span>' : '<span class="badge badge-operational">op</span>'}}</td>
     `;
     const detailTr = document.createElement('tr');
     detailTr.className = 'detail-row';
     detailTr.style.display = 'none';
-    detailTr.innerHTML = `<td colspan="8">${{renderPathDetail(p)}}</td>`;
+    detailTr.innerHTML = `<td colspan="7">${{renderPathDetail(p)}}</td>`;
 
     tr.addEventListener('click', (e) => {{
       if (e.target.closest('.signal-link')) return;
@@ -1566,7 +1739,8 @@ function renderGraphNode(displayName) {{
         <div class="node-prop"><span class="label">Type: </span><span class="value">${{escHtml(node.node_type)}}</span></div>
         ${{node.gate_func ? `<div class="node-prop"><span class="label">Gate: </span><span class="value">${{gateFuncLink(node.gate_func) || escHtml(node.gate_func)}}</span></div>` : ''}}
         ${{node.reg_type ? `<div class="node-prop"><span class="label">Reg: </span><span class="value">${{cellTypeLink(node.reg_type) || escHtml(node.reg_type)}}</span></div>` : ''}}
-        ${{node.phase ? `<div class="node-prop"><span class="label">Phase: </span><span class="value">${{phaseBadge(node.phase)}}</span></div>` : ''}}
+        ${{node.category ? `<div class="node-prop"><span class="label">Category: </span><span class="value">${{catBadge(node.category)}}</span></div>` : ''}}
+        ${{node.drive_strength > 1 ? `<div class="node-prop"><span class="label">Drive: </span><span class="value">x${{node.drive_strength}}</span></div>` : ''}}
         ${{node.source_file ? `<div class="node-prop"><span class="label">Source: </span><span class="value">${{srcLink(node.source_file, node.source_line)}}</span></div>` : ''}}
         <div class="node-prop">${{dieLink(dn)}} ${{pandocsLink(dn)}}</div>
         <div class="node-prop"><span class="label">Fan-in: </span><span class="value">${{preds.length}}</span></div>
@@ -1671,14 +1845,20 @@ def main():
     concordance = parse_concordance(out_dir / 'signal_concordance.md')
     concordance_json = json.dumps(concordance)
 
+    extra_friendly = build_friendly_map(out_dir / 'signal_concordance.md')
+    graph_friendly = build_graph_friendly(out_dir / 'ppu_graph.json')
+    # Graph-derived names are lower priority — don't overwrite concordance
+    merged = {**graph_friendly, **extra_friendly}
+    extra_friendly_json = json.dumps(merged)
+    print(f'  {len(extra_friendly)} from concordance + {len(graph_friendly)} from graph = {len(merged)} friendly names')
+
     config = {
-        'gateboy_base': GATEBOY_BASE,
-        'gateboy_commit': GATEBOY_COMMIT,
+        'source_base': SCHEMATICS_BASE,
         'pandocs_urls': PANDOCS_URLS,
     }
     config_json = json.dumps(config)
 
-    html = build_html(graph_json, paths_json, races_json, concordance_json, config_json)
+    html = build_html(graph_json, paths_json, races_json, concordance_json, config_json, extra_friendly_json)
 
     output_path = docs_dir / 'index.html'
     output_path.write_text(html)
