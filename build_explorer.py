@@ -169,8 +169,19 @@ def build_graph_friendly(graph_path: Path) -> dict:
         elif bus_name.startswith('oam_render_a'):
             sprite_bus_cells[cell] = ('OAM data', bus_name.replace('oam_render_a', ''))
 
+    # Name sprite store cells based on what data they hold:
+    # sprite_y_store[0:3] = 4-bit sprite line offset (which row within the sprite to render)
+    # oam_render_a[2:7] = 6-bit OAM attributes (tile index high bits, X flip, Y flip, palette, priority)
+    oam_bit_names = {
+        '2': 'tile bit 2', '3': 'tile bit 3', '4': 'tile bit 4',
+        '5': 'X flip', '6': 'Y flip', '7': 'BG priority',
+    }
     for cell, (bus_type, data_bit) in sprite_bus_cells.items():
-        friendly[cell] = f'Sprite store {bus_type} bit {data_bit}'
+        if bus_type == 'Y offset':
+            friendly[cell] = f'Sprite store line offset bit {data_bit}'
+        elif bus_type == 'OAM data':
+            bit_name = oam_bit_names.get(data_bit, f'bit {data_bit}')
+            friendly[cell] = f'Sprite store OAM {bit_name}'
 
     # For cells fed by the CPU data bus, use category + bit for a useful name
     cat_labels = {
