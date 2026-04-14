@@ -40,7 +40,7 @@
 ```
 
 
-## test (17 paths, max depth 32)
+## Test Mode (17 paths, max depth 32)
 
 ### Path 1: depth 32 (160-480 ns, 403% half T-cycle)
 ```
@@ -285,7 +285,7 @@
 ```
 
 
-## bus (432 paths, max depth 32)
+## Bus (432 paths, max depth 32)
 
 ### Path 1: depth 32 (160-480 ns, 403% half T-cycle)
 ```
@@ -1284,7 +1284,7 @@
 ```
 
 
-## apu-ch2 (22 paths, max depth 15)
+## APU CH2 (Square) (22 paths, max depth 15)
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
@@ -1434,7 +1434,7 @@
 ```
 
 
-## apu-ch1 (41 paths, max depth 15)
+## APU CH1 (Square+Sweep) (41 paths, max depth 15)
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
@@ -1580,7 +1580,7 @@
 ```
 
 
-## apu-ch4 (15 paths, max depth 15)
+## APU CH4 (Noise) (15 paths, max depth 15)
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
@@ -1723,7 +1723,7 @@
 ```
 
 
-## apu-ch3 (24 paths, max depth 15)
+## APU CH3 (Wave) (24 paths, max depth 15)
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
@@ -2372,7 +2372,7 @@
 ```
 
 
-## apu-control (1 paths, max depth 5)
+## APU Control (1 paths, max depth 5)
 
 ### Path 1: depth 5 (25-75 ns, 63% half T-cycle)
 ```
@@ -2504,7 +2504,7 @@
 ```
 
 
-## bootrom (1 paths, max depth 2)
+## Boot ROM (1 paths, max depth 2)
 
 ### Path 1: depth 2 (10-30 ns, 25% half T-cycle)
 ```

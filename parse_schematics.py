@@ -1077,6 +1077,17 @@ CATEGORY_DISPLAY = {
     'serial': 'Serial',
     'joypad': 'Joypad',
     'sys-decode': 'System Decode',
+    'apu-ch1': 'APU CH1 (Square+Sweep)',
+    'apu-ch2': 'APU CH2 (Square)',
+    'apu-ch3': 'APU CH3 (Wave)',
+    'apu-ch4': 'APU CH4 (Noise)',
+    'apu-control': 'APU Control',
+    'apu-decode': 'APU Decode',
+    'apu-analog': 'APU Analog',
+    'test': 'Test Mode',
+    'bootrom': 'Boot ROM',
+    'hram': 'High RAM',
+    'bus': 'Bus',
 }
 
 
@@ -1240,71 +1251,111 @@ def format_report(paths, G, races):
     L.append(f"| **Race pairs** | {len(races)} ({ppu_races} PPU) | max diff {races[0]['depth_diff'] if races else 0} | |")
     L.append("")
 
-    # === Key Findings ===
+    # === Key Findings (compute from data, not hardcoded) ===
     L.append("## Key Findings")
     L.append("")
-    L.append("### 1. The VRAM Address Adder Is the Deepest Operational Path")
-    L.append("")
-    L.append("The longest operational combinatorial chain is the 8-bit ripple carry adder")
-    L.append("that computes the VRAM tile map address from the current scanline (LY) plus")
-    L.append("the scroll register (SCY or SCX). The carry propagates through a half_adder")
-    L.append("+ 7 full_adders, each costing 4 gate-equivalents, for a total depth of ~32 ge.")
-    L.append("")
-    L.append("This means the VRAM address may not settle until 160-480 ns after LY/SCY")
-    L.append("change — well beyond one full T-cycle. In practice, the scroll registers")
-    L.append("are stable for the entire scanline, so the adder output settles before the")
-    L.append("first tile fetch. But mid-scanline SCX writes (used by some games for")
-    L.append("split-scroll effects) may not take effect for 2+ dots.")
-    L.append("")
 
-    L.append("### 2. CLKPIPE (sacu) Is the Critical Fan-out Bottleneck")
+    # Find the actual deepest operational path and describe it
+    if op_paths:
+        deepest = op_paths[0]
+        deepest_d, deepest_p = deepest
+        adders_in_deepest = [n for n in deepest_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
+        sink_cat = G.nodes.get(deepest_p[-1], {}).get('category', '')
+        src_cat = G.nodes.get(deepest_p[0], {}).get('category', '')
+
+        L.append(f"### 1. Deepest Operational Path: {deepest_d} Gate-equivalents")
+        L.append("")
+        L.append(f"The longest operational combinatorial chain runs from `{deepest_p[0]}`")
+        L.append(f"({CATEGORY_DISPLAY.get(src_cat, src_cat)}) to `{deepest_p[-1]}`")
+        L.append(f"({CATEGORY_DISPLAY.get(sink_cat, sink_cat)}), passing through")
+        L.append(f"{len(adders_in_deepest)} adder cells and {len(deepest_p)-2} total combinatorial gates.")
+        L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN}-{deepest_d*GATE_DELAY_MAX} ns")
+        L.append(f"({deepest_d*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% of half T-cycle).")
+        L.append("")
+        L.append("```")
+        for j, node in enumerate(deepest_p):
+            nd = G.nodes.get(node, {})
+            ct = nd.get('cell_type', '')
+            cat = nd.get('category', '')
+            L.append(f"{'  ' * j}[{ct}] {node} ({cat})")
+        L.append("```")
+        L.append("")
+        if len(adders_in_deepest) >= 4:
+            L.append(f"The {len(adders_in_deepest)}-stage ripple carry adder chain dominates this path.")
+            L.append(f"Each full_add costs 4 gate-equivalents, accounting for")
+            L.append(f"{len(adders_in_deepest)*4} of the {deepest_d} total depth.")
+            L.append("")
+
+    # VRAM address adder (if it's not already the deepest)
+    vram_paths = [p for p in op_paths if any('bus:~ma' in n for _, p2 in [] for n in p2)
+                  or any(G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')
+                         and G.nodes.get(n, {}).get('category') == 'ppu-bgscroll'
+                         for n in p[1])]
+    # Simpler: find paths ending at VRAM address bus
+    vram_addr_paths = [(d, p) for d, p in op_paths
+                       if any(n.startswith('bus:~ma') for n in p)]
+    if vram_addr_paths:
+        vp_d, vp_p = vram_addr_paths[0]
+        vp_adders = [n for n in vp_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
+        L.append(f"### 2. VRAM Address Adder ({vp_d} ge)")
+        L.append("")
+        L.append(f"The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)")
+        L.append(f"via an 8-bit ripple carry adder ({len(vp_adders)} adder stages, depth {vp_d} ge).")
+        L.append(f"The carry chain means the high address bits settle last —")
+        L.append(f"the VRAM address may not be valid until {vp_d*GATE_DELAY_MIN}-{vp_d*GATE_DELAY_MAX} ns")
+        L.append(f"after the inputs change. In practice, LY and SCY are stable for the full")
+        L.append(f"scanline so the address settles well before fetch begins. But mid-scanline")
+        L.append(f"SCX writes (used for split-scroll effects) may take 2+ dots to propagate.")
+        L.append("")
+
+    L.append("### 3. CLKPIPE (sacu) — Critical Fan-out Bottleneck")
     L.append("")
     sacu_depth = depth_map.get('sacu', 0)
     sacu_fo = fanout.get('sacu', 0)
-    L.append(f"The pixel pipe shift clock `sacu` (OR2 gate, depth {sacu_depth}, fan-out **{sacu_fo}**)")
-    L.append("drives every pixel-level decision: BG pipe shift, sprite pipe shift, sprite X")
-    L.append("match, mask pipe, and pixel counter increment. All pipe data is ready at depth")
-    L.append("0-5, but CLKPIPE arrives at depth ~19, creating a systematic race at every pipe DFF.")
+    L.append(f"`sacu` is an OR2 gate at depth **{sacu_depth}** with fan-out **{sacu_fo}**.")
+    L.append("It is the pixel pipe shift clock (CLKPIPE), driving every pixel-level decision:")
+    L.append("BG pipe shift, sprite pipe shift, sprite X match, mask pipe, and pixel counter.")
     L.append("")
-    L.append("This is the single most impactful signal for emulator timing. A behavioral emulator")
-    L.append("resolves CLKPIPE and data simultaneously, but on real hardware the pipe effectively")
+    L.append("All pipe data is ready at depth 0-5, but CLKPIPE arrives at depth ~19.")
+    L.append("This creates a systematic race at every pipe DFF — the pipe effectively")
     L.append(f"shifts {sacu_depth*GATE_DELAY_MIN}-{sacu_depth*GATE_DELAY_MAX} ns after data settles.")
+    L.append("This is the single most impactful signal for emulator accuracy.")
     L.append("")
 
-    L.append("### 3. Sprite Store Races Are Universal and Severe")
-    L.append("")
     objreg_races = [r for r in races if r['category'] == 'ppu-objreg']
     if objreg_races:
         max_diff = max(r['depth_diff'] for r in objreg_races)
-        L.append(f"All 10 sprite stores exhibit identical timing races (diff={max_diff}).")
-        L.append("The sprite control signal (from the Y comparator carry chain) arrives at")
-        L.append(f"depth {objreg_races[0]['max_depth']} while OAM data arrives at depth 0.")
-        L.append("At scanline boundaries, the stores may capture stale data instead of")
-        L.append("clearing, causing wrong sprite position, tile index, or attribute flags")
-        L.append("for one dot at the start of the next scanline.")
-    L.append("")
+        L.append(f"### 4. Sprite Store Races (diff={max_diff}, all 10 stores identical)")
+        L.append("")
+        L.append(f"All 10 sprite stores exhibit identical timing races. The sprite control")
+        L.append(f"signal arrives at depth {objreg_races[0]['max_depth']} (through the Y comparator")
+        L.append(f"carry chain and sprite control logic) while OAM data arrives at depth 0.")
+        L.append(f"At scanline boundaries, the stores may capture stale data instead of")
+        L.append(f"clearing — causing wrong sprite position, tile, or attributes for one")
+        L.append(f"dot at the start of the next scanline.")
+        L.append("")
 
-    L.append("### 4. Sprite X Match Has Massive Depth Differential")
-    L.append("")
     xcomp_races = [r for r in races if r['category'] == 'ppu-xcomp']
     if xcomp_races:
         max_diff = max(r['depth_diff'] for r in xcomp_races)
-        L.append(f"The {len(xcomp_races)} sprite X comparator races (max diff={max_diff}) arise because")
-        L.append("the X comparison depends on the pixel counter, which is clocked by CLKPIPE.")
-        L.append("The comparator output settles at a different time than the pixel pipe data,")
-        L.append("causing sprites to potentially trigger fetch one dot early or late.")
-    L.append("")
+        L.append(f"### 5. Sprite X Match ({len(xcomp_races)} races, max diff={max_diff})")
+        L.append("")
+        L.append(f"The sprite X comparators check each sprite's stored X position against the")
+        L.append(f"pixel counter on every dot. The comparator result depends on the pixel counter,")
+        L.append(f"which is clocked by CLKPIPE (depth {sacu_depth}). The X match output settles")
+        L.append(f"at a different time than the fetch control signals, causing sprites to")
+        L.append(f"potentially trigger fetch one dot early or late.")
+        L.append("")
 
-    L.append("### 5. Window Trigger Races Affect Split-screen Games")
-    L.append("")
     win_races = [r for r in races if r['category'] == 'ppu-window']
     if win_races:
         max_diff = max(r['depth_diff'] for r in win_races)
-        L.append(f"Window logic has {len(win_races)} races (max diff={max_diff}). The WX/WY comparison")
-        L.append("and window activation signals race against the rendering pipeline, potentially")
-        L.append("shifting window content by one pixel. This affects games that use the window")
-        L.append("for status bars or dialogue boxes.")
-    L.append("")
+        L.append(f"### 6. Window Trigger Races ({len(win_races)} races, max diff={max_diff})")
+        L.append("")
+        L.append(f"The WX/WY comparison and window activation signals race against the rendering")
+        L.append(f"pipeline. Window content may shift one pixel right. Affects games that use the")
+        L.append(f"window for status bars, dialogue boxes, or HUD overlays.")
+        L.append("")
 
     # === Paths by category summary ===
     L.append("## Critical Paths by Functional Area")

@@ -29,69 +29,98 @@ Data source: [msinger/dmg-schematics](https://github.com/msinger/dmg-schematics)
 
 ## Key Findings
 
-### 1. The VRAM Address Adder Is the Deepest Operational Path
+### 1. Deepest Operational Path: 39 Gate-equivalents
 
-The longest operational combinatorial chain is the 8-bit ripple carry adder
-that computes the VRAM tile map address from the current scanline (LY) plus
-the scroll register (SCY or SCX). The carry propagates through a half_adder
-+ 7 full_adders, each costing 4 gate-equivalents, for a total depth of ~32 ge.
+The longest operational combinatorial chain runs from `muwy`
+(STAT/LY) to `dezy`
+(Sprite Control), passing through
+8 adder cells and 14 total combinatorial gates.
+Worst-case delay: 195-585 ns
+(491% of half T-cycle).
 
-This means the VRAM address may not settle until 160-480 ns after LY/SCY
-change — well beyond one full T-cycle. In practice, the scroll registers
-are stable for the entire scanline, so the adder output settles before the
-first tile fetch. But mid-scanline SCX writes (used by some games for
-split-scroll effects) may not take effect for 2+ dots.
+```
+[dffr] muwy (ppu-stat)
+  [not_x1] ebos (ppu-ycomp)
+    [full_add] eruc (ppu-ycomp)
+      [full_add] enef (ppu-ycomp)
+        [full_add] feco (ppu-ycomp)
+          [full_add] gyky (ppu-ycomp)
+            [full_add] gopu (ppu-ycomp)
+              [full_add] fuwa (ppu-ycomp)
+                [full_add] goju (ppu-ycomp)
+                  [full_add] wuhu (ppu-ycomp)
+                    [not_x1] gewy (ppu-ycomp)
+                      [nand6] wota (ppu-ycomp)
+                        [not_x1] gese (ppu-ycomp)
+                          [and3] care (ppu-objctl)
+                            [not_x2] dyty (ppu-objctl)
+                              [dffr] dezy (ppu-objctl)
+```
 
-### 2. CLKPIPE (sacu) Is the Critical Fan-out Bottleneck
+The 8-stage ripple carry adder chain dominates this path.
+Each full_add costs 4 gate-equivalents, accounting for
+32 of the 39 total depth.
 
-The pixel pipe shift clock `sacu` (OR2 gate, depth 19, fan-out **53**)
-drives every pixel-level decision: BG pipe shift, sprite pipe shift, sprite X
-match, mask pipe, and pixel counter increment. All pipe data is ready at depth
-0-5, but CLKPIPE arrives at depth ~19, creating a systematic race at every pipe DFF.
+### 2. VRAM Address Adder (32 ge)
 
-This is the single most impactful signal for emulator timing. A behavioral emulator
-resolves CLKPIPE and data simultaneously, but on real hardware the pipe effectively
+The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)
+via an 8-bit ripple carry adder (8 adder stages, depth 32 ge).
+The carry chain means the high address bits settle last —
+the VRAM address may not be valid until 160-480 ns
+after the inputs change. In practice, LY and SCY are stable for the full
+scanline so the address settles well before fetch begins. But mid-scanline
+SCX writes (used for split-scroll effects) may take 2+ dots to propagate.
+
+### 3. CLKPIPE (sacu) — Critical Fan-out Bottleneck
+
+`sacu` is an OR2 gate at depth **19** with fan-out **53**.
+It is the pixel pipe shift clock (CLKPIPE), driving every pixel-level decision:
+BG pipe shift, sprite pipe shift, sprite X match, mask pipe, and pixel counter.
+
+All pipe data is ready at depth 0-5, but CLKPIPE arrives at depth ~19.
+This creates a systematic race at every pipe DFF — the pipe effectively
 shifts 95-285 ns after data settles.
+This is the single most impactful signal for emulator accuracy.
 
-### 3. Sprite Store Races Are Universal and Severe
+### 4. Sprite Store Races (diff=44, all 10 stores identical)
 
-All 10 sprite stores exhibit identical timing races (diff=44).
-The sprite control signal (from the Y comparator carry chain) arrives at
-depth 44 while OAM data arrives at depth 0.
+All 10 sprite stores exhibit identical timing races. The sprite control
+signal arrives at depth 44 (through the Y comparator
+carry chain and sprite control logic) while OAM data arrives at depth 0.
 At scanline boundaries, the stores may capture stale data instead of
-clearing, causing wrong sprite position, tile index, or attribute flags
-for one dot at the start of the next scanline.
+clearing — causing wrong sprite position, tile, or attributes for one
+dot at the start of the next scanline.
 
-### 4. Sprite X Match Has Massive Depth Differential
+### 5. Sprite X Match (112 races, max diff=43)
 
-The 112 sprite X comparator races (max diff=43) arise because
-the X comparison depends on the pixel counter, which is clocked by CLKPIPE.
-The comparator output settles at a different time than the pixel pipe data,
-causing sprites to potentially trigger fetch one dot early or late.
+The sprite X comparators check each sprite's stored X position against the
+pixel counter on every dot. The comparator result depends on the pixel counter,
+which is clocked by CLKPIPE (depth 19). The X match output settles
+at a different time than the fetch control signals, causing sprites to
+potentially trigger fetch one dot early or late.
 
-### 5. Window Trigger Races Affect Split-screen Games
+### 6. Window Trigger Races (30 races, max diff=17)
 
-Window logic has 30 races (max diff=17). The WX/WY comparison
-and window activation signals race against the rendering pipeline, potentially
-shifting window content by one pixel. This affects games that use the window
-for status bars or dialogue boxes.
+The WX/WY comparison and window activation signals race against the rendering
+pipeline. Window content may shift one pixel right. Affects games that use the
+window for status bars, dialogue boxes, or HUD overlays.
 
 ## Critical Paths by Functional Area
 
 | Area | Paths | Max Depth | Max Delay | Key Race |
 |------|-------|-----------|-----------|----------|
 | Sprite Control | 3 | 39 ge | 585 ns | diff=33 (17 races) |
-| test | 17 | 32 ge | 480 ns | diff=12 (8 races) |
-| bus | 432 | 32 ge | 480 ns | diff=27 (55 races) |
+| Test Mode | 17 | 32 ge | 480 ns | diff=12 (8 races) |
+| Bus | 432 | 32 ge | 480 ns | diff=27 (55 races) |
 | VRAM Interface | 37 | 29 ge | 435 ns | diff=3 (8 races) |
 | Sprite X Priority | 10 | 27 ge | 405 ns | diff=23 (10 races) |
 | Data Bus | 16 | 19 ge | 285 ns | diff=9 (8 races) |
 | DMA | 2 | 16 ge | 240 ns | diff=17 (21 races) |
 | Timer | 9 | 15 ge | 225 ns | diff=16 (21 races) |
-| apu-ch2 | 22 | 15 ge | 225 ns | diff=17 (56 races) |
-| apu-ch1 | 41 | 15 ge | 225 ns | diff=51 (102 races) |
-| apu-ch4 | 15 | 15 ge | 225 ns | diff=17 (68 races) |
-| apu-ch3 | 24 | 15 ge | 225 ns | diff=17 (59 races) |
+| APU CH2 (Square) | 22 | 15 ge | 225 ns | diff=17 (56 races) |
+| APU CH1 (Square+Sweep) | 41 | 15 ge | 225 ns | diff=51 (102 races) |
+| APU CH4 (Noise) | 15 | 15 ge | 225 ns | diff=17 (68 races) |
+| APU CH3 (Wave) | 24 | 15 ge | 225 ns | diff=17 (59 races) |
 | Address Bus | 16 | 15 ge | 225 ns | diff=12 (15 races) |
 | LCD Output | 10 | 14 ge | 210 ns | diff=11 (17 races) |
 | STAT/LY | 8 | 13 ge | 195 ns | diff=18 (33 races) |
@@ -99,10 +128,10 @@ for status bars or dialogue boxes.
 | BG/Win Cycles | 3 | 8 ge | 120 ns | diff=20 (20 races) |
 | Window Logic | 1 | 7 ge | 105 ns | diff=17 (30 races) |
 | Clock Distribution | 1 | 6 ge | 90 ns | diff=14 (21 races) |
-| apu-control | 1 | 5 ge | 75 ns | diff=16 (27 races) |
+| APU Control | 1 | 5 ge | 75 ns | diff=16 (27 races) |
 | Serial | 5 | 5 ge | 75 ns | diff=14 (17 races) |
 | Joypad | 12 | 3 ge | 45 ns | diff=12 (11 races) |
-| bootrom | 1 | 2 ge | 30 ns | diff=10 (1 races) |
+| Boot ROM | 1 | 2 ge | 30 ns | diff=10 (1 races) |
 | Sprite X Match | 80 | 1 ge | 15 ns | diff=43 (112 races) |
 | OAM Interface | 6 | 1 ge | 15 ns | diff=4 (1 races) |
 
