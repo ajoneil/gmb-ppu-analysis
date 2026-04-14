@@ -8256,20 +8256,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "gotu",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-ycomp"
-      },
-      {
         "name": "duve",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-dma"
+      },
+      {
+        "name": "gotu",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-ycomp"
       },
       {
         "name": "reso",
@@ -8310,20 +8310,20 @@
         "category": "ppu-window"
       },
       {
-        "name": "xeca",
-        "depth": 7,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-vram"
-      },
-      {
         "name": "famu",
         "depth": 7,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-ycomp"
+      },
+      {
+        "name": "xeca",
+        "depth": 7,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-vram"
       },
       {
         "name": "damu",
@@ -9324,20 +9324,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "evax",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-dma"
-      },
-      {
         "name": "wune",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-ycomp"
+      },
+      {
+        "name": "evax",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-dma"
       },
       {
         "name": "roha",
@@ -9440,20 +9440,20 @@
         "category": "ppu-ycomp"
       },
       {
-        "name": "wolu",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
         "name": "fyzy",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-dma"
+      },
+      {
+        "name": "wolu",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
       }
     ]
   },
@@ -10206,14 +10206,6 @@
         "category": ""
       },
       {
-        "name": "xaca",
-        "depth": 18,
-        "gate_func": "buf_if0",
-        "cell_type": "buf_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-xcomp"
-      },
-      {
         "name": "yfap",
         "depth": 18,
         "gate_func": "buf_if0",
@@ -10222,18 +10214,18 @@
         "category": "ppu-ycomp"
       },
       {
-        "name": "tovu",
+        "name": "xaca",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "bus-data"
+        "category": "ppu-xcomp"
       },
       {
-        "name": "romy",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "tovu",
+        "depth": 18,
+        "gate_func": "buf_if0",
+        "cell_type": "buf_if0",
         "node_type": "combinatorial",
         "category": "bus-data"
       },
@@ -10246,108 +10238,20 @@
         "category": "ppu-dma"
       },
       {
+        "name": "romy",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "bus-data"
+      },
+      {
         "name": "fapy",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "apu-ch3"
-      },
-      {
-        "name": "huna",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "dopa",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "jofo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "xary",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "raro",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "foru",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "lova",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
-        "name": "vega",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "fava",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "wypo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-control"
-      },
-      {
-        "name": "laju",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "ware",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
       },
       {
         "name": "juvy",
@@ -10358,20 +10262,28 @@
         "category": "apu-ch3"
       },
       {
-        "name": "atel",
+        "name": "raro",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch4"
+        "category": "ppu-pal"
       },
       {
-        "name": "punu",
+        "name": "lova",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-window"
+      },
+      {
+        "name": "xary",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
       },
       {
         "name": "edos",
@@ -10382,12 +10294,100 @@
         "category": "ppu-bgscroll"
       },
       {
+        "name": "foru",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "punu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "dopa",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "ware",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "atel",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "wypo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-control"
+      },
+      {
+        "name": "vega",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
         "name": "retu",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-stat"
+      },
+      {
+        "name": "jofo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "laju",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "fava",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "huna",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
       },
       {
         "name": "teby",
@@ -10406,20 +10406,12 @@
         "category": "apu-ch3"
       },
       {
-        "name": "demy",
+        "name": "kema",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "coto",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
+        "category": "joypad"
       },
       {
         "name": "buzu",
@@ -10430,12 +10422,44 @@
         "category": "apu-control"
       },
       {
+        "name": "coto",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
+      },
+      {
+        "name": "demy",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
         "name": "huvu",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "apu-ch2"
+      },
+      {
+        "name": "amyd",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "jyne",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
       },
       {
         "name": "kamo",
@@ -10454,28 +10478,20 @@
         "category": "apu-control"
       },
       {
-        "name": "amyd",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "core",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "apu-ch1"
+        "category": "serial"
       },
       {
-        "name": "kema",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "sete",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "joypad"
-      },
-      {
-        "name": "jyne",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
+        "category": "timer"
       },
       {
         "name": "cugy",
@@ -10486,7 +10502,7 @@
         "category": "serial"
       },
       {
-        "name": "soku",
+        "name": "ryla",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -10510,22 +10526,6 @@
         "category": "clocks"
       },
       {
-        "name": "core",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "serial"
-      },
-      {
-        "name": "sete",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "timer"
-      },
-      {
         "name": "sypu",
         "depth": 12,
         "gate_func": "not_if1",
@@ -10534,7 +10534,7 @@
         "category": "bootrom"
       },
       {
-        "name": "ryla",
+        "name": "soku",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -10612,12 +10612,12 @@
         "category": ""
       },
       {
-        "name": "xele",
+        "name": "sosa",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "ppu-ycomp"
+        "category": "bus-data"
       },
       {
         "name": "xagu",
@@ -10628,20 +10628,12 @@
         "category": "ppu-xcomp"
       },
       {
-        "name": "sosa",
+        "name": "xele",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "bus-data"
-      },
-      {
-        "name": "ryne",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "bus-data"
+        "category": "ppu-ycomp"
       },
       {
         "name": "rofo",
@@ -10652,68 +10644,12 @@
         "category": "ppu-dma"
       },
       {
-        "name": "xoke",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "ryne",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "xero",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-control"
-      },
-      {
-        "name": "jura",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "goba",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "wuva",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "vojo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "poda",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
-        "name": "fajy",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
+        "category": "bus-data"
       },
       {
         "name": "jaro",
@@ -10724,12 +10660,12 @@
         "category": "apu-ch2"
       },
       {
-        "name": "ekob",
+        "name": "faro",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
+        "category": "apu-ch3"
       },
       {
         "name": "demu",
@@ -10740,6 +10676,30 @@
         "category": "apu-ch1"
       },
       {
+        "name": "vojo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "xero",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-control"
+      },
+      {
+        "name": "fajy",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
         "name": "lepa",
         "depth": 15,
         "gate_func": "not_if0",
@@ -10748,12 +10708,36 @@
         "category": "ppu-pal"
       },
       {
-        "name": "paba",
+        "name": "wuva",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-pal"
+        "category": "ppu-stat"
+      },
+      {
+        "name": "ekob",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "poda",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "goba",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
       },
       {
         "name": "kafu",
@@ -10764,7 +10748,15 @@
         "category": "apu-ch3"
       },
       {
-        "name": "faro",
+        "name": "xoke",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "jura",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -10788,6 +10780,14 @@
         "category": "apu-ch1"
       },
       {
+        "name": "paba",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
         "name": "desy",
         "depth": 14,
         "gate_func": "not_if1",
@@ -10802,6 +10802,54 @@
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "ppu-stat"
+      },
+      {
+        "name": "atax",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "kaku",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "efus",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
+      },
+      {
+        "name": "coce",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "kuro",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "joypad"
+      },
+      {
+        "name": "jaca",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
       },
       {
         "name": "hyre",
@@ -10820,68 +10868,12 @@
         "category": "apu-control"
       },
       {
-        "name": "kaku",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
         "name": "capu",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "apu-control"
-      },
-      {
-        "name": "efus",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "kuro",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "joypad"
-      },
-      {
-        "name": "atax",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "jaca",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "coce",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "nabo",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "int"
       },
       {
         "name": "dude",
@@ -10900,12 +10892,12 @@
         "category": "timer"
       },
       {
-        "name": "racy",
+        "name": "nabo",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "timer"
+        "category": "int"
       },
       {
         "name": "taku",
@@ -10917,6 +10909,14 @@
       },
       {
         "name": "rote",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "timer"
+      },
+      {
+        "name": "racy",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -10994,20 +10994,20 @@
         "category": ""
       },
       {
-        "name": "sedu",
-        "depth": 18,
-        "gate_func": "buf_if0",
-        "cell_type": "buf_if0",
-        "node_type": "combinatorial",
-        "category": "bus-data"
-      },
-      {
         "name": "xepu",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
         "category": "ppu-xcomp"
+      },
+      {
+        "name": "sedu",
+        "depth": 18,
+        "gate_func": "buf_if0",
+        "cell_type": "buf_if0",
+        "node_type": "combinatorial",
+        "category": "bus-data"
       },
       {
         "name": "ypon",
@@ -11034,92 +11034,12 @@
         "category": "ppu-dma"
       },
       {
-        "name": "kesy",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "jeke",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "moko",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
-        "name": "kyvu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "fote",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "gonu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "lyco",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "cuga",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "xuno",
+        "name": "lode",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-pal"
-      },
-      {
-        "name": "razu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "fegu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
       },
       {
         "name": "dexo",
@@ -11130,7 +11050,79 @@
         "category": "apu-ch1"
       },
       {
+        "name": "fegu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "kyvu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "xuno",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
         "name": "hufo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "moko",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "kesy",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "pygu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "wyju",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-decode"
+      },
+      {
+        "name": "gonu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "fote",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -11146,34 +11138,34 @@
         "category": "ppu-pal"
       },
       {
-        "name": "wyju",
+        "name": "cuga",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-decode"
+        "category": "ppu-bgscroll"
       },
       {
-        "name": "lode",
+        "name": "jeke",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-pal"
+        "category": "apu-ch2"
       },
       {
-        "name": "pygu",
+        "name": "razu",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-window"
+        "category": "ppu-stat"
       },
       {
-        "name": "sego",
-        "depth": 14,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "lyco",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-stat"
       },
@@ -11186,7 +11178,47 @@
         "category": "apu-ch3"
       },
       {
+        "name": "sego",
+        "depth": 14,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "havu",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
         "name": "joku",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "cuzu",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "kyro",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "azyp",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -11202,36 +11234,12 @@
         "category": "apu-control"
       },
       {
-        "name": "cuzu",
+        "name": "avud",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "kuve",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "joypad"
-      },
-      {
-        "name": "azyp",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "kyro",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
+        "category": "apu-control"
       },
       {
         "name": "fate",
@@ -11242,39 +11250,15 @@
         "category": "apu-control"
       },
       {
-        "name": "avud",
+        "name": "kuve",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-control"
+        "category": "joypad"
       },
       {
-        "name": "havu",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "nola",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "timer"
-      },
-      {
-        "name": "temu",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "clocks"
-      },
-      {
-        "name": "supe",
+        "name": "ravy",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -11290,7 +11274,15 @@
         "category": "serial"
       },
       {
-        "name": "ravy",
+        "name": "temu",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "clocks"
+      },
+      {
+        "name": "nola",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -11304,6 +11296,14 @@
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "int"
+      },
+      {
+        "name": "supe",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "timer"
       },
       {
         "name": "ryko",
@@ -11376,6 +11376,14 @@
         "category": ""
       },
       {
+        "name": "taxo",
+        "depth": 18,
+        "gate_func": "buf_if0",
+        "cell_type": "buf_if0",
+        "node_type": "combinatorial",
+        "category": "bus-data"
+      },
+      {
         "name": "xuvo",
         "depth": 18,
         "gate_func": "buf_if0",
@@ -11392,10 +11400,10 @@
         "category": "ppu-xcomp"
       },
       {
-        "name": "taxo",
-        "depth": 18,
-        "gate_func": "buf_if0",
-        "cell_type": "buf_if0",
+        "name": "rase",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "bus-data"
       },
@@ -11408,22 +11416,6 @@
         "category": "ppu-dma"
       },
       {
-        "name": "rase",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "bus-data"
-      },
-      {
-        "name": "kumo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
         "name": "godo",
         "depth": 15,
         "gate_func": "not_if0",
@@ -11432,36 +11424,12 @@
         "category": "ppu-bgscroll"
       },
       {
-        "name": "fana",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "xuby",
+        "name": "lyza",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-pal"
-      },
-      {
-        "name": "jude",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "lole",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
       },
       {
         "name": "redy",
@@ -11472,6 +11440,46 @@
         "category": "ppu-stat"
       },
       {
+        "name": "lobe",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "fana",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "jude",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "wony",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "loka",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
         "name": "wojy",
         "depth": 15,
         "gate_func": "not_if0",
@@ -11480,7 +11488,31 @@
         "category": "ppu-stat"
       },
       {
-        "name": "loka",
+        "name": "fose",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "xuby",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "kumo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "lole",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -11496,44 +11528,12 @@
         "category": "ppu-control"
       },
       {
-        "name": "lyza",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "lobe",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
         "name": "puzo",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-stat"
-      },
-      {
-        "name": "wony",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "fose",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
       },
       {
         "name": "bade",
@@ -11544,20 +11544,12 @@
         "category": "apu-ch3"
       },
       {
-        "name": "afox",
+        "name": "koge",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "gene",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
+        "category": "apu-control"
       },
       {
         "name": "jeku",
@@ -11568,6 +11560,14 @@
         "category": "joypad"
       },
       {
+        "name": "gome",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
         "name": "keta",
         "depth": 13,
         "gate_func": "not_if0",
@@ -11576,7 +11576,23 @@
         "category": "apu-ch4"
       },
       {
-        "name": "koge",
+        "name": "axem",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
+      },
+      {
+        "name": "gene",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "boca",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -11592,47 +11608,15 @@
         "category": "apu-ch1"
       },
       {
-        "name": "gome",
+        "name": "afox",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch4"
+        "category": "apu-ch1"
       },
       {
-        "name": "boca",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "axem",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "tuse",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "clocks"
-      },
-      {
-        "name": "pado",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "int"
-      },
-      {
-        "name": "sosy",
+        "name": "salu",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -11648,12 +11632,28 @@
         "category": "serial"
       },
       {
-        "name": "salu",
+        "name": "sosy",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "timer"
+      },
+      {
+        "name": "pado",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "int"
+      },
+      {
+        "name": "tuse",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "clocks"
       },
       {
         "name": "tavo",
@@ -11726,12 +11726,12 @@
         "category": ""
       },
       {
-        "name": "xuna",
+        "name": "tahy",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "ppu-xcomp"
+        "category": "bus-data"
       },
       {
         "name": "zysa",
@@ -11742,20 +11742,12 @@
         "category": "ppu-ycomp"
       },
       {
-        "name": "tahy",
+        "name": "xuna",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "bus-data"
-      },
-      {
-        "name": "reka",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "bus-data"
+        "category": "ppu-xcomp"
       },
       {
         "name": "pare",
@@ -11766,28 +11758,20 @@
         "category": "ppu-dma"
       },
       {
-        "name": "cusa",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "reka",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
+        "category": "bus-data"
       },
       {
-        "name": "gero",
+        "name": "lace",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "mega",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
+        "category": "ppu-pal"
       },
       {
         "name": "voke",
@@ -11798,7 +11782,95 @@
         "category": "ppu-control"
       },
       {
+        "name": "cedu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
         "name": "juke",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "luky",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "gero",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "pofo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "vyne",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "xaju",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "mele",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "cusa",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "kary",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "mega",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "fera",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -11814,124 +11886,12 @@
         "category": "ppu-stat"
       },
       {
-        "name": "luky",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "cedu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "lace",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "pofo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "mele",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
-        "name": "vyne",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "fera",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "kary",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "xaju",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
         "name": "bune",
         "depth": 14,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "apu-ch3"
-      },
-      {
-        "name": "amad",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "hupe",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
-        "name": "heda",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "howu",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "avek",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
       },
       {
         "name": "cavu",
@@ -11950,12 +11910,52 @@
         "category": "apu-ch4"
       },
       {
+        "name": "howu",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "heda",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "hupe",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
         "name": "koce",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "joypad"
+      },
+      {
+        "name": "amad",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
+      },
+      {
+        "name": "avek",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
       },
       {
         "name": "dame",
@@ -11974,20 +11974,20 @@
         "category": "int"
       },
       {
-        "name": "somu",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "timer"
-      },
-      {
         "name": "upug",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "clocks"
+      },
+      {
+        "name": "somu",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "timer"
       },
       {
         "name": "supo",
@@ -12068,20 +12068,20 @@
         "category": ""
       },
       {
-        "name": "tesu",
-        "depth": 18,
-        "gate_func": "buf_if0",
-        "cell_type": "buf_if0",
-        "node_type": "combinatorial",
-        "category": "bus-data"
-      },
-      {
         "name": "deve",
         "depth": 18,
         "gate_func": "buf_if0",
         "cell_type": "buf_if0",
         "node_type": "combinatorial",
         "category": "ppu-xcomp"
+      },
+      {
+        "name": "tesu",
+        "depth": 18,
+        "gate_func": "buf_if0",
+        "cell_type": "buf_if0",
+        "node_type": "combinatorial",
+        "category": "bus-data"
       },
       {
         "name": "yweg",
@@ -12108,28 +12108,20 @@
         "category": "ppu-dma"
       },
       {
-        "name": "mufe",
+        "name": "cata",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-window"
+        "category": "ppu-bgscroll"
       },
       {
-        "name": "sasy",
+        "name": "gyzo",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "vazu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
+        "category": "ppu-bgscroll"
       },
       {
         "name": "pela",
@@ -12148,60 +12140,12 @@
         "category": "ppu-stat"
       },
       {
-        "name": "xobo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "cata",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "gaky",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
-      },
-      {
         "name": "lyka",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-pal"
-      },
-      {
-        "name": "jeza",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "gode",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "gyzo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
       },
       {
         "name": "luga",
@@ -12212,6 +12156,38 @@
         "category": "ppu-pal"
       },
       {
+        "name": "mufe",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "gode",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "xobo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "sasy",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
         "name": "vato",
         "depth": 15,
         "gate_func": "not_if0",
@@ -12220,12 +12196,44 @@
         "category": "ppu-control"
       },
       {
+        "name": "gaky",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "jeza",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "vazu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
         "name": "bava",
         "depth": 14,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "apu-ch3"
+      },
+      {
+        "name": "hewa",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
       },
       {
         "name": "godu",
@@ -12244,6 +12252,22 @@
         "category": "apu-ch3"
       },
       {
+        "name": "akux",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "cudy",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "joypad"
+      },
+      {
         "name": "cudu",
         "depth": 13,
         "gate_func": "not_if0",
@@ -12260,12 +12284,12 @@
         "category": "apu-ch2"
       },
       {
-        "name": "cudy",
+        "name": "gype",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "joypad"
+        "category": "apu-ch4"
       },
       {
         "name": "arux",
@@ -12276,30 +12300,6 @@
         "category": "apu-control"
       },
       {
-        "name": "hewa",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "gype",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "akux",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
         "name": "evok",
         "depth": 12,
         "gate_func": "not_if1",
@@ -12308,7 +12308,7 @@
         "category": "serial"
       },
       {
-        "name": "sotu",
+        "name": "suro",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -12324,7 +12324,7 @@
         "category": "clocks"
       },
       {
-        "name": "suro",
+        "name": "sotu",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
@@ -12402,14 +12402,6 @@
         "category": ""
       },
       {
-        "name": "zeha",
-        "depth": 18,
-        "gate_func": "buf_if0",
-        "cell_type": "buf_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-xcomp"
-      },
-      {
         "name": "tazu",
         "depth": 18,
         "gate_func": "buf_if0",
@@ -12426,12 +12418,12 @@
         "category": "ppu-ycomp"
       },
       {
-        "name": "resu",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "zeha",
+        "depth": 18,
+        "gate_func": "buf_if0",
+        "cell_type": "buf_if0",
         "node_type": "combinatorial",
-        "category": "ppu-dma"
+        "category": "ppu-xcomp"
       },
       {
         "name": "ryke",
@@ -12442,68 +12434,20 @@
         "category": "bus-data"
       },
       {
-        "name": "gadu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "resu",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "apu-ch2"
+        "category": "ppu-dma"
       },
       {
-        "name": "doxe",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "vafe",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "xaxa",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "polo",
+        "name": "muly",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-window"
-      },
-      {
-        "name": "lody",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "kora",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "gune",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
       },
       {
         "name": "vaha",
@@ -12514,7 +12458,23 @@
         "category": "ppu-control"
       },
       {
-        "name": "leba",
+        "name": "polo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
+      },
+      {
+        "name": "kora",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "lody",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -12530,12 +12490,60 @@
         "category": "apu-ch1"
       },
       {
+        "name": "doxe",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "xaxa",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "gadu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "vafe",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "gune",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
         "name": "wavo",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-stat"
+      },
+      {
+        "name": "leba",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
       },
       {
         "name": "pote",
@@ -12546,44 +12554,12 @@
         "category": "ppu-stat"
       },
       {
-        "name": "muly",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
         "name": "desa",
         "depth": 14,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "apu-ch3"
-      },
-      {
-        "name": "cury",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "gaka",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "horo",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
       },
       {
         "name": "cecy",
@@ -12594,31 +12570,7 @@
         "category": "apu-ch2"
       },
       {
-        "name": "bocy",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "bowo",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "huco",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
-      },
-      {
-        "name": "bytu",
+        "name": "awos",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -12634,12 +12586,12 @@
         "category": "apu-ch4"
       },
       {
-        "name": "haca",
+        "name": "cury",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch3"
+        "category": "apu-ch4"
       },
       {
         "name": "heve",
@@ -12650,22 +12602,6 @@
         "category": "apu-ch1"
       },
       {
-        "name": "awos",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "cada",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
         "name": "gojy",
         "depth": 13,
         "gate_func": "not_if0",
@@ -12674,12 +12610,68 @@
         "category": "apu-ch2"
       },
       {
-        "name": "sawa",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "haca",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "clocks"
+        "category": "apu-ch3"
+      },
+      {
+        "name": "bytu",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "horo",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "bowo",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
+      },
+      {
+        "name": "gaka",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "huco",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch3"
+      },
+      {
+        "name": "bocy",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
+      },
+      {
+        "name": "cada",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-control"
       },
       {
         "name": "rowu",
@@ -12696,6 +12688,14 @@
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "timer"
+      },
+      {
+        "name": "sawa",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "clocks"
       },
       {
         "name": "efab",
@@ -12800,14 +12800,6 @@
         "category": "ppu-xcomp"
       },
       {
-        "name": "nuvy",
-        "depth": 16,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
-        "node_type": "combinatorial",
-        "category": "ppu-dma"
-      },
-      {
         "name": "raru",
         "depth": 16,
         "gate_func": "not_if1",
@@ -12816,28 +12808,12 @@
         "category": "bus-data"
       },
       {
-        "name": "foze",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
+        "name": "nuvy",
+        "depth": 16,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "xawo",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
-      },
-      {
-        "name": "lelu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-pal"
+        "category": "ppu-dma"
       },
       {
         "name": "mara",
@@ -12848,20 +12824,12 @@
         "category": "ppu-window"
       },
       {
-        "name": "weze",
+        "name": "kamy",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "xebu",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-control"
+        "category": "apu-ch3"
       },
       {
         "name": "casy",
@@ -12872,36 +12840,20 @@
         "category": "ppu-bgscroll"
       },
       {
-        "name": "gazo",
+        "name": "foze",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch2"
+        "category": "apu-ch1"
       },
       {
-        "name": "pufy",
+        "name": "xebu",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-stat"
-      },
-      {
-        "name": "gyza",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
-        "name": "kamy",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch3"
+        "category": "ppu-control"
       },
       {
         "name": "lary",
@@ -12920,36 +12872,60 @@
         "category": "ppu-window"
       },
       {
+        "name": "xawo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
+        "name": "weze",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "pufy",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-stat"
+      },
+      {
+        "name": "gyza",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
+      },
+      {
+        "name": "gazo",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "lelu",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-pal"
+      },
+      {
         "name": "bezu",
         "depth": 14,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "apu-ch3"
-      },
-      {
-        "name": "cere",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "hope",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-control"
-      },
-      {
-        "name": "ceka",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch2"
       },
       {
         "name": "cuda",
@@ -12960,12 +12936,12 @@
         "category": "apu-ch1"
       },
       {
-        "name": "hyry",
+        "name": "cere",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch2"
+        "category": "apu-control"
       },
       {
         "name": "geko",
@@ -12976,28 +12952,12 @@
         "category": "apu-ch3"
       },
       {
-        "name": "jyse",
+        "name": "hope",
         "depth": 13,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "apu-ch1"
-      },
-      {
-        "name": "hacu",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
-      },
-      {
-        "name": "hapy",
-        "depth": 13,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "apu-ch4"
+        "category": "apu-control"
       },
       {
         "name": "atum",
@@ -13008,20 +12968,44 @@
         "category": "apu-control"
       },
       {
-        "name": "puso",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "hacu",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "timer"
+        "category": "apu-ch4"
       },
       {
-        "name": "sapu",
-        "depth": 12,
-        "gate_func": "not_if1",
-        "cell_type": "not_if1",
+        "name": "hyry",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "timer"
+        "category": "apu-ch2"
+      },
+      {
+        "name": "hapy",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch4"
+      },
+      {
+        "name": "ceka",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch2"
+      },
+      {
+        "name": "jyse",
+        "depth": 13,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "apu-ch1"
       },
       {
         "name": "etak",
@@ -13032,12 +13016,12 @@
         "category": "serial"
       },
       {
-        "name": "eluv",
+        "name": "sapu",
         "depth": 12,
         "gate_func": "not_if1",
         "cell_type": "not_if1",
         "node_type": "combinatorial",
-        "category": "serial"
+        "category": "timer"
       },
       {
         "name": "tatu",
@@ -13046,6 +13030,22 @@
         "cell_type": "not_if1",
         "node_type": "combinatorial",
         "category": "clocks"
+      },
+      {
+        "name": "puso",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "timer"
+      },
+      {
+        "name": "eluv",
+        "depth": 12,
+        "gate_func": "not_if1",
+        "cell_type": "not_if1",
+        "node_type": "combinatorial",
+        "category": "serial"
       },
       {
         "name": "taju",
@@ -13414,20 +13414,20 @@
         "category": "ppu-objreg"
       },
       {
-        "name": "wuxe",
-        "depth": 15,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-objreg"
-      },
-      {
         "name": "cega",
         "depth": 15,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-ycomp"
+      },
+      {
+        "name": "wuxe",
+        "depth": 15,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-objreg"
       },
       {
         "name": "baco",
@@ -13500,20 +13500,20 @@
         "category": "ppu-objreg"
       },
       {
-        "name": "wenu",
-        "depth": 19,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-ycomp"
-      },
-      {
         "name": "bydo",
         "depth": 19,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-objreg"
+      },
+      {
+        "name": "wenu",
+        "depth": 19,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-ycomp"
       },
       {
         "name": "zypo",
@@ -13586,20 +13586,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "wyga",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-ycomp"
-      },
-      {
         "name": "erew",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-dma"
+      },
+      {
+        "name": "wyga",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-ycomp"
       },
       {
         "name": "rusa",
@@ -14982,12 +14982,12 @@
         "category": "ppu-vram"
       },
       {
-        "name": "fuhe",
+        "name": "aras",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-dma"
+        "category": "ppu-ycomp"
       },
       {
         "name": "wawe",
@@ -14998,12 +14998,12 @@
         "category": "ppu-window"
       },
       {
-        "name": "aras",
+        "name": "fuhe",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
-        "category": "ppu-ycomp"
+        "category": "ppu-dma"
       }
     ]
   },
@@ -33142,20 +33142,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "ecal",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-dma"
-      },
-      {
         "name": "xonu",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-window"
+      },
+      {
+        "name": "ecal",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-dma"
       },
       {
         "name": "abem",
@@ -40114,20 +40114,20 @@
     "min_depth": 5,
     "inputs": [
       {
-        "name": "coxo",
-        "depth": 9,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-bgscroll"
-      },
-      {
         "name": "vogu",
         "depth": 9,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-window"
+      },
+      {
+        "name": "coxo",
+        "depth": 9,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-bgscroll"
       },
       {
         "name": "rumo",
@@ -40138,20 +40138,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "dyso",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-ycomp"
-      },
-      {
         "name": "exyf",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-dma"
+      },
+      {
+        "name": "dyso",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-ycomp"
       },
       {
         "name": "vury",
@@ -40176,20 +40176,20 @@
     "min_depth": 5,
     "inputs": [
       {
-        "name": "veza",
-        "depth": 9,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-window"
-      },
-      {
         "name": "cove",
         "depth": 9,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-bgscroll"
+      },
+      {
+        "name": "veza",
+        "depth": 9,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-window"
       },
       {
         "name": "ryna",
@@ -40200,20 +40200,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "fusy",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-dma"
-      },
-      {
         "name": "xehe",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-ycomp"
+      },
+      {
+        "name": "fusy",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-dma"
       },
       {
         "name": "tobo",
@@ -40262,20 +40262,20 @@
         "category": "ppu-vram"
       },
       {
-        "name": "gegu",
-        "depth": 6,
-        "gate_func": "not_if0",
-        "cell_type": "not_if0",
-        "node_type": "combinatorial",
-        "category": "ppu-ycomp"
-      },
-      {
         "name": "eraf",
         "depth": 6,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
         "node_type": "combinatorial",
         "category": "ppu-dma"
+      },
+      {
+        "name": "gegu",
+        "depth": 6,
+        "gate_func": "not_if0",
+        "cell_type": "not_if0",
+        "node_type": "combinatorial",
+        "category": "ppu-ycomp"
       },
       {
         "name": "suvo",
@@ -40438,7 +40438,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "gybu",
+        "name": "guse",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40446,7 +40446,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "guse",
+        "name": "gybu",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40484,7 +40484,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "gema",
+        "name": "gyka",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40492,7 +40492,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "gyka",
+        "name": "gema",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40576,7 +40576,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "faku",
+        "name": "faco",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40584,7 +40584,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "faco",
+        "name": "faku",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40668,7 +40668,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "goby",
+        "name": "fyke",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",
@@ -40676,7 +40676,7 @@
         "category": "ppu-oam"
       },
       {
-        "name": "fyke",
+        "name": "goby",
         "depth": 5,
         "gate_func": "not_if0",
         "cell_type": "not_if0",

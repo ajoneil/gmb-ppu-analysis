@@ -31,30 +31,29 @@ Data source: [msinger/dmg-schematics](https://github.com/msinger/dmg-schematics)
 
 ### 1. Deepest Operational Path: 39 Gate-equivalents
 
-The longest operational combinatorial chain runs from `muwy`
-(STAT/LY) to `dezy`
-(Sprite Control), passing through
+The longest operational combinatorial chain runs from `muwy` (LY bit 0)
+to `dezy` (Sprite Control), passing through
 8 adder cells and 14 total combinatorial gates.
 Worst-case delay: 195-585 ns
 (491% of half T-cycle).
 
 ```
-[dffr] muwy (ppu-stat)
-  [not_x1] ebos (ppu-ycomp)
-    [full_add] eruc (ppu-ycomp)
-      [full_add] enef (ppu-ycomp)
-        [full_add] feco (ppu-ycomp)
-          [full_add] gyky (ppu-ycomp)
-            [full_add] gopu (ppu-ycomp)
-              [full_add] fuwa (ppu-ycomp)
-                [full_add] goju (ppu-ycomp)
-                  [full_add] wuhu (ppu-ycomp)
-                    [not_x1] gewy (ppu-ycomp)
-                      [nand6] wota (ppu-ycomp)
-                        [not_x1] gese (ppu-ycomp)
-                          [and3] care (ppu-objctl)
-                            [not_x2] dyty (ppu-objctl)
-                              [dffr] dezy (ppu-objctl)
+[dffr] muwy  — LY bit 0
+  [not_x1] ebos  — Sprite Y Compare
+    [full_add] eruc  — Sprite Y Compare
+      [full_add] enef  — Sprite Y Compare
+        [full_add] feco  — Sprite Y Compare
+          [full_add] gyky  — Sprite Y Compare
+            [full_add] gopu  — Sprite Y Compare
+              [full_add] fuwa  — Sprite Y Compare
+                [full_add] goju  — Sprite Y Compare
+                  [full_add] wuhu  — Sprite Y Compare
+                    [not_x1] gewy  — Sprite Y Compare
+                      [nand6] wota  — Sprite Y Compare
+                        [not_x1] gese  — Sprite Y Compare
+                          [and3] care  — Sprite Control
+                            [not_x2] dyty  — Sprite Control
+                              [dffr] dezy  — Sprite Control
 ```
 
 The 8-stage ripple carry adder chain dominates this path.
@@ -140,28 +139,28 @@ window for status bars, dialogue boxes, or HUD overlays.
 These signals drive many downstream gates. High fan-out combined with deep
 combinatorial depth means the signal arrives late at many destinations simultaneously.
 
-| Signal | Fan-out | Depth | Cell Type | Category |
-|--------|---------|-------|-----------|----------|
-| `keba` | 100 | 8 ge | not_x6 | apu-control |
-| `sacu` | 53 | 19 ge | or2 | ppu-cycles |
-| `alur` | 48 | 3 ge | not_x2 | clocks |
-| `bus:d0` | 46 | 0 ge |  | bus |
-| `bus:d1` | 44 | 0 ge |  | bus |
-| `bus:d2` | 43 | 0 ge |  | bus |
-| `cpu` | 42 | 6 ge | sm83 |  |
-| `bus:d6` | 41 | 0 ge |  | bus |
-| `bus:d7` | 41 | 0 ge |  | bus |
-| `bus:d4` | 40 | 0 ge |  | bus |
-| `bus:d3` | 39 | 0 ge |  | bus |
-| `bus:d5` | 39 | 0 ge |  | bus |
-| `bogy` | 37 | 13 ge | not_x6 | apu-control |
-| `unor` | 34 | 3 ge | and2 | test |
-| `tova` | 32 | 4 ge | not_x1 | bus-adr |
-| `aguz` | 30 | 10 ge | not_x6 | apu-control |
-| `adad` | 29 | 1 ge | not_x4 | apu-ch1 |
-| `cunu` | 24 | 5 ge | not_x2 | ppu-control |
-| `xymu` | 23 | 0 ge | nor_latch | ppu-stat |
-| `bus:a1` | 23 | 0 ge |  | bus |
+| Signal | Description | Fan-out | Depth | Cell Type | Category |
+|--------|-------------|---------|-------|-----------|----------|
+| `keba` | APU Master Enable | 100 | 8 ge | not_x6 | APU Control |
+| `sacu` | Pixel Shift Clock (CLKPIPE) | 53 | 19 ge | or2 | BG/Win Cycles |
+| `alur` | System Clock Inv | 48 | 3 ge | not_x2 | Clock Distribution |
+| `bus:d0` |  | 46 | 0 ge |  | Bus |
+| `bus:d1` |  | 44 | 0 ge |  | Bus |
+| `bus:d2` |  | 43 | 0 ge |  | Bus |
+| `cpu` |  | 42 | 6 ge | sm83 |  |
+| `bus:d6` |  | 41 | 0 ge |  | Bus |
+| `bus:d7` |  | 41 | 0 ge |  | Bus |
+| `bus:d4` |  | 40 | 0 ge |  | Bus |
+| `bus:d3` |  | 39 | 0 ge |  | Bus |
+| `bus:d5` |  | 39 | 0 ge |  | Bus |
+| `bogy` | APU Clock Gate | 37 | 13 ge | not_x6 | APU Control |
+| `unor` | Test Mode Gate | 34 | 3 ge | and2 | Test Mode |
+| `tova` | Ext Bus Enable | 32 | 4 ge | not_x1 | Address Bus |
+| `aguz` | APU Length Clock | 30 | 10 ge | not_x6 | APU Control |
+| `adad` | CH1 Freq Clock | 29 | 1 ge | not_x4 | APU CH1 (Square+Sweep) |
+| `cunu` | System Reset Inv | 24 | 5 ge | not_x2 | PPU Control |
+| `xymu` | Rendering Active (Mode 3) | 23 | 0 ge | nor_latch | STAT/LY |
+| `bus:a1` |  | 23 | 0 ge |  | Bus |
 
 ## APU Timing
 

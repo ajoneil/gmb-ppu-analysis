@@ -5,38 +5,38 @@
 
 ### Path 1: depth 39 (195-585 ns, 491% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [not_x1] ebos (ppu-ycomp)
-    [full_add] eruc (ppu-ycomp)
-      [full_add] enef (ppu-ycomp)
-        [full_add] feco (ppu-ycomp)
-          [full_add] gyky (ppu-ycomp)
-            [full_add] gopu (ppu-ycomp)
-              [full_add] fuwa (ppu-ycomp)
-                [full_add] goju (ppu-ycomp)
-                  [full_add] wuhu (ppu-ycomp)
-                    [not_x1] gewy (ppu-ycomp)
-                      [nand6] wota (ppu-ycomp)
-                        [not_x1] gese (ppu-ycomp)
-                          [and3] care (ppu-objctl)
-                            [not_x2] dyty (ppu-objctl) x2 fan-out=11
-                              [REGISTERED:dffr] dezy (ppu-objctl)
+[REGISTERED:dffr] muwy  — LY bit 0
+  [not_x1] ebos  — Sprite Y Compare
+    [full_add] eruc  — Sprite Y Compare
+      [full_add] enef  — Sprite Y Compare
+        [full_add] feco  — Sprite Y Compare
+          [full_add] gyky  — Sprite Y Compare
+            [full_add] gopu  — Sprite Y Compare
+              [full_add] fuwa  — Sprite Y Compare
+                [full_add] goju  — Sprite Y Compare
+                  [full_add] wuhu  — Sprite Y Compare
+                    [not_x1] gewy  — Sprite Y Compare
+                      [nand6] wota  — Sprite Y Compare
+                        [not_x1] gese  — Sprite Y Compare
+                          [and3] care  — Sprite Control
+                            [not_x2] dyty  — Sprite Control x2 fan-out=11
+                              [REGISTERED:dffr] dezy  — Sprite Control
 ```
 
 ### Path 2: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[REGISTERED:dffr] lovu (ppu-stat)
-  [and2] xyvo (ppu-lcd)
-    [not_x1] ales (ppu-objctl)
-      [and2] abov (ppu-objctl)
-        [REGISTERED:dffr] catu (ppu-objctl)
+[REGISTERED:dffr] lovu  — LY bit 4
+  [and2] xyvo  — LCD
+    [not_x1] ales  — Sprite Control
+      [and2] abov  — Sprite Control
+        [REGISTERED:dffr] catu  — Sprite Control
 ```
 
 ### Path 3: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] fony (ppu-objctl)
-  [and4] feto (ppu-objctl)
-    [REGISTERED:dffr] byba (ppu-objctl)
+[REGISTERED:dffr] fony  — Sprite Control
+  [and4] feto  — Sprite Control
+    [REGISTERED:dffr] byba  — Sprite Control
 ```
 
 
@@ -44,244 +44,244 @@
 
 ### Path 1: depth 32 (160-480 ns, 403% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [and2] byza (apu-ch3)
-                        [or3] beta (apu-ch3)
-                          [not_x1] azor (apu-ch3)
-                            [not_x6] buku (apu-ch3) x6
-                              [mux] atur (apu-ch3)
-                                [not_x3] aler (apu-ch3) x3
-                                  [not_x1] yrar (apu-ch3)
-                                    [and2] ymaw (apu-ch3)
-                                      [or2] ysod (apu-ch3)
-                                        [and2] ylac (apu-ch3)
-                                          [or2] ymul (apu-ch3)
-                                            [BOUNDARY:wave_ram] wave_ram () fan-out=16
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [and2] byza  — CH3
+                        [or3] beta  — CH3
+                          [not_x1] azor  — CH3
+                            [not_x6] buku  — CH3 x6
+                              [mux] atur  — CH3
+                                [not_x3] aler  — CH3 x3
+                                  [not_x1] yrar  — CH3
+                                    [and2] ymaw  — CH3
+                                      [or2] ysod  — CH3
+                                        [and2] ylac  — CH3
+                                          [or2] ymul  — CH3
+                                            [BOUNDARY:wave_ram] wave_ram fan-out=16
 ```
 
 ### Path 2: depth 26 (130-390 ns, 327% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [nand2] wycy (ppu-oam)
-                                        [not_x2] wory (ppu-oam) x2
-                                          [not_x2] wame (ppu-oam) x2
-                                            [BOUNDARY:oam] oam_a ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [nand2] wycy  — OAM
+                                        [not_x2] wory  — OAM x2
+                                          [not_x2] wame  — OAM x2
+                                            [BOUNDARY:oam] oam_a
 ```
 
 ### Path 3: depth 26 (130-390 ns, 327% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [nand2] wycy (ppu-oam)
-                                        [not_x2] wory (ppu-oam) x2
-                                          [not_x2] wame (ppu-oam) x2
-                                            [BOUNDARY:oam] oam_b ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [nand2] wycy  — OAM
+                                        [not_x2] wory  — OAM x2
+                                          [not_x2] wame  — OAM x2
+                                            [BOUNDARY:oam] oam_b
 ```
 
 ### Path 4: depth 25 (125-375 ns, 315% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [nand2] wycy (ppu-oam)
-                                        [not_x2] wory (ppu-oam) x2
-                                          [BOUNDARY:oam] oam_a ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [nand2] wycy  — OAM
+                                        [not_x2] wory  — OAM x2
+                                          [BOUNDARY:oam] oam_a
 ```
 
 ### Path 5: depth 25 (125-375 ns, 315% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [nand2] wycy (ppu-oam)
-                                        [not_x2] wory (ppu-oam) x2
-                                          [BOUNDARY:oam] oam_b ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [nand2] wycy  — OAM
+                                        [not_x2] wory  — OAM x2
+                                          [BOUNDARY:oam] oam_b
 ```
 
 ### Path 6: depth 24 (120-360 ns, 302% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [and2] byza (apu-ch3)
-                        [or3] beta (apu-ch3)
-                          [not_x1] azor (apu-ch3)
-                            [not_x6] buku (apu-ch3) x6
-                              [mux] atur (apu-ch3)
-                                [not_x3] aler (apu-ch3) x3
-                                  [not_x1] yrar (apu-ch3)
-                                    [BOUNDARY:wave_ram] wave_ram () fan-out=16
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [and2] byza  — CH3
+                        [or3] beta  — CH3
+                          [not_x1] azor  — CH3
+                            [not_x6] buku  — CH3 x6
+                              [mux] atur  — CH3
+                                [not_x3] aler  — CH3 x3
+                                  [not_x1] yrar  — CH3
+                                    [BOUNDARY:wave_ram] wave_ram fan-out=16
 ```
 
 ### Path 7: depth 23 (115-345 ns, 289% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [BOUNDARY:oam] oam_a ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [BOUNDARY:oam] oam_a
 ```
 
 ### Path 8: depth 23 (115-345 ns, 289% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [muxi] ujyv (bus-data)
-            [not_x3] tedo (bus-data) x3 fan-out=14
-              [not_x2] ajas (ppu-control) x2
-                [not_x4] asot (ppu-control) x4 fan-out=14
-                  [nand3] bota (ppu-oam)
-                    [and3] asyt (ppu-oam)
-                      [not_x1] bode (ppu-oam) fan-out=17
-                        [not_x1] yval (ppu-oam)
-                          [not_x1] yryv (ppu-oam)
-                            [not_x2] zodo (ppu-oam) x2
-                              [not_x1] wusu (ppu-oam)
-                                [or3] wazo (ppu-oam)
-                                  [nand2] wujy (ppu-oam)
-                                    [not_x3] wahe (ppu-oam) x3
-                                      [BOUNDARY:oam] oam_b ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [muxi] ujyv
+            [not_x3] tedo x3 fan-out=14
+              [not_x2] ajas  — PPU Control x2
+                [not_x4] asot  — PPU Control x4 fan-out=14
+                  [nand3] bota  — OAM
+                    [and3] asyt  — OAM
+                      [not_x1] bode  — OAM fan-out=17
+                        [not_x1] yval  — OAM
+                          [not_x1] yryv  — OAM
+                            [not_x2] zodo  — OAM x2
+                              [not_x1] wusu  — OAM
+                                [or3] wazo  — OAM
+                                  [nand2] wujy  — OAM
+                                    [not_x3] wahe  — OAM x3
+                                      [BOUNDARY:oam] oam_b
 ```
 
 ### Path 9: depth 17 (85-255 ns, 214% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [and2] byza (apu-ch3)
-                        [not_x3] amyt (apu-ch3) x3
-                          [not_x1] ydez (apu-ch3)
-                            [BOUNDARY:wave_ram] wave_ram () fan-out=16
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [and2] byza  — CH3
+                        [not_x3] amyt  — CH3 x3
+                          [not_x1] ydez  — CH3
+                            [BOUNDARY:wave_ram] wave_ram fan-out=16
 ```
 
 ### Path 10: depth 17 (85-255 ns, 214% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand2] atef (hram)
-                    [not_x2] apuh (hram) x2
-                      [or2] wype (hram)
-                        [nand2] wopo (hram)
-                          [not_x2] wuly (hram) x2
-                            [BOUNDARY:high_ram] high_ram ()
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand2] atef
+                    [not_x2] apuh x2
+                      [or2] wype
+                        [nand2] wopo
+                          [not_x2] wuly x2
+                            [BOUNDARY:high_ram] high_ram
 ```
 
 
@@ -289,224 +289,224 @@
 
 ### Path 1: depth 32 (160-480 ns, 403% half T-cycle)
 ```
-[REGISTERED:dffr] muwy (ppu-stat)
-  [half_add] fafo (ppu-bgscroll)
-    [full_add] emux (ppu-bgscroll)
-      [full_add] ecab (ppu-bgscroll)
-        [full_add] etam (ppu-bgscroll)
-          [full_add] doto (ppu-bgscroll)
-            [full_add] daba (ppu-bgscroll)
-              [full_add] efyk (ppu-bgscroll)
-                [full_add] ejok (ppu-bgscroll)
-                  [not_if0] dafe (ppu-bgscroll)
-                    [BUS:] bus:~ma9 (bus)
+[REGISTERED:dffr] muwy  — LY bit 0
+  [half_add] fafo  — BG Scroll
+    [full_add] emux  — BG Scroll
+      [full_add] ecab  — BG Scroll
+        [full_add] etam  — BG Scroll
+          [full_add] doto  — BG Scroll
+            [full_add] daba  — BG Scroll
+              [full_add] efyk  — BG Scroll
+                [full_add] ejok  — BG Scroll
+                  [not_if0] dafe  — BG Scroll
+                    [BUS:] bus:~ma9
 ```
 
 ### Path 2: depth 32 (160-480 ns, 403% half T-cycle)
 ```
-[REGISTERED:dffr] xeho (ppu-stat)
-  [half_add] atad (ppu-bgscroll)
-    [full_add] behu (ppu-bgscroll)
-      [full_add] apyh (ppu-bgscroll)
-        [full_add] babe (ppu-bgscroll)
-          [full_add] abod (ppu-bgscroll)
-            [full_add] bewy (ppu-bgscroll)
-              [full_add] byca (ppu-bgscroll)
-                [full_add] acul (ppu-bgscroll)
-                  [not_if0] ajan (ppu-bgscroll)
-                    [BUS:] bus:~ma4 (bus)
+[REGISTERED:dffr] xeho  — Pixel X bit 0
+  [half_add] atad  — BG Scroll
+    [full_add] behu  — BG Scroll
+      [full_add] apyh  — BG Scroll
+        [full_add] babe  — BG Scroll
+          [full_add] abod  — BG Scroll
+            [full_add] bewy  — BG Scroll
+              [full_add] byca  — BG Scroll
+                [full_add] acul  — BG Scroll
+                  [not_if0] ajan  — BG Scroll
+                    [BUS:] bus:~ma4
 ```
 
 ### Path 3: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] zaro (ppu-objreg)
-                                      [BUS:] bus:oam_render_a2 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] zaro  — Sprite Store
+                                      [BUS:] bus:oam_render_a2 fan-out=11
 ```
 
 ### Path 4: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] zojy (ppu-objreg)
-                                      [BUS:] bus:oam_render_a3 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] zojy  — Sprite Store
+                                      [BUS:] bus:oam_render_a3 fan-out=11
 ```
 
 ### Path 5: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] ynev (ppu-objreg)
-                                      [BUS:] bus:oam_render_a4 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] ynev  — Sprite Store
+                                      [BUS:] bus:oam_render_a4 fan-out=11
 ```
 
 ### Path 6: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] xyra (ppu-objreg)
-                                      [BUS:] bus:oam_render_a5 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] xyra  — Sprite Store
+                                      [BUS:] bus:oam_render_a5 fan-out=11
 ```
 
 ### Path 7: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] yrad (ppu-objreg)
-                                      [BUS:] bus:oam_render_a6 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] yrad  — Sprite Store
+                                      [BUS:] bus:oam_render_a6 fan-out=11
 ```
 
 ### Path 8: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] yhal (ppu-objreg)
-                                      [BUS:] bus:oam_render_a7 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] yhal  — Sprite Store
+                                      [BUS:] bus:oam_render_a7 fan-out=11
 ```
 
 ### Path 9: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] byme (ppu-objreg)
-                                      [BUS:] bus:sprite_y_store0 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] byme  — Sprite Store
+                                      [BUS:] bus:sprite_y_store0 fan-out=11
 ```
 
 ### Path 10: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [not_x2] fado (ppu-xprio) x2 fan-out=10
-                                    [not_if0] gate (ppu-objreg)
-                                      [BUS:] bus:sprite_y_store1 (bus) fan-out=11
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [not_x2] fado  — Sprite X Priority x2 fan-out=10
+                                    [not_if0] gate  — Sprite Store
+                                      [BUS:] bus:sprite_y_store1 fan-out=11
 ```
 
 
@@ -514,240 +514,240 @@
 
 ### Path 1: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] suke (ppu-vram)
-                                    [not_x2] ryze (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md7 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] suke  — VRAM
+                                    [not_x2] ryze  — VRAM x2
+                                      [PAD:pad_bidir_pu] md7  — VRAM
 ```
 
 ### Path 2: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] samo (ppu-vram)
-                                    [not_x2] reku (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md6 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] samo  — VRAM
+                                    [not_x2] reku  — VRAM x2
+                                      [PAD:pad_bidir_pu] md6  — VRAM
 ```
 
 ### Path 3: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] sazu (ppu-vram)
-                                    [not_x2] revu (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md5 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] sazu  — VRAM
+                                    [not_x2] revu  — VRAM x2
+                                      [PAD:pad_bidir_pu] md5  — VRAM
 ```
 
 ### Path 4: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] sumo (ppu-vram)
-                                    [not_x2] ryro (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md4 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] sumo  — VRAM
+                                    [not_x2] ryro  — VRAM x2
+                                      [PAD:pad_bidir_pu] md4  — VRAM
 ```
 
 ### Path 5: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] suna (ppu-vram)
-                                    [not_x2] rada (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md3 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] suna  — VRAM
+                                    [not_x2] rada  — VRAM x2
+                                      [PAD:pad_bidir_pu] md3  — VRAM
 ```
 
 ### Path 6: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] sefu (ppu-vram)
-                                    [not_x2] razo (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md2 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] sefu  — VRAM
+                                    [not_x2] razo  — VRAM x2
+                                      [PAD:pad_bidir_pu] md2  — VRAM
 ```
 
 ### Path 7: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] sogo (ppu-vram)
-                                    [not_x2] ryky (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md1 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] sogo  — VRAM
+                                    [not_x2] ryky  — VRAM x2
+                                      [PAD:pad_bidir_pu] md1  — VRAM
 ```
 
 ### Path 8: depth 29 (145-435 ns, 365% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [not_x1] rove (ppu-vram)
-                                  [and2] sefa (ppu-vram)
-                                    [not_x2] rege (ppu-vram) x2
-                                      [PAD:pad_bidir_pu] md0 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [not_x1] rove  — VRAM
+                                  [and2] sefa  — VRAM
+                                    [not_x2] rege  — VRAM x2
+                                      [PAD:pad_bidir_pu] md0  — VRAM
 ```
 
 ### Path 9: depth 28 (140-420 ns, 352% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [or2] sawu (ppu-vram)
-                                  [not_x2] rady (ppu-vram) x2
-                                    [PAD:pad_bidir_pu] md7 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [or2] sawu  — VRAM
+                                  [not_x2] rady  — VRAM x2
+                                    [PAD:pad_bidir_pu] md7  — VRAM
 ```
 
 ### Path 10: depth 28 (140-420 ns, 352% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [nor2] tefa (ppu-vram)
-              [and2] sose (ppu-vram)
-                [and2] tuca (ppu-vram)
-                  [mux] tole (ppu-vram)
-                    [and2] sere (ppu-vram)
-                      [and2] sazo (ppu-vram)
-                        [not_x1] ryje (ppu-vram)
-                          [not_x1] revo (ppu-vram)
-                            [and2] rocy (ppu-vram)
-                              [not_x3] rahu (ppu-vram) x3 fan-out=17
-                                [or2] sedo (ppu-vram)
-                                  [not_x2] ryty (ppu-vram) x2
-                                    [PAD:pad_bidir_pu] md6 (ppu-vram)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [nor2] tefa  — VRAM
+              [and2] sose  — VRAM
+                [and2] tuca  — VRAM
+                  [mux] tole  — VRAM
+                    [and2] sere  — VRAM
+                      [and2] sazo  — VRAM
+                        [not_x1] ryje  — VRAM
+                          [not_x1] revo  — VRAM
+                            [and2] rocy  — VRAM
+                              [not_x3] rahu  — VRAM x3 fan-out=17
+                                [or2] sedo  — VRAM
+                                  [not_x2] ryty  — VRAM x2
+                                    [PAD:pad_bidir_pu] md6  — VRAM
 ```
 
 
@@ -755,176 +755,176 @@
 
 ### Path 1: depth 27 (135-405 ns, 340% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [or2] gyga (ppu-xprio)
-                                [nor2] guze (ppu-xprio)
-                                  [REGISTERED:dffr] fono (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [or2] gyga  — Sprite X Priority
+                                [nor2] guze  — Sprite X Priority
+                                  [REGISTERED:dffr] fono  — Sprite X Priority
 ```
 
 ### Path 2: depth 25 (125-375 ns, 315% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [or2] favo (ppu-xprio)
-                              [nor2] foxa (ppu-xprio)
-                                [REGISTERED:dffr] exuq (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [or2] favo  — Sprite X Priority
+                              [nor2] foxa  — Sprite X Priority
+                                [REGISTERED:dffr] exuq  — Sprite X Priority
 ```
 
 ### Path 3: depth 23 (115-345 ns, 289% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [or2] wyla (ppu-xprio)
-                            [nor2] gutu (ppu-xprio)
-                              [REGISTERED:dffr] wapo (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [or2] wyla  — Sprite X Priority
+                            [nor2] gutu  — Sprite X Priority
+                              [REGISTERED:dffr] wapo  — Sprite X Priority
 ```
 
 ### Path 4: depth 21 (105-315 ns, 264% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [or2] weja (ppu-xprio)
-                          [nor2] xoja (ppu-xprio)
-                            [REGISTERED:dffr] womy (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [or2] weja  — Sprite X Priority
+                          [nor2] xoja  — Sprite X Priority
+                            [REGISTERED:dffr] womy  — Sprite X Priority
 ```
 
 ### Path 5: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [or2] xyla (ppu-xprio)
-                        [nor2] gega (ppu-xprio)
-                          [REGISTERED:dffr] wafy (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [or2] xyla  — Sprite X Priority
+                        [nor2] gega  — Sprite X Priority
+                          [REGISTERED:dffr] wafy  — Sprite X Priority
 ```
 
 ### Path 6: depth 17 (85-255 ns, 214% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [or2] wuto (ppu-xprio)
-                      [nor2] gono (ppu-xprio)
-                        [REGISTERED:dffr] xudy (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [or2] wuto  — Sprite X Priority
+                      [nor2] gono  — Sprite X Priority
+                        [REGISTERED:dffr] xudy  — Sprite X Priority
 ```
 
 ### Path 7: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [or2] gede (ppu-xprio)
-                    [nor2] gyfy (ppu-xprio)
-                      [REGISTERED:dffr] gota (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [or2] gede  — Sprite X Priority
+                    [nor2] gyfy  — Sprite X Priority
+                      [REGISTERED:dffr] gota  — Sprite X Priority
 ```
 
 ### Path 8: depth 13 (65-195 ns, 164% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [or2] fuma (ppu-xprio)
-                  [nor2] emol (ppu-xprio)
-                    [REGISTERED:dffr] egav (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [or2] fuma  — Sprite X Priority
+                  [nor2] emol  — Sprite X Priority
+                    [REGISTERED:dffr] egav  — Sprite X Priority
 ```
 
 ### Path 9: depth 11 (55-165 ns, 138% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [not_x1] wefu (ppu-xprio)
-              [or2] geze (ppu-xprio)
-                [nor2] enut (ppu-xprio)
-                  [REGISTERED:dffr] cedy (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [not_x1] wefu  — Sprite X Priority
+              [or2] geze  — Sprite X Priority
+                [nor2] enut  — Sprite X Priority
+                  [REGISTERED:dffr] cedy  — Sprite X Priority
 ```
 
 ### Path 10: depth 8 (40-120 ns, 101% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] ydug (ppu-xprio)
-            [nor2] guva (ppu-xprio)
-              [REGISTERED:dffr] eboj (ppu-xprio)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] ydug  — Sprite X Priority
+            [nor2] guva  — Sprite X Priority
+              [REGISTERED:dffr] eboj  — Sprite X Priority
 ```
 
 
@@ -932,180 +932,180 @@
 
 ### Path 1: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] rafy (bus-data)
-                          [PAD:pad_bidir_pu] d6 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] rafy
+                          [PAD:pad_bidir_pu] d6
 ```
 
 ### Path 2: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] ravu (bus-data)
-                          [PAD:pad_bidir_pu] d7 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] ravu
+                          [PAD:pad_bidir_pu] d7
 ```
 
 ### Path 3: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] ryvo (bus-data)
-                          [PAD:pad_bidir_pu] d5 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] ryvo
+                          [PAD:pad_bidir_pu] d5
 ```
 
 ### Path 4: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] rory (bus-data)
-                          [PAD:pad_bidir_pu] d4 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] rory
+                          [PAD:pad_bidir_pu] d4
 ```
 
 ### Path 5: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] rera (bus-data)
-                          [PAD:pad_bidir_pu] d3 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] rera
+                          [PAD:pad_bidir_pu] d3
 ```
 
 ### Path 6: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] raby (bus-data)
-                          [PAD:pad_bidir_pu] d2 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] raby
+                          [PAD:pad_bidir_pu] d2
 ```
 
 ### Path 7: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] ruja (bus-data)
-                          [PAD:pad_bidir_pu] d1 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] ruja
+                          [PAD:pad_bidir_pu] d1
 ```
 
 ### Path 8: depth 19 (95-285 ns, 239% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [not_x1] lula (bus-data) fan-out=16
-                        [nand2] ruxa (bus-data)
-                          [PAD:pad_bidir_pu] d0 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [not_x1] lula fan-out=16
+                        [nand2] ruxa
+                          [PAD:pad_bidir_pu] d0
 ```
 
 ### Path 9: depth 18 (90-270 ns, 227% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [nor2] rogy (bus-data)
-                        [PAD:pad_bidir_pu] d6 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [nor2] rogy
+                        [PAD:pad_bidir_pu] d6
 ```
 
 ### Path 10: depth 18 (90-270 ns, 227% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [and2] texo (bus-adr)
-            [not_x1] levo (bus-data)
-              [ao21] lagu (bus-data)
-                [not_x1] lywe (bus-data)
-                  [or2] moty (bus-data)
-                    [mux] roru (bus-adr) fan-out=10
-                      [nor2] ryda (bus-data)
-                        [PAD:pad_bidir_pu] d7 (bus-data)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [and2] texo
+            [not_x1] levo
+              [ao21] lagu
+                [not_x1] lywe
+                  [or2] moty
+                    [mux] roru fan-out=10
+                      [nor2] ryda
+                        [PAD:pad_bidir_pu] d7
 ```
 
 
@@ -1113,28 +1113,28 @@
 
 ### Path 1: depth 16 (80-240 ns, 201% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x2] dyky (ppu-control) x2
-                    [not_x4] cupa (ppu-control) x4 fan-out=13
-                      [and2] lavy (ppu-dma)
-                        [nor2] lupa (ppu-dma)
-                          [REGISTERED:dffr] luvy (ppu-dma)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x2] dyky  — PPU Control x2
+                    [not_x4] cupa  — PPU Control x4 fan-out=13
+                      [and2] lavy  — DMA
+                        [nor2] lupa  — DMA
+                          [REGISTERED:dffr] luvy  — DMA
 ```
 
 ### Path 2: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] mugu (ppu-dma)
-  [nand6] navo (ppu-dma)
-    [not_x1] nolo (ppu-dma)
-      [REGISTERED:dffr] myte (ppu-dma)
+[REGISTERED:dffr] mugu  — DMA
+  [nand6] navo  — DMA
+    [not_x1] nolo  — DMA
+      [REGISTERED:dffr] myte  — DMA
 ```
 
 
@@ -1142,145 +1142,145 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] nuga (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] nuga  — Timer
 ```
 
 ### Path 2: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] peru (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] peru  — Timer
 ```
 
 ### Path 3: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] povy (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] povy  — Timer
 ```
 
 ### Path 4: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] peda (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] peda  — Timer
 ```
 
 ### Path 5: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] rate (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] rate  — Timer
 ```
 
 ### Path 6: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] rage (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] rage  — Timer
 ```
 
 ### Path 7: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] ruby (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] ruby  — Timer
 ```
 
 ### Path 8: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [nand4] tope (timer)
-                    [or2] muzu (timer)
-                      [nand3] mexu (timer)
-                        [REGISTERED:tffnl] rega (timer)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [nand4] tope  — Timer
+                    [or2] muzu  — Timer
+                      [nand3] mexu  — Timer
+                        [REGISTERED:tffnl] rega  — Timer
 ```
 
 ### Path 9: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] nydu (timer)
-  [nor2] mery (timer)
-    [REGISTERED:dffr] moba (timer)
+[REGISTERED:dffr] nydu  — Timer
+  [nor2] mery  — Timer
+    [REGISTERED:dffr] moba  — Timer
 ```
 
 
@@ -1288,149 +1288,149 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] aget (apu-ch2)
-                          [REGISTERED:tffnl] akyd (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] aget  — CH2
+                          [REGISTERED:tffnl] akyd  — CH2
 ```
 
 ### Path 2: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] aget (apu-ch2)
-                          [REGISTERED:tffnl] buva (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] aget  — CH2
+                          [REGISTERED:tffnl] buva  — CH2
 ```
 
 ### Path 3: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] bymo (apu-ch2)
-                          [REGISTERED:tffnl] came (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] bymo  — CH2
+                          [REGISTERED:tffnl] came  — CH2
 ```
 
 ### Path 4: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] bymo (apu-ch2)
-                          [REGISTERED:tffnl] conu (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] bymo  — CH2
+                          [REGISTERED:tffnl] conu  — CH2
 ```
 
 ### Path 5: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] bymo (apu-ch2)
-                          [REGISTERED:tffnl] cera (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] bymo  — CH2
+                          [REGISTERED:tffnl] cera  — CH2
 ```
 
 ### Path 6: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] agyn (apu-ch2)
-                        [not_x1] bymo (apu-ch2)
-                          [REGISTERED:tffnl] eryc (apu-ch2)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] agyn  — CH2
+                        [not_x1] bymo  — CH2
+                          [REGISTERED:tffnl] eryc  — CH2
 ```
 
 ### Path 7: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[REGISTERED:dffr_cc] cagy (apu-ch2)
-  [and2] dymu (apu-ch2)
-    [and2] egog (apu-ch2)
-      [ao2222] exes (apu-ch2)
-        [REGISTERED:dffr] dome (apu-ch2)
+[REGISTERED:dffr_cc] cagy  — CH2
+  [and2] dymu  — CH2
+    [and2] egog  — CH2
+      [ao2222] exes  — CH2
+        [REGISTERED:dffr] dome  — CH2
 ```
 
 ### Path 8: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:dffr] gyko (apu-ch2)
-  [not_x1] etuk (apu-ch2)
-    [not_x1] davu (apu-ch2)
-      [nor2] duju (apu-ch2)
-        [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] cyvo (apu-ch2)
+[REGISTERED:dffr] gyko  — CH2
+  [not_x1] etuk  — CH2
+    [not_x1] davu  — CH2
+      [nor2] duju  — CH2
+        [not_x1] cogu  — CH2
+          [REGISTERED:tffnl] cyvo  — CH2
 ```
 
 ### Path 9: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:dffr] gyko (apu-ch2)
-  [not_x1] etuk (apu-ch2)
-    [not_x1] davu (apu-ch2)
-      [nor2] duju (apu-ch2)
-        [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] done (apu-ch2)
+[REGISTERED:dffr] gyko  — CH2
+  [not_x1] etuk  — CH2
+    [not_x1] davu  — CH2
+      [nor2] duju  — CH2
+        [not_x1] cogu  — CH2
+          [REGISTERED:tffnl] done  — CH2
 ```
 
 ### Path 10: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:dffr] gyko (apu-ch2)
-  [not_x1] etuk (apu-ch2)
-    [not_x1] davu (apu-ch2)
-      [nor2] duju (apu-ch2)
-        [not_x1] cogu (apu-ch2)
-          [REGISTERED:tffnl] dynu (apu-ch2)
+[REGISTERED:dffr] gyko  — CH2
+  [not_x1] etuk  — CH2
+    [not_x1] davu  — CH2
+      [nor2] duju  — CH2
+        [not_x1] cogu  — CH2
+          [REGISTERED:tffnl] dynu  — CH2
 ```
 
 
@@ -1438,145 +1438,145 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bugy (apu-ch1)
-                          [REGISTERED:tffnl] bovy (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bugy  — CH1
+                          [REGISTERED:tffnl] bovy  — CH1
 ```
 
 ### Path 2: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bugy (apu-ch1)
-                          [REGISTERED:tffnl] bacy (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bugy  — CH1
+                          [REGISTERED:tffnl] bacy  — CH1
 ```
 
 ### Path 3: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bepe (apu-ch1)
-                          [REGISTERED:tffnl] cura (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bepe  — CH1
+                          [REGISTERED:tffnl] cura  — CH1
 ```
 
 ### Path 4: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bugy (apu-ch1)
-                          [REGISTERED:tffnl] cuno (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bugy  — CH1
+                          [REGISTERED:tffnl] cuno  — CH1
 ```
 
 ### Path 5: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bugy (apu-ch1)
-                          [REGISTERED:tffnl] cavy (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bugy  — CH1
+                          [REGISTERED:tffnl] cavy  — CH1
 ```
 
 ### Path 6: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] boro (apu-ch1)
-                        [not_x1] bepe (apu-ch1)
-                          [REGISTERED:tffnl] eram (apu-ch1)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] boro  — CH1
+                        [not_x1] bepe  — CH1
+                          [REGISTERED:tffnl] eram  — CH1
 ```
 
 ### Path 7: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[REGISTERED:dffr_cc] dape (apu-ch1)
-  [and2] ezoz (apu-ch1)
-    [and2] enek (apu-ch1)
-      [ao2222] duna (apu-ch1)
-        [REGISTERED:dffr] duwo (apu-ch1)
+[REGISTERED:dffr_cc] dape  — CH1
+  [and2] ezoz  — CH1
+    [and2] enek  — CH1
+      [ao2222] duna  — CH1
+        [REGISTERED:dffr] duwo  — CH1
 ```
 
 ### Path 8: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:dffr] comy (apu-ch1)
-  [not_x1] cyte (apu-ch1)
-    [not_x1] cope (apu-ch1)
-      [nor2] epyk (apu-ch1)
-        [not_x1] dako (apu-ch1)
-          [REGISTERED:tffnl] copu (apu-ch1)
+[REGISTERED:dffr] comy  — CH1
+  [not_x1] cyte  — CH1
+    [not_x1] cope  — CH1
+      [nor2] epyk  — CH1
+        [not_x1] dako  — CH1
+          [REGISTERED:tffnl] copu  — CH1
 ```
 
 ### Path 9: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:drlatch_ee] avaf (apu-ch1)
-  [not_x3] aryl (apu-ch1) x3 fan-out=14
-    [xor] culu (apu-ch1)
-      [REGISTERED:dffr_cc_q] deva (apu-ch1)
+[REGISTERED:drlatch_ee] avaf  — CH1
+  [not_x3] aryl  — CH1 x3 fan-out=14
+    [xor] culu  — CH1
+      [REGISTERED:dffr_cc_q] deva  — CH1
 ```
 
 ### Path 10: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:drlatch_ee] avaf (apu-ch1)
-  [not_x3] aryl (apu-ch1) x3 fan-out=14
-    [xor] cale (apu-ch1)
-      [REGISTERED:dffr_cc_q] defa (apu-ch1)
+[REGISTERED:drlatch_ee] avaf  — CH1
+  [not_x3] aryl  — CH1 x3 fan-out=14
+    [xor] cale  — CH1
+      [REGISTERED:dffr_cc_q] defa  — CH1
 ```
 
 
@@ -1584,142 +1584,142 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] dotu (apu-ch4)
-                          [REGISTERED:tffnl] cedo (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] dotu  — CH4
+                          [REGISTERED:tffnl] cedo  — CH4
 ```
 
 ### Path 2: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] dotu (apu-ch4)
-                          [REGISTERED:tffnl] dena (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] dotu  — CH4
+                          [REGISTERED:tffnl] dena  — CH4
 ```
 
 ### Path 3: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] dotu (apu-ch4)
-                          [REGISTERED:tffnl] dano (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] dotu  — CH4
+                          [REGISTERED:tffnl] dano  — CH4
 ```
 
 ### Path 4: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] epek (apu-ch4)
-                          [REGISTERED:tffnl] edop (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] epek  — CH4
+                          [REGISTERED:tffnl] edop  — CH4
 ```
 
 ### Path 5: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] dotu (apu-ch4)
-                          [REGISTERED:tffnl] favy (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] dotu  — CH4
+                          [REGISTERED:tffnl] favy  — CH4
 ```
 
 ### Path 6: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] caze (apu-ch4)
-                        [not_x1] epek (apu-ch4)
-                          [REGISTERED:tffnl] fylo (apu-ch4)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] caze  — CH4
+                        [not_x1] epek  — CH4
+                          [REGISTERED:tffnl] fylo  — CH4
 ```
 
 ### Path 7: depth 4 (20-60 ns, 50% half T-cycle)
 ```
-[REGISTERED:tffnl] feko (apu-ch4)
-  [nand5] cuty (apu-ch4)
-    [not_x1] dubo (apu-ch4)
-      [or2] evur (apu-ch4)
-        [REGISTERED:dffr] fyno (apu-ch4)
+[REGISTERED:tffnl] feko  — CH4
+  [nand5] cuty  — CH4
+    [not_x1] dubo  — CH4
+      [or2] evur  — CH4
+        [REGISTERED:dffr] fyno  — CH4
 ```
 
 ### Path 8: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] hyro (apu-ch4)
-  [xnor] hura (apu-ch4)
-    [REGISTERED:dffr] joto (apu-ch4)
+[REGISTERED:dffr] hyro  — CH4
+  [xnor] hura  — CH4
+    [REGISTERED:dffr] joto  — CH4
 ```
 
 ### Path 9: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] fosy (apu-ch4)
-  [nor2] enec (apu-ch4)
-    [not_x1] dapy (apu-ch4)
-      [REGISTERED:tffnl] cuna (apu-ch4)
+[REGISTERED:dffr] fosy  — CH4
+  [nor2] enec  — CH4
+    [not_x1] dapy  — CH4
+      [REGISTERED:tffnl] cuna  — CH4
 ```
 
 ### Path 10: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] fosy (apu-ch4)
-  [nor2] enec (apu-ch4)
-    [not_x1] dapy (apu-ch4)
-      [REGISTERED:tffnl] cofe (apu-ch4)
+[REGISTERED:dffr] fosy  — CH4
+  [nor2] enec  — CH4
+    [not_x1] dapy  — CH4
+      [REGISTERED:tffnl] cofe  — CH4
 ```
 
 
@@ -1727,165 +1727,165 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] emut (apu-ch3)
-                          [REGISTERED:tffnl] foro (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] emut  — CH3
+                          [REGISTERED:tffnl] foro  — CH3
 ```
 
 ### Path 2: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] emut (apu-ch3)
-                          [REGISTERED:tffnl] fave (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] emut  — CH3
+                          [REGISTERED:tffnl] fave  — CH3
 ```
 
 ### Path 3: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] emut (apu-ch3)
-                          [REGISTERED:tffnl] fyru (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] emut  — CH3
+                          [REGISTERED:tffnl] fyru  — CH3
 ```
 
 ### Path 4: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] gajy (apu-ch3)
-                          [REGISTERED:tffnl] fory (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] gajy  — CH3
+                          [REGISTERED:tffnl] fory  — CH3
 ```
 
 ### Path 5: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] emut (apu-ch3)
-                          [REGISTERED:tffnl] gemo (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] emut  — CH3
+                          [REGISTERED:tffnl] gemo  — CH3
 ```
 
 ### Path 6: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] gajy (apu-ch3)
-                          [REGISTERED:tffnl] gevo (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] gajy  — CH3
+                          [REGISTERED:tffnl] gevo  — CH3
 ```
 
 ### Path 7: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] gajy (apu-ch3)
-                          [REGISTERED:tffnl] gatu (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] gajy  — CH3
+                          [REGISTERED:tffnl] gatu  — CH3
 ```
 
 ### Path 8: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [nand2] arev (clocks)
-            [not_x3] apov (clocks) x3
-              [muxi] ubal (bus-data)
-                [not_x3] tapu (bus-data) x3 fan-out=13
-                  [not_x1] bafu (apu-control)
-                    [not_x6] bogy (apu-control) x6 fan-out=37
-                      [nand2] dery (apu-ch3)
-                        [not_x1] gajy (apu-ch3)
-                          [REGISTERED:tffnl] gapo (apu-ch3)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [nand2] arev  — Clocks
+            [not_x3] apov  — Clocks x3
+              [muxi] ubal
+                [not_x3] tapu x3 fan-out=13
+                  [not_x1] bafu  — APU Control
+                    [not_x6] bogy  — APU Clock Gate x6 fan-out=37
+                      [nand2] dery  — CH3
+                        [not_x1] gajy  — CH3
+                          [REGISTERED:tffnl] gapo  — CH3
 ```
 
 ### Path 9: depth 7 (35-105 ns, 88% half T-cycle)
 ```
-[REGISTERED:dffr] davo (apu-ch3)
-  [not_x2] coka (apu-ch3) x2 fan-out=13
-    [mux] bole (apu-ch3)
-      [not_x1] ydod (apu-ch3)
-        [and2] ygef (apu-ch3)
-          [BOUNDARY:wave_ram] wave_ram () fan-out=16
+[REGISTERED:dffr] davo  — CH3
+  [not_x2] coka  — CH3 x2 fan-out=13
+    [mux] bole  — CH3
+      [not_x1] ydod  — CH3
+        [and2] ygef  — CH3
+          [BOUNDARY:wave_ram] wave_ram fan-out=16
 ```
 
 ### Path 10: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[REGISTERED:dffr] davo (apu-ch3)
-  [not_x2] coka (apu-ch3) x2 fan-out=13
-    [mux] agyl (apu-ch3)
-      [and2] yjej (apu-ch3)
-        [BOUNDARY:wave_ram] wave_ram () fan-out=16
+[REGISTERED:dffr] davo  — CH3
+  [not_x2] coka  — CH3 x2 fan-out=13
+    [mux] agyl  — CH3
+      [and2] yjej  — CH3
+        [BOUNDARY:wave_ram] wave_ram fan-out=16
 ```
 
 
@@ -1893,135 +1893,135 @@
 
 ### Path 1: depth 15 (75-225 ns, 189% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [oa21] agut (clocks)
-            [nor2] awod (clocks)
-              [not_x3] abuz (clocks) x3
-                [nand2] sepy (bus-adr)
-                  [mux] tazy (bus-adr)
-                    [nor2] rulo (bus-adr)
-                      [PAD:pad_bidir] a15 (bus-adr)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [oa21] agut  — Clocks
+            [nor2] awod  — Clocks
+              [not_x3] abuz  — Clocks x3
+                [nand2] sepy
+                  [mux] tazy
+                    [nor2] rulo
+                      [PAD:pad_bidir] a15
 ```
 
 ### Path 2: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] amet (bus-adr)
-              [nand2] kupo (bus-adr)
-                [PAD:pad_bidir] a0 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] amet
+              [nand2] kupo
+                [PAD:pad_bidir] a0
 ```
 
 ### Path 3: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] pege (bus-adr)
-              [nand2] puhe (bus-adr)
-                [PAD:pad_bidir] a14 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] pege
+              [nand2] puhe
+                [PAD:pad_bidir] a14
 ```
 
 ### Path 4: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] muce (bus-adr)
-              [nor2] leva (bus-adr)
-                [PAD:pad_bidir] a13 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] muce
+              [nor2] leva
+                [PAD:pad_bidir] a13
 ```
 
 ### Path 5: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] mojy (bus-adr)
-              [nor2] loso (bus-adr)
-                [PAD:pad_bidir] a12 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] mojy
+              [nor2] loso
+                [PAD:pad_bidir] a12
 ```
 
 ### Path 6: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] male (bus-adr)
-              [nor2] lyny (bus-adr)
-                [PAD:pad_bidir] a11 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] male
+              [nor2] lyny
+                [PAD:pad_bidir] a11
 ```
 
 ### Path 7: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] pamy (bus-adr)
-              [nor2] rore (bus-adr)
-                [PAD:pad_bidir] a10 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] pamy
+              [nor2] rore
+                [PAD:pad_bidir] a10
 ```
 
 ### Path 8: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] masu (bus-adr)
-              [nand2] mune (bus-adr)
-                [PAD:pad_bidir] a9 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] masu
+              [nand2] mune
+                [PAD:pad_bidir] a9
 ```
 
 ### Path 9: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] mano (bus-adr)
-              [nor2] mego (bus-adr)
-                [PAD:pad_bidir] a8 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] mano
+              [nor2] mego
+                [PAD:pad_bidir] a8
 ```
 
 ### Path 10: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] maru (ppu-dma)
-  [not_x1] lebu (ppu-dma)
-    [nor3] muda (ppu-dma)
-      [not_x1] logo (ppu-dma)
-        [nand2] mory (ppu-dma)
-          [not_x1] luma (ppu-dma) fan-out=20
-            [mux] asur (bus-adr)
-              [nor2] colo (bus-adr)
-                [PAD:pad_bidir] a7 (bus-adr)
+[REGISTERED:dlatch_ee] maru  — DMA
+  [not_x1] lebu  — DMA
+    [nor3] muda  — DMA
+      [not_x1] logo  — DMA
+        [nand2] mory  — DMA
+          [not_x1] luma  — DMA fan-out=20
+            [mux] asur
+              [nor2] colo
+                [PAD:pad_bidir] a7
 ```
 
 
@@ -2029,95 +2029,95 @@
 
 ### Path 1: depth 14 (70-210 ns, 176% half T-cycle)
 ```
-[REGISTERED:dffsr] pybo (ppu-bgfifo)
-  [and2] rajy (ppu-mux)
-    [and2] ryfu (ppu-mux)
-      [nor3] poka (ppu-mux)
-        [nand2] leka (ppu-mux)
-          [not_x1] luku (ppu-mux)
-            [and3] laru (ppu-mux)
-              [ao2222] moka (ppu-mux)
-                [or3] paty (ppu-mux)
-                  [not_x2] ravo (ppu-mux) x2
-                    [PAD:pad_out] ld1 (ppu-lcd)
+[REGISTERED:dffsr] pybo  — BG FIFO
+  [and2] rajy  — Pixel Mux
+    [and2] ryfu  — Pixel Mux
+      [nor3] poka  — Pixel Mux
+        [nand2] leka  — Pixel Mux
+          [not_x1] luku  — Pixel Mux
+            [and3] laru  — Pixel Mux
+              [ao2222] moka  — Pixel Mux
+                [or3] paty  — Pixel Mux
+                  [not_x2] ravo  — Pixel Mux x2
+                    [PAD:pad_out] ld1  — LCD
 ```
 
 ### Path 2: depth 14 (70-210 ns, 176% half T-cycle)
 ```
-[REGISTERED:dffsr] pybo (ppu-bgfifo)
-  [and2] rajy (ppu-mux)
-    [and2] ryfu (ppu-mux)
-      [nor3] poka (ppu-mux)
-        [nand2] leka (ppu-mux)
-          [not_x1] luku (ppu-mux)
-            [and3] laru (ppu-mux)
-              [ao2222] mufa (ppu-mux)
-                [or3] pero (ppu-mux)
-                  [not_x2] remy (ppu-mux) x2
-                    [PAD:pad_out] ld0 (ppu-lcd)
+[REGISTERED:dffsr] pybo  — BG FIFO
+  [and2] rajy  — Pixel Mux
+    [and2] ryfu  — Pixel Mux
+      [nor3] poka  — Pixel Mux
+        [nand2] leka  — Pixel Mux
+          [not_x1] luku  — Pixel Mux
+            [and3] laru  — Pixel Mux
+              [ao2222] mufa  — Pixel Mux
+                [or3] pero  — Pixel Mux
+                  [not_x2] remy  — Pixel Mux x2
+                    [PAD:pad_out] ld0  — LCD
 ```
 
 ### Path 3: depth 8 (40-120 ns, 101% half T-cycle)
 ```
-[REGISTERED:dffr] luca (ppu-lcd)
-  [xor] magu (ppu-lcd)
-    [not_x3] meco (ppu-lcd) x3
-      [not_x1] kebo (ppu-lcd)
-        [ao22] kupa (ppu-lcd)
-          [not_x3] kofo (ppu-lcd) x3
-            [PAD:pad_out] fr (ppu-lcd)
+[REGISTERED:dffr] luca  — LCD
+  [xor] magu  — LCD
+    [not_x3] meco  — LCD x3
+      [not_x1] kebo  — LCD
+        [ao22] kupa  — LCD
+          [not_x3] kofo  — LCD x3
+            [PAD:pad_out] fr  — LCD
 ```
 
 ### Path 4: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] taha (ppu-lcd)
-  [not_x1] tafy (ppu-lcd)
-    [nand7] tebo (ppu-lcd)
-      [nand4] tegy (ppu-lcd)
-        [REGISTERED:dffr] sygu (ppu-lcd)
+[REGISTERED:dffr] taha  — LCD
+  [not_x1] tafy  — LCD
+    [nand7] tebo  — LCD
+      [nand4] tegy  — LCD
+        [REGISTERED:dffr] sygu  — LCD
 ```
 
 ### Path 5: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] rutu (ppu-lcd)
-  [or2] ryno (ppu-lcd)
-    [not_x2] pogu (ppu-lcd) x2
-      [PAD:pad_out] cpg (ppu-lcd)
+[REGISTERED:dffr] rutu  — LCD
+  [or2] ryno  — LCD
+    [not_x2] pogu  — LCD x2
+      [PAD:pad_out] cpg  — LCD
 ```
 
 ### Path 6: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] lydo (ppu-stat)
-  [and4] noko (ppu-lcd)
-    [REGISTERED:dffr] myta (ppu-lcd)
+[REGISTERED:dffr] lydo  — LY bit 3
+  [and4] noko  — LCD
+    [REGISTERED:dffr] myta  — LCD
 ```
 
 ### Path 7: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] lovu (ppu-stat)
-  [and2] xyvo (ppu-lcd)
-    [REGISTERED:dffr] popu (ppu-lcd)
+[REGISTERED:dffr] lovu  — LY bit 4
+  [and2] xyvo  — LCD
+    [REGISTERED:dffr] popu  — LCD
 ```
 
 ### Path 8: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] saxo (ppu-lcd)
-  [and4] sanu (ppu-lcd)
-    [REGISTERED:dffr] rutu (ppu-lcd)
+[REGISTERED:dffr] saxo  — LCD
+  [and4] sanu  — LCD
+    [REGISTERED:dffr] rutu  — LCD
 ```
 
 ### Path 9: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] lexa (ppu-stat)
-  [nor8] neru (ppu-lcd)
-    [REGISTERED:dffr] meda (ppu-lcd)
+[REGISTERED:dffr] lexa  — LY bit 2
+  [nor8] neru  — LCD
+    [REGISTERED:dffr] meda  — LCD
 ```
 
 ### Path 10: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] meda (ppu-lcd)
-  [not_x3] mure (ppu-lcd) x3
-    [PAD:pad_out] s (ppu-lcd)
+[REGISTERED:dffr] meda  — LCD
+  [not_x3] mure  — LCD x3
+    [PAD:pad_out] s  — LCD
 ```
 
 
@@ -2125,75 +2125,75 @@
 
 ### Path 1: depth 13 (65-195 ns, 164% half T-cycle)
 ```
-[REGISTERED:dffr] ceno (ppu-objctl)
-  [not_x2] ceha (ppu-objctl) x2
-    [not_x1] byjo (ppu-objctl)
-      [and2] azem (ppu-objctl)
-        [and2] aror (ppu-xprio) fan-out=10
-          [nand3] dyka (ppu-xprio)
-            [nand5] fove (ppu-xprio)
-              [or2] fepo (ppu-xprio)
-                [not_x1] xena (ppu-stat)
-                  [and2] wodu (ppu-stat)
-                    [REGISTERED:dffr] voga (ppu-stat)
+[REGISTERED:dffr] ceno  — Scan Active
+  [not_x2] ceha  — Sprite Control x2
+    [not_x1] byjo  — Sprite Control
+      [and2] azem  — Sprite Control
+        [and2] aror  — Sprite X Priority fan-out=10
+          [nand3] dyka  — Sprite X Priority
+            [nand5] fove  — Sprite X Priority
+              [or2] fepo  — Sprite X Priority
+                [not_x1] xena  — STAT/LY
+                  [and2] wodu  — STAT/LY
+                    [REGISTERED:dffr] voga  — STAT/LY
 ```
 
 ### Path 2: depth 7 (35-105 ns, 88% half T-cycle)
 ```
-[REGISTERED:dffr] tuhu (ppu-stat)
-  [and2] tyba (ppu-stat)
-    [and2] sury (ppu-stat)
-      [xor] roku (ppu-stat)
-        [REGISTERED:dffr] sybe (ppu-stat)
+[REGISTERED:dffr] tuhu  — STAT/LY
+  [and2] tyba  — STAT/LY
+    [and2] sury  — STAT/LY
+      [xor] roku  — STAT/LY
+        [REGISTERED:dffr] sybe  — STAT/LY
 ```
 
 ### Path 3: depth 7 (35-105 ns, 88% half T-cycle)
 ```
-[REGISTERED:dffr] savy (ppu-stat)
-  [and2] xuke (ppu-stat)
-    [and2] xyle (ppu-stat)
-      [xor] xora (ppu-stat)
-        [REGISTERED:dffr] xydo (ppu-stat)
+[REGISTERED:dffr] savy  — Pixel X bit 1
+  [and2] xuke  — STAT/LY
+    [and2] xyle  — STAT/LY
+      [xor] xora  — STAT/LY
+        [REGISTERED:dffr] xydo  — Pixel X bit 3
 ```
 
 ### Path 4: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[REGISTERED:dffr] lexa (ppu-stat)
-  [xor] reda (ppu-stat)
-    [nor4] subo (ppu-stat)
-      [nand2] rape (ppu-stat)
-        [not_x1] paly (ppu-stat)
-          [REGISTERED:dffr] ropo (ppu-stat)
+[REGISTERED:dffr] lexa  — LY bit 2
+  [xor] reda  — STAT/LY
+    [nor4] subo  — STAT/LY
+      [nand2] rape  — STAT/LY
+        [not_x1] paly  — STAT/LY
+          [REGISTERED:dffr] ropo  — STAT/LY
 ```
 
 ### Path 5: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[REGISTERED:dffr] tuhu (ppu-stat)
-  [and2] tyba (ppu-stat)
-    [xor] tyge (ppu-stat)
-      [REGISTERED:dffr] tako (ppu-stat)
+[REGISTERED:dffr] tuhu  — STAT/LY
+  [and2] tyba  — STAT/LY
+    [xor] tyge  — STAT/LY
+      [REGISTERED:dffr] tako  — STAT/LY
 ```
 
 ### Path 6: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[REGISTERED:dffr] savy (ppu-stat)
-  [and2] xuke (ppu-stat)
-    [xor] xegy (ppu-stat)
-      [REGISTERED:dffr] xodu (ppu-stat)
+[REGISTERED:dffr] savy  — Pixel X bit 1
+  [and2] xuke  — STAT/LY
+    [xor] xegy  — STAT/LY
+      [REGISTERED:dffr] xodu  — Pixel X bit 2
 ```
 
 ### Path 7: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] savy (ppu-stat)
-  [xor] rybo (ppu-stat)
-    [REGISTERED:dffr] savy (ppu-stat)
+[REGISTERED:dffr] savy  — Pixel X bit 1
+  [xor] rybo  — STAT/LY
+    [REGISTERED:dffr] savy  — Pixel X bit 1
 ```
 
 ### Path 8: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] tuhu (ppu-stat)
-  [xor] sake (ppu-stat)
-    [REGISTERED:dffr] tuky (ppu-stat)
+[REGISTERED:dffr] tuhu  — STAT/LY
+  [xor] sake  — STAT/LY
+    [REGISTERED:dffr] tuky  — STAT/LY
 ```
 
 
@@ -2201,112 +2201,112 @@
 
 ### Path 1: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pono (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] mytu (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pono  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] mytu  — Sprite FIFO
 ```
 
 ### Path 2: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pono (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] mofo (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pono  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] mofo  — Sprite FIFO
 ```
 
 ### Path 3: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pobe (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] pudu (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pobe  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] pudu  — Sprite FIFO
 ```
 
 ### Path 4: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pute (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] pefo (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pute  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] pefo  — Sprite FIFO
 ```
 
 ### Path 5: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pelo (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] peba (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pelo  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] peba  — Sprite FIFO
 ```
 
 ### Path 6: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] puly (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] rydu (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] puly  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] rydu  — Sprite FIFO
 ```
 
 ### Path 7: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pawe (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] rama (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pawe  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] rama  — Sprite FIFO
 ```
 
 ### Path 8: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pobe (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] ramu (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pobe  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] ramu  — Sprite FIFO
 ```
 
 ### Path 9: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pute (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] rewo (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pute  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] rewo  — Sprite FIFO
 ```
 
 ### Path 10: depth 9 (45-135 ns, 113% half T-cycle)
 ```
-[REGISTERED:dffr] tuly (ppu-ycomp)
-  [nor2] saky (ppu-ycomp)
-    [or2] tyso (ppu-ycomp)
-      [not_x2] texy (ppu-ycomp) x2
-        [and2] xono (ppu-objfifo)
-          [mux] pelo (ppu-objfifo)
-            [REGISTERED:dlatch_ee_q] roka (ppu-objfifo)
+[REGISTERED:dffr] tuly  — Sprite Y Compare
+  [nor2] saky  — Sprite Y Compare
+    [or2] tyso  — Sprite Y Compare
+      [not_x2] texy  — Sprite Fetching x2
+        [and2] xono  — Sprite FIFO
+          [mux] pelo  — Sprite FIFO
+            [REGISTERED:dlatch_ee_q] roka  — Sprite FIFO
 ```
 
 
@@ -2314,34 +2314,34 @@
 
 ### Path 1: depth 8 (40-120 ns, 101% half T-cycle)
 ```
-[REGISTERED:drlatch_ee] mypu (ppu-window)
-  [xnor] nezo (ppu-window)
-    [nand5] puky (ppu-window)
-      [not_x1] nufa (ppu-window)
-        [nand5] nogy (ppu-window)
-          [not_x1] nuko (ppu-window)
-            [nor2] pany (ppu-cycles)
-              [REGISTERED:dffr] ryfa (ppu-cycles)
+[REGISTERED:drlatch_ee] mypu  — Window
+  [xnor] nezo  — Window
+    [nand5] puky  — Window
+      [not_x1] nufa  — Window
+        [nand5] nogy  — Window
+          [not_x1] nuko  — Window
+            [nor2] pany  — BG/Win Cycles
+              [REGISTERED:dffr] ryfa  — Window Y Match
 ```
 
 ### Path 2: depth 7 (35-105 ns, 88% half T-cycle)
 ```
-[REGISTERED:drlatch_ee] mypu (ppu-window)
-  [xnor] nezo (ppu-window)
-    [nand5] puky (ppu-window)
-      [not_x1] nufa (ppu-window)
-        [nand5] nogy (ppu-window)
-          [not_x1] nuko (ppu-window)
-            [REGISTERED:dffr] pyco (ppu-cycles)
+[REGISTERED:drlatch_ee] mypu  — Window
+  [xnor] nezo  — Window
+    [nand5] puky  — Window
+      [not_x1] nufa  — Window
+        [nand5] nogy  — Window
+          [not_x1] nuko  — Window
+            [REGISTERED:dffr] pyco  — BG/Win Cycles
 ```
 
 ### Path 3: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[REGISTERED:dffr] roga (ppu-cycles)
-  [xnor] syby (ppu-cycles)
-    [nand4] rone (ppu-cycles)
-      [not_x1] pohu (ppu-cycles)
-        [REGISTERED:dffr] puxa (ppu-cycles)
+[REGISTERED:dffr] roga  — BG/Win Cycles
+  [xnor] syby  — BG/Win Cycles
+    [nand4] rone  — BG/Win Cycles
+      [not_x1] pohu  — BG/Win Cycles
+        [REGISTERED:dffr] puxa  — BG/Win Cycles
 ```
 
 
@@ -2349,13 +2349,13 @@
 
 ### Path 1: depth 7 (35-105 ns, 88% half T-cycle)
 ```
-[REGISTERED:dffr] lafo (ppu-stat)
-  [xnor] nupa (ppu-window)
-    [nand5] palo (ppu-window)
-      [not_x1] nele (ppu-window)
-        [nand5] pafu (ppu-window)
-          [not_x1] roge (ppu-window)
-            [REGISTERED:dffr] sary (ppu-window)
+[REGISTERED:dffr] lafo  — LY bit 7
+  [xnor] nupa  — Window
+    [nand5] palo  — Window
+      [not_x1] nele  — Window
+        [nand5] pafu  — Window
+          [not_x1] roge  — Window
+            [REGISTERED:dffr] sary  — Window
 ```
 
 
@@ -2363,12 +2363,12 @@
 
 ### Path 1: depth 6 (30-90 ns, 76% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [or3] taba (clocks)
-        [sm83] cpu () fan-out=42
-          [PAD:pad_xtal] ck1_ck2 (clocks)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [or3] taba  — Clocks
+        [sm83] cpu fan-out=42
+          [PAD:pad_xtal] ck1_ck2  — Clocks
 ```
 
 
@@ -2376,11 +2376,11 @@
 
 ### Path 1: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[PAD:pad_in] t1 (test)
-  [not_x1] ubet (test)
-    [and2] unor (test) fan-out=34
-      [and2] efop (apu-control)
-        [REGISTERED:drlatch_ee] fero (apu-control)
+[PAD:pad_in] t1
+  [not_x1] ubet
+    [and2] unor  — Test Mode Gate fan-out=34
+      [and2] efop  — APU Control
+        [REGISTERED:drlatch_ee] fero  — APU Control
 ```
 
 
@@ -2388,40 +2388,40 @@
 
 ### Path 1: depth 5 (25-75 ns, 63% half T-cycle)
 ```
-[REGISTERED:dffr] coty (serial)
-  [muxi] cave (serial)
-    [or2] dawa (serial)
-      [nor2] kujo (serial)
-        [PAD:pad_bidir_pu_latch] sck (serial)
+[REGISTERED:dffr] coty
+  [muxi] cave
+    [or2] dawa
+      [nor2] kujo
+        [PAD:pad_bidir_pu_latch] sck
 ```
 
 ### Path 2: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] elys (serial)
-  [muxi] kena (serial)
-    [PAD:pad_out] sout (serial)
+[REGISTERED:dffr] elys
+  [muxi] kena
+    [PAD:pad_out] sout
 ```
 
 ### Path 3: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] jeva (test)
-    [nor2] kywe (test)
-      [PAD:pad_bidir_pu] sin (serial)
+[REGISTERED:dffr] buro
+  [not_x1] jeva
+    [nor2] kywe
+      [PAD:pad_bidir_pu] sin
 ```
 
 ### Path 4: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[PAD:pad_bidir_pu] sin (serial)
-  [not_x1] cage (serial)
-    [REGISTERED:dffsr] cuba (serial)
+[PAD:pad_bidir_pu] sin
+  [not_x1] cage
+    [REGISTERED:dffsr] cuba
 ```
 
 ### Path 5: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [nand2] kore (test)
-    [PAD:pad_bidir_pu] sin (serial)
+[REGISTERED:dffr] buro
+  [nand2] kore
+    [PAD:pad_bidir_pu] sin
 ```
 
 
@@ -2429,78 +2429,78 @@
 
 ### Path 1: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [or2] cela (joypad)
-      [PAD:pad_out_diff] p15 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [or2] cela
+      [PAD:pad_out_diff] p15
 ```
 
 ### Path 2: depth 3 (15-45 ns, 38% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [or2] karu (joypad)
-      [PAD:pad_out_diff] p14 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [or2] karu
+      [PAD:pad_out_diff] p14
 ```
 
 ### Path 3: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[PAD:pad_bidir_pu] p10 (joypad)
-  [or4] kery (joypad)
-    [REGISTERED:dlatch] awob (joypad)
+[PAD:pad_bidir_pu] p10
+  [or4] kery
+    [REGISTERED:dlatch] awob
 ```
 
 ### Path 4: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[PAD:pad_bidir_pu] p10 (joypad)
-  [or4] kery (joypad)
-    [REGISTERED:dffr] batu (joypad)
+[PAD:pad_bidir_pu] p10
+  [or4] kery
+    [REGISTERED:dffr] batu
 ```
 
 ### Path 5: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [nor2] kybu (test)
-      [PAD:pad_bidir_pu] p10 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [nor2] kybu
+      [PAD:pad_bidir_pu] p10
 ```
 
 ### Path 6: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [nor2] kabu (test)
-      [PAD:pad_bidir_pu] p11 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [nor2] kabu
+      [PAD:pad_bidir_pu] p11
 ```
 
 ### Path 7: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [nor2] kasy (test)
-      [PAD:pad_bidir_pu] p12 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [nor2] kasy
+      [PAD:pad_bidir_pu] p12
 ```
 
 ### Path 8: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [not_x1] kura (test)
-    [nor2] kale (test)
-      [PAD:pad_bidir_pu] p13 (joypad)
+[REGISTERED:dffr] buro
+  [not_x1] kura
+    [nor2] kale
+      [PAD:pad_bidir_pu] p13
 ```
 
 ### Path 9: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [nand2] kole (test)
-    [PAD:pad_bidir_pu] p10 (joypad)
+[REGISTERED:dffr] buro
+  [nand2] kole
+    [PAD:pad_bidir_pu] p10
 ```
 
 ### Path 10: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dffr] buro (test)
-  [nand2] kyto (test)
-    [PAD:pad_bidir_pu] p11 (joypad)
+[REGISTERED:dffr] buro
+  [nand2] kyto
+    [PAD:pad_bidir_pu] p11
 ```
 
 
@@ -2508,9 +2508,9 @@
 
 ### Path 1: depth 2 (10-30 ns, 25% half T-cycle)
 ```
-[BUS:] bus:d0 (bus) fan-out=46
-  [or2] sato (bootrom)
-    [REGISTERED:dffr] tepu (bootrom)
+[BUS:] bus:d0 fan-out=46
+  [or2] sato
+    [REGISTERED:dffr] tepu
 ```
 
 
@@ -2518,72 +2518,72 @@
 
 ### Path 1: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] depo (ppu-xcomp) fan-out=17
-  [not_x1] bady (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] cusy (ppu-xcomp)
+[REGISTERED:dlatch_ee] depo  — Sprite X Match fan-out=17
+  [not_x1] bady  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] cusy  — Sprite X Match
 ```
 
 ### Path 2: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] baxo (ppu-xcomp)
-  [not_x1] arop (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] ceso (ppu-xcomp)
+[REGISTERED:dlatch_ee] baxo  — Sprite X Match
+  [not_x1] arop  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] ceso  — Sprite X Match
 ```
 
 ### Path 3: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] gomo (ppu-xcomp) fan-out=17
-  [not_x1] cose (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] cywe (ppu-xcomp)
+[REGISTERED:dlatch_ee] gomo  — Sprite X Match fan-out=17
+  [not_x1] cose  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] cywe  — Sprite X Match
 ```
 
 ### Path 4: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] depo (ppu-xcomp) fan-out=17
-  [not_x1] bady (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] cuvy (ppu-xcomp)
+[REGISTERED:dlatch_ee] depo  — Sprite X Match fan-out=17
+  [not_x1] bady  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] cuvy  — Sprite X Match
 ```
 
 ### Path 5: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] gomo (ppu-xcomp) fan-out=17
-  [not_x1] cose (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] dake (ppu-xcomp)
+[REGISTERED:dlatch_ee] gomo  — Sprite X Match fan-out=17
+  [not_x1] cose  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] dake  — Sprite X Match
 ```
 
 ### Path 6: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] yzos (ppu-xcomp)
-  [not_x1] xatu (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] dyfu (ppu-xcomp)
+[REGISTERED:dlatch_ee] yzos  — Sprite X Match
+  [not_x1] xatu  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] dyfu  — Sprite X Match
 ```
 
 ### Path 7: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] zezy (ppu-xcomp)
-  [not_x1] yvok (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] dazo (ppu-xcomp)
+[REGISTERED:dlatch_ee] zezy  — Sprite X Match
+  [not_x1] yvok  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] dazo  — Sprite X Match
 ```
 
 ### Path 8: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] yzos (ppu-xcomp)
-  [not_x1] xatu (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] dury (ppu-xcomp)
+[REGISTERED:dlatch_ee] yzos  — Sprite X Match
+  [not_x1] xatu  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] dury  — Sprite X Match
 ```
 
 ### Path 9: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] zyve (ppu-xcomp)
-  [not_x1] ypur (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] desu (ppu-xcomp)
+[REGISTERED:dlatch_ee] zyve  — Sprite X Match
+  [not_x1] ypur  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] desu  — Sprite X Match
 ```
 
 ### Path 10: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[REGISTERED:dlatch_ee] zyty (ppu-xcomp)
-  [not_x1] zocy (ppu-xcomp) fan-out=10
-    [REGISTERED:drlatch_ee] duko (ppu-xcomp)
+[REGISTERED:dlatch_ee] zyty  — Sprite X Match
+  [not_x1] zocy  — Sprite X Match fan-out=10
+    [REGISTERED:drlatch_ee] duko  — Sprite X Match
 ```
 
 
@@ -2591,42 +2591,42 @@
 
 ### Path 1: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a2}_tri (bus)
-  [not_x1] yfot (ppu-oam)
-    [REGISTERED:dffr_cc] xadu (ppu-oam)
+[BUS:] bus:oam_~{a2}_tri
+  [not_x1] yfot  — OAM
+    [REGISTERED:dffr_cc] xadu  — OAM
 ```
 
 ### Path 2: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a3}_tri (bus)
-  [not_x1] yfoc (ppu-oam)
-    [REGISTERED:dffr_cc] xedy (ppu-oam)
+[BUS:] bus:oam_~{a3}_tri
+  [not_x1] yfoc  — OAM
+    [REGISTERED:dffr_cc] xedy  — OAM
 ```
 
 ### Path 3: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a5}_tri (bus)
-  [not_x1] ymev (ppu-oam)
-    [REGISTERED:dffr_cc] xobe (ppu-oam)
+[BUS:] bus:oam_~{a5}_tri
+  [not_x1] ymev  — OAM
+    [REGISTERED:dffr_cc] xobe  — OAM
 ```
 
 ### Path 4: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a7}_tri (bus)
-  [not_x1] yzet (ppu-oam)
-    [REGISTERED:dffr_cc] xecu (ppu-oam)
+[BUS:] bus:oam_~{a7}_tri
+  [not_x1] yzet  — OAM
+    [REGISTERED:dffr_cc] xecu  — OAM
 ```
 
 ### Path 5: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a6}_tri (bus)
-  [not_x1] xemu (ppu-oam)
-    [REGISTERED:dffr_cc] yduf (ppu-oam)
+[BUS:] bus:oam_~{a6}_tri
+  [not_x1] xemu  — OAM
+    [REGISTERED:dffr_cc] yduf  — OAM
 ```
 
 ### Path 6: depth 1 (5-15 ns, 13% half T-cycle)
 ```
-[BUS:] bus:oam_~{a4}_tri (bus)
-  [not_x1] yvom (ppu-oam)
-    [REGISTERED:dffr_cc] zuze (ppu-oam)
+[BUS:] bus:oam_~{a4}_tri
+  [not_x1] yvom  — OAM
+    [REGISTERED:dffr_cc] zuze  — OAM
 ```

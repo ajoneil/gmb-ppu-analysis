@@ -1179,6 +1179,61 @@ def export_paths_json(paths, G, races=None):
 # Report Generation
 # ============================================================================
 
+def build_friendly_names(G):
+    """Build a die name -> friendly description map for use in reports."""
+    # Key signals (hand-curated)
+    names = {
+        'sacu': 'Pixel Shift Clock (CLKPIPE)', 'xymu': 'Rendering Active (Mode 3)',
+        'poky': 'Pixel Pipe Done', 'roxy': 'Fine Scroll Done',
+        'nyka': 'BG Fetch Clock', 'atej': 'Line Strobe',
+        'muwy': 'LY bit 0', 'myro': 'LY bit 1', 'lexa': 'LY bit 2',
+        'lydo': 'LY bit 3', 'lovu': 'LY bit 4', 'lema': 'LY bit 5',
+        'mato': 'LY bit 6', 'lafo': 'LY bit 7',
+        'xeho': 'Pixel X bit 0', 'savy': 'Pixel X bit 1',
+        'xodu': 'Pixel X bit 2', 'xydo': 'Pixel X bit 3',
+        'laxu': 'BG Fetch S0', 'mesu': 'BG Fetch S1', 'nyva': 'BG Fetch S2',
+        'lovy': 'Fetch Done', 'lony': 'Fetching Active',
+        'besu': 'OAM Scan Done', 'ceno': 'Scan Active',
+        'taka': 'Sprite Fetch Gate', 'sobu': 'Sprite Fetch Req',
+        'texy': 'Sprite Fetching', 'wuty': 'Sprite Fetch Done',
+        'ryfa': 'Window Y Match', 'rene': 'Window Active',
+        'afer': 'System Reset', 'xapo': 'Video Reset',
+        'keba': 'APU Master Enable', 'bogy': 'APU Clock Gate',
+        'aguz': 'APU Length Clock', 'alur': 'System Clock Inv',
+        'cunu': 'System Reset Inv', 'tova': 'Ext Bus Enable',
+        'unor': 'Test Mode Gate', 'adad': 'CH1 Freq Clock',
+    }
+    # Category-based fallback for cells not in the map
+    cat_labels = {
+        'ppu-bgfifo': 'BG FIFO', 'ppu-bgscroll': 'BG Scroll',
+        'ppu-control': 'PPU Control', 'ppu-cycles': 'BG/Win Cycles',
+        'ppu-dma': 'DMA', 'ppu-lcd': 'LCD', 'ppu-mux': 'Pixel Mux',
+        'ppu-oam': 'OAM', 'ppu-objctl': 'Sprite Control',
+        'ppu-objfifo': 'Sprite FIFO', 'ppu-objreg': 'Sprite Store',
+        'ppu-pal': 'Palettes', 'ppu-stat': 'STAT/LY',
+        'ppu-vram': 'VRAM', 'ppu-window': 'Window',
+        'ppu-xcomp': 'Sprite X Match', 'ppu-xprio': 'Sprite X Priority',
+        'ppu-ycomp': 'Sprite Y Compare', 'ppu-decode': 'PPU Decode',
+        'clocks': 'Clocks', 'int': 'Interrupts', 'timer': 'Timer',
+        'apu-ch1': 'CH1', 'apu-ch2': 'CH2', 'apu-ch3': 'CH3', 'apu-ch4': 'CH4',
+        'apu-control': 'APU Control', 'apu-decode': 'APU Decode',
+    }
+    for n, nd in G.nodes(data=True):
+        if n in names:
+            continue
+        cat = nd.get('category', '')
+        label = cat_labels.get(cat)
+        if label:
+            names[n] = label
+    return names
+
+
+def _friendly(names, node):
+    """Return 'die_name (friendly)' or just 'die_name'."""
+    f = names.get(node, '')
+    return f"`{node}` ({f})" if f else f"`{node}`"
+
+
 def format_report(paths, G, races):
     """Generate markdown report sections with substantive analysis."""
     HALF_TCYCLE_NS = 119.2
@@ -1186,6 +1241,7 @@ def format_report(paths, G, races):
     GATE_DELAY_MAX = 15
     fanout = {n: G.out_degree(n) for n in G.nodes()}
     depth_map, _ = compute_depths(G)
+    names = build_friendly_names(G)
 
     reset_paths = [(d, p) for d, p in paths if is_reset_path_schematic(p, G)]
     op_paths = [(d, p) for d, p in paths if not is_reset_path_schematic(p, G)]
@@ -1265,9 +1321,8 @@ def format_report(paths, G, races):
 
         L.append(f"### 1. Deepest Operational Path: {deepest_d} Gate-equivalents")
         L.append("")
-        L.append(f"The longest operational combinatorial chain runs from `{deepest_p[0]}`")
-        L.append(f"({CATEGORY_DISPLAY.get(src_cat, src_cat)}) to `{deepest_p[-1]}`")
-        L.append(f"({CATEGORY_DISPLAY.get(sink_cat, sink_cat)}), passing through")
+        L.append(f"The longest operational combinatorial chain runs from {_friendly(names, deepest_p[0])}")
+        L.append(f"to {_friendly(names, deepest_p[-1])}, passing through")
         L.append(f"{len(adders_in_deepest)} adder cells and {len(deepest_p)-2} total combinatorial gates.")
         L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN}-{deepest_d*GATE_DELAY_MAX} ns")
         L.append(f"({deepest_d*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% of half T-cycle).")
@@ -1276,8 +1331,9 @@ def format_report(paths, G, races):
         for j, node in enumerate(deepest_p):
             nd = G.nodes.get(node, {})
             ct = nd.get('cell_type', '')
-            cat = nd.get('category', '')
-            L.append(f"{'  ' * j}[{ct}] {node} ({cat})")
+            friendly = names.get(node, '')
+            friendly_str = f"  — {friendly}" if friendly else ""
+            L.append(f"{'  ' * j}[{ct}] {node}{friendly_str}")
         L.append("```")
         L.append("")
         if len(adders_in_deepest) >= 4:
@@ -1377,13 +1433,15 @@ def format_report(paths, G, races):
     L.append("These signals drive many downstream gates. High fan-out combined with deep")
     L.append("combinatorial depth means the signal arrives late at many destinations simultaneously.")
     L.append("")
-    L.append("| Signal | Fan-out | Depth | Cell Type | Category |")
-    L.append("|--------|---------|-------|-----------|----------|")
+    L.append("| Signal | Description | Fan-out | Depth | Cell Type | Category |")
+    L.append("|--------|-------------|---------|-------|-----------|----------|")
     for name, fo, nd in high_fanout[:20]:
         d = depth_map.get(name, 0)
         ct = nd.get('cell_type', '')
         cat = nd.get('category', '')
-        L.append(f"| `{name}` | {fo} | {d} ge | {ct} | {cat} |")
+        friendly = names.get(name, '')
+        cat_display = CATEGORY_DISPLAY.get(cat, cat)
+        L.append(f"| `{name}` | {friendly} | {fo} | {d} ge | {ct} | {cat_display} |")
     L.append("")
 
     # === APU findings ===
@@ -1459,7 +1517,9 @@ def format_report(paths, G, races):
                     marker = f"[{ct}]"
                 ds_str = f" x{ds}" if ds > 1 else ""
                 fo_str = f" fan-out={fo}" if fo >= 10 else ""
-                lines.append(f"{'  ' * j}{marker} {node} ({cat_n}){ds_str}{fo_str}")
+                friendly = names.get(node, '')
+                friendly_str = f"  — {friendly}" if friendly else ""
+                lines.append(f"{'  ' * j}{marker} {node}{friendly_str}{ds_str}{fo_str}")
             lines.append("```\n")
     sections['operational_paths.md'] = '\n'.join(lines)
 
