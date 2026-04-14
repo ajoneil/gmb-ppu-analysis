@@ -29,48 +29,7 @@ Data source: [msinger/dmg-schematics](https://github.com/msinger/dmg-schematics)
 
 ## Key Findings
 
-### 1. Deepest Operational Path: 39 Gate-equivalents
-
-The longest operational combinatorial chain runs from `muwy` (LY bit 0)
-to `dezy` (Sprite Control), passing through
-8 adder cells and 14 total combinatorial gates.
-Worst-case delay: 195-585 ns
-(491% of half T-cycle).
-
-```
-[dffr] muwy  — LY bit 0
-  [not_x1] ebos  — Sprite Y Compare
-    [full_add] eruc  — Sprite Y Compare
-      [full_add] enef  — Sprite Y Compare
-        [full_add] feco  — Sprite Y Compare
-          [full_add] gyky  — Sprite Y Compare
-            [full_add] gopu  — Sprite Y Compare
-              [full_add] fuwa  — Sprite Y Compare
-                [full_add] goju  — Sprite Y Compare
-                  [full_add] wuhu  — Sprite Y Compare
-                    [not_x1] gewy  — Sprite Y Compare
-                      [nand6] wota  — Sprite Y Compare
-                        [not_x1] gese  — Sprite Y Compare
-                          [and3] care  — Sprite Control
-                            [not_x2] dyty  — Sprite Control
-                              [dffr] dezy  — Sprite Control
-```
-
-The 8-stage ripple carry adder chain dominates this path.
-Each full_add costs 4 gate-equivalents, accounting for
-32 of the 39 total depth.
-
-### 2. VRAM Address Adder (32 ge)
-
-The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)
-via an 8-bit ripple carry adder (8 adder stages, depth 32 ge).
-The carry chain means the high address bits settle last —
-the VRAM address may not be valid until 160-480 ns
-after the inputs change. In practice, LY and SCY are stable for the full
-scanline so the address settles well before fetch begins. But mid-scanline
-SCX writes (used for split-scroll effects) may take 2+ dots to propagate.
-
-### 3. CLKPIPE (sacu) — Critical Fan-out Bottleneck
+### 1. CLKPIPE (sacu) — The Most Impactful Timing Race
 
 `sacu` is an OR2 gate at depth **19** with fan-out **53**.
 It is the pixel pipe shift clock (CLKPIPE) — the single most impactful
@@ -133,6 +92,47 @@ counter before CLKPIPE can fire.
 - Sprite Pixel Shifter: 16 races
 - Sprite X Match: 16 races
 - STAT/LY: 4 races
+
+### 2. Deepest Operational Path: 39 Gate-equivalents
+
+The longest operational combinatorial chain runs from `muwy` (LY bit 0)
+to `dezy` (Sprite Control), passing through
+8 adder cells and 14 total combinatorial gates.
+Worst-case delay: 195-585 ns
+(491% of half T-cycle).
+
+```
+[dffr] muwy  — LY bit 0
+  [not_x1] ebos  — Sprite Y Compare
+    [full_add] eruc  — Sprite Y Compare
+      [full_add] enef  — Sprite Y Compare
+        [full_add] feco  — Sprite Y Compare
+          [full_add] gyky  — Sprite Y Compare
+            [full_add] gopu  — Sprite Y Compare
+              [full_add] fuwa  — Sprite Y Compare
+                [full_add] goju  — Sprite Y Compare
+                  [full_add] wuhu  — Sprite Y Compare
+                    [not_x1] gewy  — Sprite Y Compare
+                      [nand6] wota  — Sprite Y Compare
+                        [not_x1] gese  — Sprite Y Compare
+                          [and3] care  — Sprite Control
+                            [not_x2] dyty  — Sprite Control
+                              [dffr] dezy  — Sprite Control
+```
+
+The 8-stage ripple carry adder chain dominates this path.
+Each full_add costs 4 gate-equivalents, accounting for
+32 of the 39 total depth.
+
+### 3. VRAM Address Adder (32 ge)
+
+The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)
+via an 8-bit ripple carry adder (8 adder stages, depth 32 ge).
+The carry chain means the high address bits settle last —
+the VRAM address may not be valid until 160-480 ns
+after the inputs change. In practice, LY and SCY are stable for the full
+scanline so the address settles well before fetch begins. But mid-scanline
+SCX writes (used for split-scroll effects) may take 2+ dots to propagate.
 
 ### 4. Sprite Store Races (diff=44, all 10 stores identical)
 

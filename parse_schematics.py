@@ -1339,64 +1339,11 @@ def format_report(paths, G, races):
     L.append(f"| **Race pairs** | {len(races)} ({ppu_races} PPU) | max diff {races[0]['depth_diff'] if races else 0} | |")
     L.append("")
 
-    # === Key Findings (compute from data, not hardcoded) ===
+    # === Key Findings — ordered by impact, not depth ===
     L.append("## Key Findings")
     L.append("")
 
-    # Find the actual deepest operational path and describe it
-    if op_paths:
-        deepest = op_paths[0]
-        deepest_d, deepest_p = deepest
-        adders_in_deepest = [n for n in deepest_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
-        sink_cat = G.nodes.get(deepest_p[-1], {}).get('category', '')
-        src_cat = G.nodes.get(deepest_p[0], {}).get('category', '')
-
-        L.append(f"### 1. Deepest Operational Path: {deepest_d} Gate-equivalents")
-        L.append("")
-        L.append(f"The longest operational combinatorial chain runs from {_friendly(names, deepest_p[0])}")
-        L.append(f"to {_friendly(names, deepest_p[-1])}, passing through")
-        L.append(f"{len(adders_in_deepest)} adder cells and {len(deepest_p)-2} total combinatorial gates.")
-        L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN}-{deepest_d*GATE_DELAY_MAX} ns")
-        L.append(f"({deepest_d*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% of half T-cycle).")
-        L.append("")
-        L.append("```")
-        for j, node in enumerate(deepest_p):
-            nd = G.nodes.get(node, {})
-            ct = nd.get('cell_type', '')
-            friendly = names.get(node, '')
-            friendly_str = f"  — {friendly}" if friendly else ""
-            L.append(f"{'  ' * j}[{ct}] {node}{friendly_str}")
-        L.append("```")
-        L.append("")
-        if len(adders_in_deepest) >= 4:
-            L.append(f"The {len(adders_in_deepest)}-stage ripple carry adder chain dominates this path.")
-            L.append(f"Each full_add costs 4 gate-equivalents, accounting for")
-            L.append(f"{len(adders_in_deepest)*4} of the {deepest_d} total depth.")
-            L.append("")
-
-    # VRAM address adder (if it's not already the deepest)
-    vram_paths = [p for p in op_paths if any('bus:~ma' in n for _, p2 in [] for n in p2)
-                  or any(G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')
-                         and G.nodes.get(n, {}).get('category') == 'ppu-bgscroll'
-                         for n in p[1])]
-    # Simpler: find paths ending at VRAM address bus
-    vram_addr_paths = [(d, p) for d, p in op_paths
-                       if any(n.startswith('bus:~ma') for n in p)]
-    if vram_addr_paths:
-        vp_d, vp_p = vram_addr_paths[0]
-        vp_adders = [n for n in vp_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
-        L.append(f"### 2. VRAM Address Adder ({vp_d} ge)")
-        L.append("")
-        L.append(f"The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)")
-        L.append(f"via an 8-bit ripple carry adder ({len(vp_adders)} adder stages, depth {vp_d} ge).")
-        L.append(f"The carry chain means the high address bits settle last —")
-        L.append(f"the VRAM address may not be valid until {vp_d*GATE_DELAY_MIN}-{vp_d*GATE_DELAY_MAX} ns")
-        L.append(f"after the inputs change. In practice, LY and SCY are stable for the full")
-        L.append(f"scanline so the address settles well before fetch begins. But mid-scanline")
-        L.append(f"SCX writes (used for split-scroll effects) may take 2+ dots to propagate.")
-        L.append("")
-
-    L.append("### 3. CLKPIPE (sacu) — Critical Fan-out Bottleneck")
+    L.append("### 1. CLKPIPE (sacu) — The Most Impactful Timing Race")
     L.append("")
     sacu_depth = depth_map.get('sacu', 0)
     sacu_fo = fanout.get('sacu', 0)
@@ -1495,6 +1442,52 @@ def format_report(paths, G, races):
         L.append("")
         for cat, count in sorted(clkpipe_race_cats.items(), key=lambda x: -x[1]):
             L.append(f"- {cat}: {count} races")
+        L.append("")
+
+    # Deepest operational path
+    if op_paths:
+        deepest = op_paths[0]
+        deepest_d, deepest_p = deepest
+        adders_in_deepest = [n for n in deepest_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
+
+        L.append(f"### 2. Deepest Operational Path: {deepest_d} Gate-equivalents")
+        L.append("")
+        L.append(f"The longest operational combinatorial chain runs from {_friendly(names, deepest_p[0])}")
+        L.append(f"to {_friendly(names, deepest_p[-1])}, passing through")
+        L.append(f"{len(adders_in_deepest)} adder cells and {len(deepest_p)-2} total combinatorial gates.")
+        L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN}-{deepest_d*GATE_DELAY_MAX} ns")
+        L.append(f"({deepest_d*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% of half T-cycle).")
+        L.append("")
+        L.append("```")
+        for j, node in enumerate(deepest_p):
+            nd = G.nodes.get(node, {})
+            ct = nd.get('cell_type', '')
+            friendly = names.get(node, '')
+            friendly_str = f"  — {friendly}" if friendly else ""
+            L.append(f"{'  ' * j}[{ct}] {node}{friendly_str}")
+        L.append("```")
+        L.append("")
+        if len(adders_in_deepest) >= 4:
+            L.append(f"The {len(adders_in_deepest)}-stage ripple carry adder chain dominates this path.")
+            L.append(f"Each full_add costs 4 gate-equivalents, accounting for")
+            L.append(f"{len(adders_in_deepest)*4} of the {deepest_d} total depth.")
+            L.append("")
+
+    # VRAM address adder
+    vram_addr_paths = [(d, p) for d, p in op_paths
+                       if any(n.startswith('bus:~ma') for n in p)]
+    if vram_addr_paths:
+        vp_d, vp_p = vram_addr_paths[0]
+        vp_adders = [n for n in vp_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
+        L.append(f"### 3. VRAM Address Adder ({vp_d} ge)")
+        L.append("")
+        L.append(f"The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)")
+        L.append(f"via an 8-bit ripple carry adder ({len(vp_adders)} adder stages, depth {vp_d} ge).")
+        L.append(f"The carry chain means the high address bits settle last —")
+        L.append(f"the VRAM address may not be valid until {vp_d*GATE_DELAY_MIN}-{vp_d*GATE_DELAY_MAX} ns")
+        L.append(f"after the inputs change. In practice, LY and SCY are stable for the full")
+        L.append(f"scanline so the address settles well before fetch begins. But mid-scanline")
+        L.append(f"SCX writes (used for split-scroll effects) may take 2+ dots to propagate.")
         L.append("")
 
     objreg_races = [r for r in races if r['category'] == 'ppu-objreg']
