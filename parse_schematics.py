@@ -76,7 +76,7 @@ class CellType:
     is_memory: bool = False        # RAM/ROM block
     is_pad: bool = False           # I/O pad
     drive_strength: int = 1        # relative drive strength (from _xN suffix)
-    gate_equiv: int = 1    # equivalent gate count for delay estimation
+    gate_equiv: float = 1.0  # equivalent gate stages for delay estimation
 
 
 @dataclass
@@ -120,7 +120,7 @@ class Node:
     category: str = ""      # functional category
     drive_strength: int = 1
     bbox: tuple = ()        # physical coordinates
-    gate_equiv: int = 1     # equivalent gate stages for delay
+    gate_equiv: float = 1.0  # effective gate-equivalents (Elmore-based)
 
 
 @dataclass
@@ -194,6 +194,423 @@ GATE_EQUIVALENTS = {
 def get_drive_strength(type_name: str) -> int:
     m = re.search(r'_x(\d+)$', type_name)
     return int(m.group(1)) if m else 1
+
+
+# ============================================================================
+# Elmore Delay Model (from msinger/dmg-sim timing-default.sv)
+# ============================================================================
+#
+# Computes per-instance propagation delays using an Elmore RC model with
+# parameters from the dmg-sim SystemVerilog simulator.  Wire lengths and
+# transistor widths come from the physical layout; the model gives
+# physically-grounded *relative* delays.  Absolute values are normalised
+# to "effective gate equivalents" (1.0 = NOT_x1 at default wire length)
+# so they plug into the existing 5-15 ns/ge estimation range.
+
+# --- Process constants (timing-default.sv) ---
+_RPRIME_WIRE  = 0.05       # ohm/unit  (wire resistance per layout unit)
+_CPRIME_WIRE  = 0.2e-15    # F/unit    (wire capacitance per layout unit)
+_LEFF_UM      = 1.2        # effective channel length (guessed for DMG)
+_KR_NMOS_REF  = 1.0e4      # ohm·µm at Lref=1.0
+_GAMMA_PN     = 2.0        # PMOS/NMOS resistance ratio
+_CINT_STAGE_F = 0.5e-15    # intrinsic stage capacitance (F)
+_L_UNIT       = 0.454      # Electric VLSI layout units → µm
+
+_KR_NMOS = _KR_NMOS_REF * (_LEFF_UM / 1.0)   # 12000 ohm·µm
+
+def _r_nmos(w_um):
+    """NMOS drive resistance for transistor width w_um (µm)."""
+    return _KR_NMOS / w_um
+
+def _r_pmos(wp_um):
+    """PMOS drive resistance for transistor width wp_um (µm)."""
+    return _GAMMA_PN * _KR_NMOS / wp_um
+
+def _tpd_elmore(L, R_drv, C_extra=0.0):
+    """Elmore propagation delay (seconds) for wire length L and driver R."""
+    Cw = _CPRIME_WIRE * L
+    Rw = _RPRIME_WIRE * L
+    return 0.69 * R_drv * (Cw + _CINT_STAGE_F + C_extra) + 0.38 * Rw * Cw
+
+# Standard transistor width (35 layout units → µm)
+_W_STD = 35 * _L_UNIT    # 15.89 µm
+_RN    = _r_nmos(_W_STD)  # ~755 ohm
+_RP    = _r_pmos(_W_STD)  # ~1510 ohm
+
+# Reference delay: NOT_x1 at MEDIAN wire length for combinatorial gates.
+# The median L_y across ~2300 combinatorial gates in the layout is ~295.
+# This makes 1.0 effective ge = "one typical gate at a typical wire length",
+# which matches the 5-15 ns/ge calibration from Sharp ~5 µm CMOS.
+_L_MEDIAN = 295
+_REF_DELAY = (_tpd_elmore(_L_MEDIAN, _RP) + _tpd_elmore(_L_MEDIAN, _RN)) / 2
+
+# Default wire length when no per-instance data is available
+_L_DEFAULT = _L_MEDIAN
+
+# Cap wire length for delay estimation.  Long wires (chip-spanning signals,
+# bus routing) have L_y up to 39000 layout units, which massively overestimates
+# delay in our path analysis — the Elmore model gives the full RC delay of
+# the wire, but in practice signals are distributed to nearby loads first.
+# Cap at p95 of combinatorial gate wire lengths (~3000 layout units).
+_L_MAX = 3000
+
+
+def _gate_delay_not(L_y, W=35):
+    """NOT inverter (any drive strength).  W is in layout units."""
+    w_um = W * _L_UNIT
+    rise = _tpd_elmore(L_y, _r_pmos(w_um))
+    fall = _tpd_elmore(L_y, _r_nmos(w_um))
+    return max(rise, fall)
+
+def _gate_delay_nand(L_y, n_inputs):
+    """NAND gate with n_inputs series NMOS."""
+    rise = _tpd_elmore(L_y, _RP)                  # parallel PMOS
+    fall = _tpd_elmore(L_y, _RN * n_inputs)       # series NMOS
+    return max(rise, fall)
+
+def _gate_delay_nor(L_y, n_inputs):
+    """NOR gate with n_inputs series PMOS."""
+    rise = _tpd_elmore(L_y, _RP * n_inputs)       # series PMOS
+    fall = _tpd_elmore(L_y, _RN)                  # parallel NMOS
+    return max(rise, fall)
+
+def _gate_delay_and(L_y, n_inputs, L_int=None):
+    """AND = NAND(L_int) + NOT(L_y).  Internal wire lengths from SV cells."""
+    L_int_map = {2: 122, 3: 135, 4: 140}
+    Li = L_int if L_int is not None else L_int_map.get(n_inputs, 122)
+    # NAND stage (internal)
+    t_rise_nand = _tpd_elmore(Li, _RP)
+    t_fall_nand = _tpd_elmore(Li, _RN * n_inputs)
+    # NOT stage (output)
+    t_rise_y = _tpd_elmore(L_y, _RP)
+    t_fall_y = _tpd_elmore(L_y, _RN)
+    rise = t_fall_nand + t_rise_y   # NAND falls → NOT rises
+    fall = t_rise_nand + t_fall_y   # NAND rises → NOT falls
+    return max(rise, fall)
+
+def _gate_delay_or(L_y, n_inputs, L_int=None):
+    """OR = NOR(L_int) + NOT(L_y)."""
+    L_int_map = {2: 122, 3: 135, 4: 140}
+    Li = L_int if L_int is not None else L_int_map.get(n_inputs, 122)
+    t_rise_nor = _tpd_elmore(Li, _RP * n_inputs)
+    t_fall_nor = _tpd_elmore(Li, _RN)
+    t_rise_y = _tpd_elmore(L_y, _RP)
+    t_fall_y = _tpd_elmore(L_y, _RN)
+    rise = t_fall_nor + t_rise_y
+    fall = t_rise_nor + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_xor(L_y):
+    """XOR = NOR-like first stage (L=122) + NOR-like output (L=L_y)."""
+    t_rise_nor = _tpd_elmore(122, _RP * 2)
+    t_fall_nor = _tpd_elmore(122, _RN)
+    t_rise_y = _tpd_elmore(L_y, _RP * 2)
+    t_fall_y = _tpd_elmore(L_y, _RN * 2)
+    rise = t_fall_nor + t_rise_y
+    fall = t_rise_nor + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_xnor(L_y):
+    """XNOR = NAND-like first stage (L=122) + NOR-like output."""
+    t_rise_nand = _tpd_elmore(122, _RP)
+    t_fall_nand = _tpd_elmore(122, _RN * 2)
+    t_rise_y = _tpd_elmore(L_y, _RP * 2)
+    t_fall_y = _tpd_elmore(L_y, _RN * 2)
+    rise = t_fall_nand + t_rise_y
+    fall = t_rise_nand + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_oai21(L_y):
+    """OAI21 = single-stage (OR-AND-Invert), 2-deep PMOS and NMOS stacks."""
+    rise = _tpd_elmore(L_y, _RP * 2)
+    fall = _tpd_elmore(L_y, _RN * 2)
+    return max(rise, fall)
+
+def _gate_delay_ao(L_y, n_or_terms, L_int=None):
+    """AO (AND-OR) = AOI(L_int) + NOT(L_y).  n_or_terms = number of AND groups."""
+    # Internal wire lengths and PMOS stack depths from SV cells.
+    # The PMOS stack depth in the AOI is the number of series PMOS transistors
+    # in the pull-up network, verified against each gate's .sv specify block.
+    L_int_map = {2: 112, 3: 151, 4: 185, 5: 218, 7: 284}
+    pmos_stack = {2: 2, 3: 2, 4: 3, 5: 4, 7: 6}
+    Li = L_int if L_int is not None else L_int_map.get(n_or_terms, 151)
+    t_rise_aoi = _tpd_elmore(Li, _RP * pmos_stack.get(n_or_terms, n_or_terms))
+    t_fall_aoi = _tpd_elmore(Li, _RN * 2)  # 2-deep NMOS in each AND group
+    t_rise_y = _tpd_elmore(L_y, _RP)
+    t_fall_y = _tpd_elmore(L_y, _RN)
+    rise = t_fall_aoi + t_rise_y
+    fall = t_rise_aoi + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_oa21(L_y):
+    """OA21 = OAI(L=112) + NOT(L_y)."""
+    t_rise_oai = _tpd_elmore(112, _RP * 2)
+    t_fall_oai = _tpd_elmore(112, _RN * 2)
+    t_rise_y = _tpd_elmore(L_y, _RP)
+    t_fall_y = _tpd_elmore(L_y, _RN)
+    rise = t_fall_oai + t_rise_y
+    fall = t_rise_oai + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_muxi(L_y):
+    """MUXI (inverting mux) = pass-gate(L=93, W=6) + inverter(L=L_y)."""
+    W_small = 6 * _L_UNIT
+    t_buf = max(_tpd_elmore(93, _r_pmos(W_small)),
+                _tpd_elmore(93, _r_nmos(W_small)))
+    t_rise_y = _tpd_elmore(L_y, _RP)
+    t_fall_y = _tpd_elmore(L_y, _RN)
+    return t_buf + max(t_rise_y, t_fall_y)
+
+def _gate_delay_mux(L_y):
+    """MUX (non-inverting) = sel_inv(33,W=6) + pass-gate(93,W=6) + muxi(116) + inv(L_y)."""
+    W_small = 6 * _L_UNIT
+    t_sel = max(_tpd_elmore(33, _r_pmos(W_small)),
+                _tpd_elmore(33, _r_nmos(W_small)))
+    t_buf = max(_tpd_elmore(93, _r_pmos(W_small)),
+                _tpd_elmore(93, _r_nmos(W_small)))
+    t_muxi = max(_tpd_elmore(116, _RP), _tpd_elmore(116, _RN))
+    t_out = max(_tpd_elmore(L_y, _RP), _tpd_elmore(L_y, _RN))
+    # Worst case: sel path through all stages
+    return max(t_sel + t_buf, t_buf) + t_muxi + t_out
+
+def _gate_delay_not_if(L_y, W_y_p=35):
+    """NOT_IF0/NOT_IF1 (tri-state inverter).  Data path: in→y."""
+    w_p_um = W_y_p * _L_UNIT
+    rise = _tpd_elmore(L_y, _r_pmos(w_p_um) * 2)  # 2-deep pass + drive
+    fall = _tpd_elmore(L_y, _RN * 2)
+    return max(rise, fall)
+
+def _gate_delay_buf_if0(L_y):
+    """BUF_IF0 (tri-state buffer) = NAND(152) + output(L_y, W=70)."""
+    W_buf = 70 * _L_UNIT
+    t_rise_nand = _tpd_elmore(152, _RP)
+    t_fall_nand = _tpd_elmore(152, _RN * 2)
+    t_rise_nor = _tpd_elmore(125, _RP * 2)
+    t_rise_y = _tpd_elmore(L_y, _r_pmos(W_buf))
+    t_fall_y = _tpd_elmore(L_y, _r_nmos(W_buf))
+    rise = t_fall_nand + t_rise_y
+    fall = t_rise_nor + t_fall_y
+    return max(rise, fall)
+
+def _gate_delay_half_add(L_y, L_sum=None, L_cout=None):
+    """Half adder: AND2(L_cout) for carry, XOR(L_sum) for sum."""
+    Ls = L_sum if L_sum is not None else L_y
+    Lc = L_cout if L_cout is not None else L_y
+    t_sum = _gate_delay_xor(Ls)
+    t_cout = _gate_delay_and(Lc, 2)
+    return max(t_sum, t_cout)
+
+def _gate_delay_full_add(L_y, L_sum=None, L_cout=None):
+    """Full adder carry and sum delay.
+
+    Topology from full_add.sv:
+      axb  = XOR(a, b)         L=296
+      ab   = NAND2(a, b)       L=119
+      caxb = NAND2(cin, axb)   L=120
+      cout = NAND2(ab, caxb)   L=L_cout
+      sum  = XOR(axb, cin)     L=L_sum
+
+    Carry path (a→cout): max(XOR(296), NAND(119)) + NAND(120) + NAND(L_cout)
+    Carry path (cin→cout): NAND(120) + NAND(L_cout)
+    Sum path (a→sum): XOR(296) + XOR(L_sum)
+    Sum path (cin→sum): XOR(L_sum)
+
+    We return the worst-case delay across all input-to-output paths.
+    """
+    Ls = L_sum if L_sum is not None else L_y
+    Lc = L_cout if L_cout is not None else L_y
+    # First stage: a,b → axb (XOR) and a,b → ab (NAND2) in parallel
+    t_xor_axb = _gate_delay_xor(296)
+    t_nand_ab = _gate_delay_nand(119, 2)
+    t_first = max(t_xor_axb, t_nand_ab)
+    # Second stage: cin,axb → caxb (NAND2)
+    t_nand_caxb = _gate_delay_nand(120, 2)
+    # Third stage: ab,caxb → cout (NAND2)
+    t_nand_cout = _gate_delay_nand(Lc, 2)
+    # Carry path from a: first stage + caxb + cout
+    t_carry_a = t_first + t_nand_caxb + t_nand_cout
+    # Carry path from cin: caxb + cout (cin feeds caxb directly)
+    t_carry_cin = t_nand_caxb + t_nand_cout
+    # Sum path from a: XOR(296) + XOR(L_sum)
+    t_sum_a = t_xor_axb + _gate_delay_xor(Ls)
+    # Sum path from cin: XOR(L_sum) (cin feeds sum XOR directly)
+    t_sum_cin = _gate_delay_xor(Ls)
+    return max(t_carry_a, t_carry_cin, t_sum_a, t_sum_cin)
+
+
+def compute_elmore_delay(gate_type, params):
+    """Compute Elmore delay for a gate instance, return effective gate equivalents.
+
+    Args:
+        gate_type: cell type name (e.g. "nand2", "not_x1")
+        params: dict of per-instance parameters from dmg_cpu_b.sv
+                (e.g. {"L_y": 532.4, "W_y": 140})
+
+    Returns:
+        float: delay normalised to effective gate equivalents
+               (1.0 = NOT_x1 at median wire length)
+    """
+    L_y = min(params.get('L_y', _L_DEFAULT), _L_MAX)
+
+    if gate_type in ('not_x1',):
+        delay = _gate_delay_not(L_y, W=35)
+    elif gate_type == 'not_x2':
+        delay = _gate_delay_not(L_y, W=70)
+    elif gate_type == 'not_x3':
+        delay = _gate_delay_not(L_y, W=105)
+    elif gate_type == 'not_x4':
+        W = params.get('W_y', 140)
+        delay = _gate_delay_not(L_y, W=W)
+    elif gate_type == 'not_x6':
+        W = params.get('W_y', 210)
+        delay = _gate_delay_not(L_y, W=W)
+    elif gate_type in ('nand2', 'eco_nand2'):
+        delay = _gate_delay_nand(L_y, 2)
+    elif gate_type == 'nand3':
+        delay = _gate_delay_nand(L_y, 3)
+    elif gate_type == 'nand4':
+        delay = _gate_delay_nand(L_y, 4)
+    elif gate_type == 'nand5':
+        delay = _gate_delay_nand(L_y, 5)
+    elif gate_type == 'nand6':
+        delay = _gate_delay_nand(L_y, 6)
+    elif gate_type == 'nand7':
+        delay = _gate_delay_nand(L_y, 7)
+    elif gate_type == 'nor2':
+        delay = _gate_delay_nor(L_y, 2)
+    elif gate_type == 'nor3':
+        delay = _gate_delay_nor(L_y, 3)
+    elif gate_type == 'nor4':
+        delay = _gate_delay_nor(L_y, 4)
+    elif gate_type == 'nor5':
+        delay = _gate_delay_nor(L_y, 5)
+    elif gate_type == 'nor6':
+        delay = _gate_delay_nor(L_y, 6)
+    elif gate_type == 'nor8':
+        delay = _gate_delay_nor(L_y, 8)
+    elif gate_type == 'and2':
+        delay = _gate_delay_and(L_y, 2)
+    elif gate_type == 'and3':
+        delay = _gate_delay_and(L_y, 3)
+    elif gate_type == 'and4':
+        delay = _gate_delay_and(L_y, 4)
+    elif gate_type == 'or2':
+        delay = _gate_delay_or(L_y, 2)
+    elif gate_type == 'or3':
+        delay = _gate_delay_or(L_y, 3)
+    elif gate_type == 'or4':
+        delay = _gate_delay_or(L_y, 4)
+    elif gate_type == 'xor':
+        delay = _gate_delay_xor(L_y)
+    elif gate_type == 'xnor':
+        delay = _gate_delay_xnor(L_y)
+    elif gate_type == 'oai21':
+        delay = _gate_delay_oai21(L_y)
+    elif gate_type == 'ao21':
+        delay = _gate_delay_ao(L_y, 2, L_int=112)
+    elif gate_type == 'ao22':
+        delay = _gate_delay_ao(L_y, 3, L_int=151)
+    elif gate_type == 'ao222':
+        delay = _gate_delay_ao(L_y, 4, L_int=185)
+    elif gate_type == 'ao2222':
+        delay = _gate_delay_ao(L_y, 5, L_int=218)
+    elif gate_type == 'ao222222':
+        delay = _gate_delay_ao(L_y, 7, L_int=284)
+    elif gate_type == 'oa21':
+        delay = _gate_delay_oa21(L_y)
+    elif gate_type == 'muxi':
+        delay = _gate_delay_muxi(L_y)
+    elif gate_type == 'mux':
+        delay = _gate_delay_mux(L_y)
+    elif gate_type in ('not_if0', 'not_if1'):
+        W_y_p = params.get('W_y_p', 35)
+        delay = _gate_delay_not_if(L_y, W_y_p=W_y_p)
+    elif gate_type == 'buf_if0':
+        delay = _gate_delay_buf_if0(L_y)
+    elif gate_type == 'half_add':
+        delay = _gate_delay_half_add(L_y,
+                                     L_sum=params.get('L_sum'),
+                                     L_cout=params.get('L_cout'))
+    elif gate_type == 'full_add':
+        delay = _gate_delay_full_add(L_y,
+                                     L_sum=params.get('L_sum'),
+                                     L_cout=params.get('L_cout'))
+    else:
+        # Unknown gate type — fall back to NOT_x1-equivalent at this wire length
+        delay = _gate_delay_not(L_y)
+
+    return delay / _REF_DELAY
+
+
+# ============================================================================
+# dmg-sim instance parameter extraction
+# ============================================================================
+
+# Path to dmg-sim SystemVerilog netlist with per-instance wire lengths
+DMG_SIM_SV = Path(__file__).parent / "dmg-schematics" / ".." / "dmg-sim" / "dmg_cpu_b" / "dmg_cpu_b.sv"
+# Also try common locations
+DMG_SIM_SEARCH_PATHS = [
+    Path(__file__).parent / "dmg-sim" / "dmg_cpu_b" / "dmg_cpu_b.sv",
+    Path.home() / "Projects" / "missingno" / "receipts" / "resources" / "dmg-sim" / "dmg_cpu_b" / "dmg_cpu_b.sv",
+]
+
+
+def parse_dmg_sim_params(sv_path=None):
+    """Parse dmg_cpu_b.sv to extract per-instance parameters (L_y, W_y, etc.).
+
+    Returns:
+        dict: instance_name → {param_name: value, ...}
+              e.g. {"abez": {"L_y": 1180.438}, "ajec": {"L_y": 38893.62, "W_y_p": 310}}
+    """
+    # Find the SV file
+    if sv_path and Path(sv_path).exists():
+        path = Path(sv_path)
+    elif DMG_SIM_SV.exists():
+        path = DMG_SIM_SV
+    else:
+        for p in DMG_SIM_SEARCH_PATHS:
+            if p.exists():
+                path = p
+                break
+        else:
+            return {}
+
+    text = path.read_text()
+
+    # Parse instantiations like:
+    #   dmg_nand2 #(
+    #       .L_y(32.40649)
+    #   ) abuf_inst (
+    #
+    # or multi-param:
+    #   dmg_full_add #(
+    #       .L_cout(150.3436),
+    #       .L_sum(132.5468)
+    #   ) abod_inst (
+
+    instances = {}
+
+    # Match: module_name #( params ) instance_name (
+    # Negative lookbehind prevents matching the module definition itself.
+    pattern = re.compile(
+        r'(?<!module )dmg_\w+\s*#\s*\((.*?)\)\s*(\w+)_inst\s*\(',
+        re.DOTALL
+    )
+
+    for m in pattern.finditer(text):
+        param_block = m.group(1)
+        inst_name = m.group(2)
+
+        params = {}
+        for pm in re.finditer(r'\.(\w+)\s*\(\s*([0-9.eE+-]+)\s*\)', param_block):
+            param_name = pm.group(1)
+            param_value = float(pm.group(2))
+            params[param_name] = param_value
+
+        if params:
+            instances[inst_name] = params
+
+    return instances
 
 
 # ============================================================================
@@ -299,7 +716,7 @@ def _finalize_type(types: dict, first_line: str, full_text: str):
         ct.is_pad = True
 
     ct.drive_strength = get_drive_strength(name)
-    ct.gate_equiv = GATE_EQUIVALENTS.get(name, 1)
+    ct.gate_equiv = float(GATE_EQUIVALENTS.get(name, 1))
 
     types[name] = ct
 
@@ -511,7 +928,7 @@ def _parse_pin_refs(text: str) -> list:
 # Graph construction
 # ============================================================================
 
-def build_graph(cell_types: dict, cells: list, wires: list):
+def build_graph(cell_types: dict, cells: list, wires: list, sim_params=None):
     """Build a signal dependency graph from parsed cells and wires.
 
     Each cell becomes one or more nodes:
@@ -520,9 +937,14 @@ def build_graph(cell_types: dict, cells: list, wires: list):
     - Tri-state cells: one node
 
     Wires create edges from driver cell outputs to sink cell inputs.
+
+    If sim_params is provided (from parse_dmg_sim_params), per-instance Elmore
+    delays are computed and stored as effective gate equivalents on each node.
     """
     nodes = {}
     edges = []
+    if sim_params is None:
+        sim_params = {}
 
     # Index cells by name
     cell_index = {}
@@ -582,6 +1004,18 @@ def build_graph(cell_types: dict, cells: list, wires: list):
             node_type = "combinatorial"
             reg_type = ""
 
+        # Compute per-instance delay from Elmore model if sim params available.
+        # Registered nodes are path terminators (depth=0), so their gate_equiv
+        # doesn't affect path analysis — skip the computation.
+        if ct.is_registered:
+            ge = ct.gate_equiv
+        else:
+            inst_params = sim_params.get(cell.name, {})
+            if inst_params:
+                ge = compute_elmore_delay(cell.cell_type, inst_params)
+            else:
+                ge = ct.gate_equiv
+
         node = Node(
             name=cell.name,
             node_type=node_type,
@@ -593,7 +1027,7 @@ def build_graph(cell_types: dict, cells: list, wires: list):
             bbox=cell.bbox,
             gate_func=cell.cell_type,
             drive_strength=ct.drive_strength,
-            gate_equiv=ct.gate_equiv,
+            gate_equiv=ge,
         )
         nodes[cell.name] = node
 
@@ -794,7 +1228,7 @@ def export_graph_json(nodes: dict, edges: list, cell_types: dict,
             "cell_type": n.cell_type,
             "category": n.category,
             "drive_strength": n.drive_strength,
-            "gate_equiv": n.gate_equiv,
+            "gate_equiv": round(n.gate_equiv, 2),
         }
         if n.bbox:
             entry["bbox"] = list(n.bbox)
@@ -907,7 +1341,7 @@ def build_networkx_graph(nodes: dict, edges: list):
             'cell_type': n.cell_type,
             'category': n.category,
             'drive_strength': n.drive_strength,
-            'gate_equiv': n.gate_equiv,
+            'gate_equiv': round(n.gate_equiv, 2),
             'source_file': n.source_file,
             'source_line': n.source_line,
             'comment': n.comment,
@@ -933,7 +1367,9 @@ def compute_depths(G):
     """Compute longest combinatorial depth to each node without building a DAG.
 
     Registered/bus/boundary/pad nodes have depth 0 (they're path boundaries).
-    Combinatorial nodes get depth = max(predecessor depths) + gate_equiv.
+    Combinatorial nodes get depth = max(predecessor depths) + gate_equiv,
+    where gate_equiv is a float representing effective gate-equivalents
+    computed from the Elmore delay model (wire length + gate topology).
 
     Uses iterative relaxation with cycle detection: if a node appears in its
     own predecessor path, that's a combinatorial feedback loop and we skip it.
@@ -945,10 +1381,10 @@ def compute_depths(G):
 
     for n in G.nodes():
         if is_path_terminator(G, n):
-            depth[n] = 0
+            depth[n] = 0.0
             path[n] = [n]
         else:
-            depth[n] = -1
+            depth[n] = -1.0
             path[n] = []
 
     changed = True
@@ -960,14 +1396,14 @@ def compute_depths(G):
             if is_path_terminator(G, n):
                 continue
 
-            best_d = -1
+            best_d = -1.0
             best_path = []
             best_pred = ''
             for pred in sorted(G.predecessors(n)):
                 edge_data = G.edges[pred, n]
                 if edge_data.get('edge_type') in ('clock', 'reset'):
                     continue
-                pd = depth.get(pred, -1)
+                pd = depth.get(pred, -1.0)
                 pp = path.get(pred, [])
                 # Skip if this would create a cycle (n is already in the path)
                 if n in pp:
@@ -979,7 +1415,7 @@ def compute_depths(G):
                     best_pred = pred
 
             if best_d >= 0:
-                ge = G.nodes[n].get('gate_equiv', 1)
+                ge = G.nodes[n].get('gate_equiv', 1.0)
                 new_d = best_d + ge
                 if new_d > depth[n]:
                     depth[n] = new_d
@@ -1005,22 +1441,79 @@ def find_critical_paths(G):
             edge_data = G.edges[pred, n]
             if edge_data.get('edge_type') in ('clock', 'reset'):
                 continue
-            d = depth.get(pred, 0)
+            d = depth.get(pred, 0.0)
             p = path.get(pred, [])
-            if d >= 1:
+            if d >= 0.5:
                 paths.append((d, p + [n]))
 
     paths.sort(key=lambda x: -x[0])
 
-    # Deduplicate by (start, end, depth)
+    # Deduplicate by (start, end, rounded depth)
     seen = set()
     unique = []
     for d, p in paths:
-        key = (p[0], p[-1], d)
+        key = (p[0], p[-1], round(d, 2))
         if key not in seen:
             seen.add(key)
             unique.append((d, p))
     return unique
+
+
+# Timing deadlines by functional category (in T-cycles).
+# Slack = deadline - max_depth.  Lower slack = more critical.
+#
+# Per-dot:  PPU registers that update every pixel during rendering.
+#           Deadline = 1 T-cycle (238.4 ns) — must settle within one dot.
+# Per-line: PPU registers that update once per scanline (at LY increment
+#           or during OAM scan).  Deadline = ~4 T-cycles (~953 ns).
+# Bus:      CPU bus transfers.  Deadline = 1 M-cycle (4 T-cycles).
+# Loose:    APU, timer, serial — many T-cycles of slack.
+HALF_TCYCLE_NS = 119.2
+TCYCLE_NS = 238.4
+MCYCLE_NS = TCYCLE_NS * 4    # 953.6 ns
+
+DEADLINE_BY_CATEGORY = {
+    # Per-dot PPU — tightest deadline
+    'ppu-bgfifo':    TCYCLE_NS,
+    'ppu-objfifo':   TCYCLE_NS,
+    'ppu-mux':       TCYCLE_NS,
+    'ppu-xcomp':     TCYCLE_NS,
+    'ppu-xprio':     TCYCLE_NS,
+    'ppu-cycles':    TCYCLE_NS,
+    'ppu-bgscroll':  TCYCLE_NS,
+    'ppu-stat':      TCYCLE_NS,     # pixel counter increments per dot
+    # Per-line PPU — moderate deadline
+    'ppu-ycomp':     MCYCLE_NS,     # once per scanline at LY increment
+    'ppu-objctl':    MCYCLE_NS,     # sprite store during OAM scan
+    'ppu-objreg':    MCYCLE_NS,     # sprite store latches
+    'ppu-oam':       MCYCLE_NS,
+    'ppu-dma':       MCYCLE_NS,
+    'ppu-window':    TCYCLE_NS,     # window trigger checked per dot
+    'ppu-lcd':       MCYCLE_NS,
+    'ppu-control':   MCYCLE_NS,
+    'ppu-vram':      MCYCLE_NS,
+    'ppu-decode':    MCYCLE_NS,
+    'ppu-pal':       MCYCLE_NS,
+    # Bus — full M-cycle
+    'bus':           MCYCLE_NS,
+    'bus-data':      MCYCLE_NS,
+    'bus-adr':       MCYCLE_NS,
+    # Loose — many cycles of slack
+    'apu-ch1':       MCYCLE_NS * 4,
+    'apu-ch2':       MCYCLE_NS * 4,
+    'apu-ch3':       MCYCLE_NS * 4,
+    'apu-ch4':       MCYCLE_NS * 4,
+    'apu-control':   MCYCLE_NS * 4,
+    'apu-decode':    MCYCLE_NS * 4,
+    'timer':         MCYCLE_NS * 4,
+    'serial':        MCYCLE_NS * 4,
+    'joypad':        MCYCLE_NS * 4,
+    'clocks':        MCYCLE_NS,
+    'int':           MCYCLE_NS,
+    'test':          MCYCLE_NS * 16,
+    'bootrom':       MCYCLE_NS * 4,
+}
+DEFAULT_DEADLINE_NS = MCYCLE_NS
 
 
 def find_race_pairs(G):
@@ -1030,6 +1523,10 @@ def find_race_pairs(G):
     because the race is between ANY inputs that must settle before the register
     captures. For example, a latch's enable signal (classified as 'clock')
     races against its data input.
+
+    Each race includes a slack estimate: deadline_ge - max_depth, where
+    deadline_ge is the timing budget in effective gate-equivalents.
+    Lower (or negative) slack = more critical.
     """
     depth, _ = compute_depths(G)
 
@@ -1043,29 +1540,42 @@ def find_race_pairs(G):
         if len(preds) < 2:
             continue
 
-        pred_depths = [(p, depth.get(p, 0)) for p in preds]
+        pred_depths = [(p, depth.get(p, 0.0)) for p in preds]
         pred_depths.sort(key=lambda x: (-x[1], x[0]))  # depth desc, name asc for ties
 
         max_d = pred_depths[0][1]
         min_d = pred_depths[-1][1]
         diff = max_d - min_d
 
-        if diff >= 3 and max_d >= 4:
+        # Thresholds scaled for Elmore model where a typical gate ≈ 1.3 ge
+        if diff >= 4.0 and max_d >= 5.0:
+            cat = G.nodes[n].get('category', '')
+            deadline_ns = DEADLINE_BY_CATEGORY.get(cat, DEFAULT_DEADLINE_NS)
+            # Timing domain label
+            if deadline_ns <= TCYCLE_NS:
+                timing_domain = 'per-dot'
+            elif deadline_ns <= MCYCLE_NS:
+                timing_domain = 'per-line'
+            else:
+                timing_domain = 'loose'
+
             races.append({
                 'node': n,
                 'display_name': n,
                 'node_type': G.nodes[n].get('node_type', ''),
                 'reg_type': G.nodes[n].get('reg_type', ''),
                 'cell_type': G.nodes[n].get('cell_type', ''),
-                'category': G.nodes[n].get('category', ''),
+                'category': cat,
                 'source_file': G.nodes[n].get('source_file', ''),
-                'depth_diff': diff,
-                'max_depth': max_d,
-                'min_depth': min_d,
+                'depth_diff': round(diff, 2),
+                'max_depth': round(max_d, 2),
+                'min_depth': round(min_d, 2),
+                'deadline_ns': deadline_ns,
+                'timing_domain': timing_domain,
                 'inputs': [
                     {
                         'name': p,
-                        'depth': d,
+                        'depth': round(d, 2),
                         'gate_func': G.nodes[p].get('gate_func', ''),
                         'cell_type': G.nodes[p].get('cell_type', ''),
                         'node_type': G.nodes[p].get('node_type', ''),
@@ -1075,7 +1585,10 @@ def find_race_pairs(G):
                 ],
             })
 
-    races.sort(key=lambda x: (-x['depth_diff'], -x['max_depth']))
+    # Sort by timing criticality: per-dot races first, then by depth_diff descending
+    domain_order = {'per-dot': 0, 'per-line': 1, 'loose': 2}
+    races.sort(key=lambda x: (domain_order.get(x['timing_domain'], 3),
+                               -x['depth_diff'], -x['max_depth']))
     return races
 
 
@@ -1672,13 +2185,13 @@ def is_reset_path_schematic(path, G):
 def export_paths_json(paths, G, races=None, clock_domains=None):
     """Export critical paths and races in format compatible with build_explorer.py."""
     HALF_TCYCLE_NS = 119.2
-    GATE_DELAY_MIN = 5   # ns
-    GATE_DELAY_MAX = 15  # ns
+    GATE_DELAY_MIN = 5   # ns per effective gate-equivalent
+    GATE_DELAY_MAX = 15  # ns per effective gate-equivalent
 
     path_list = []
     for depth, path in paths:
-        min_ns = depth * GATE_DELAY_MIN
-        max_ns = depth * GATE_DELAY_MAX
+        min_ns = round(depth * GATE_DELAY_MIN, 1)
+        max_ns = round(depth * GATE_DELAY_MAX, 1)
         pct = max_ns / HALF_TCYCLE_NS * 100
 
         path_nodes = []
@@ -1692,12 +2205,12 @@ def export_paths_json(paths, G, races=None, clock_domains=None):
                 'cell_type': nd.get('cell_type', ''),
                 'category': nd.get('category', ''),
                 'drive_strength': nd.get('drive_strength', 1),
-                'gate_equiv': nd.get('gate_equiv', 1),
+                'gate_equiv': round(nd.get('gate_equiv', 1.0), 2),
                 'fan_out': G.out_degree(n),
             })
 
         entry = {
-            'depth': depth,
+            'depth': round(depth, 2),
             'min_delay_ns': min_ns,
             'max_delay_ns': max_ns,
             'pct_half_tcycle': round(pct, 1),
@@ -1871,8 +2384,9 @@ def format_report(paths, G, races):
     L.append("| Master clock | 4.194304 MHz |")
     L.append("| T-cycle (one dot) | ~238.4 ns |")
     L.append("| Half T-cycle | ~119.2 ns |")
-    L.append("| Gate delay (Sharp ~5 um CMOS) | 5-15 ns |")
-    L.append("| Gate-equivalent counting | NOT=1, AND/OR=2, MUX=3, XOR=3, full_add=4 |")
+    L.append("| Gate delay (Sharp ~5 µm CMOS) | 5-15 ns per effective ge |")
+    L.append("| Delay model | Elmore RC (per-instance wire length + gate topology) |")
+    L.append("| Effective ge unit | NOT_x1 at median wire length = 1.0 ge |")
     L.append("")
     L.append("## Overview")
     L.append("")
@@ -1882,10 +2396,10 @@ def format_report(paths, G, races):
     L.append("")
     L.append("| Category | Paths | Max Depth | Worst-case Delay |")
     L.append("|----------|-------|-----------|-----------------|")
-    L.append(f"| **Operational** | {len(op_paths)} | {op_max} ge | {op_max*GATE_DELAY_MAX} ns ({op_max*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% half T-cycle) |")
-    L.append(f"| Reset-only | {len(reset_paths)} | {rst_max} ge | {rst_max*GATE_DELAY_MAX} ns |")
+    L.append(f"| **Operational** | {len(op_paths)} | {op_max:.1f} ge | {op_max*GATE_DELAY_MAX:.0f} ns ({op_max*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% half T-cycle) |")
+    L.append(f"| Reset-only | {len(reset_paths)} | {rst_max:.1f} ge | {rst_max*GATE_DELAY_MAX:.0f} ns |")
     L.append(f"| **Total paths** | {len(paths)} | | |")
-    L.append(f"| **Race pairs** | {len(races)} ({ppu_races} PPU) | max diff {races[0]['depth_diff'] if races else 0} | |")
+    L.append(f"| **Race pairs** | {len(races)} ({ppu_races} PPU) | max diff {races[0]['depth_diff'] if races else 0} ge | |")
     L.append("")
 
     # === Key Findings — ordered by impact, not depth ===
@@ -1896,12 +2410,11 @@ def format_report(paths, G, races):
     L.append("")
     sacu_depth = depth_map.get('sacu', 0)
     sacu_fo = fanout.get('sacu', 0)
-    L.append(f"`sacu` is an OR2 gate at static depth {sacu_depth} (fan-out **{sacu_fo}**).")
+    L.append(f"`sacu` is an OR2 gate at effective depth {sacu_depth:.1f} ge")
+    L.append(f"({sacu_depth*GATE_DELAY_MIN:.0f}-{sacu_depth*GATE_DELAY_MAX:.0f} ns, fan-out **{sacu_fo}**).")
     L.append("It is the pixel pipe shift clock (CLKPIPE) — the single most impactful")
-    L.append("signal for emulator accuracy. During normal rendering, the effective")
-    L.append("operational depth is ~16 ge (the reset chain input is stable); the static")
-    L.append(f"depth of {sacu_depth} includes the reset inverter chain which only changes on")
-    L.append("LCDC toggle or system reset.")
+    L.append("signal for emulator accuracy. The static depth includes the reset inverter")
+    L.append("chain which only changes on LCDC toggle or system reset.")
     L.append("")
 
     # What CLKPIPE drives
@@ -1943,12 +2456,11 @@ def format_report(paths, G, races):
     L.append("**The core problem:**")
     L.append("")
     L.append("All pixel pipe data (BG tile bits, sprite tile bits, palette/priority)")
-    L.append("is loaded into the pipe shift registers at depth 0-5. But CLKPIPE, which")
-    L.append("triggers the shift, must wait for the sprite X priority check (depth 10),")
-    L.append("the H-blank detection (depth 13), and the PPU clock phase (depth 8)")
-    L.append("before it can fire. The effective operational delay is ~16 ge")
-    L.append(f"({16*GATE_DELAY_MIN}-{16*GATE_DELAY_MAX} ns), during which the pipe data")
-    L.append("is ready and waiting.")
+    L.append("is loaded into the pipe shift registers at low depth. But CLKPIPE, which")
+    L.append("triggers the shift, must wait for the sprite X priority check,")
+    L.append("the H-blank detection, and the PPU clock phase before it can fire.")
+    L.append(f"At depth {sacu_depth:.1f} ge ({sacu_depth*GATE_DELAY_MIN:.0f}-{sacu_depth*GATE_DELAY_MAX:.0f} ns),")
+    L.append("the pipe data is ready and waiting.")
     L.append("")
     L.append("A behavioral emulator applies the shift and data load simultaneously.")
     L.append("On real hardware, the data is stable before the shift happens — meaning")
@@ -1958,32 +2470,34 @@ def format_report(paths, G, races):
     L.append("")
 
     # Show the input tree as a diagram, not just the single deepest path
+    # Build CLKPIPE tree dynamically with computed depths
+    def _tree_depth(name):
+        return depth_map.get(name, 0)
+
     L.append(f"**CLKPIPE input tree** (`sacu` = OR2):")
     L.append("")
     L.append("```")
-    L.append("sacu [or2] — Pixel Shift Clock (CLKPIPE)")
-    L.append("├── roxy [nor_latch] — Fine Scroll Done (depth 0, registered)")
-    L.append("└── segu [not_x4] — CLKPIPE buffer (depth 17)")
-    L.append("    └── tyfa [and3] — CLKPIPE gate (depth 16)")
-    L.append("        ├── poky [nor_latch] — Pixel Pipe Done (depth 0, registered)")
-    L.append("        ├── socy (depth 14) — through reset inverter chain")
-    L.append("        │   └── ... xapo [Video Reset] → pyry → rydy → sylo → tomu → socy")
-    L.append("        │   (stable during rendering — only changes on LCDC toggle/reset)")
-    L.append("        └── vybo [nor3] (depth 14) — OPERATIONAL path, active every dot:")
-    L.append("            ├── fepo [or2] — sprite X priority match (depth 10)")
-    L.append("            │   └── 10 sprite X comparators (NAND5+NAND3 trees)")
-    L.append("            ├── myvo — PPU clock phase (depth 8)")
-    L.append("            └── wodu [and2] — H-blank gate (depth 13)")
-    L.append("                └── pixel counter X == 160 check (NAND5)")
+    L.append(f"sacu [or2] — Pixel Shift Clock (CLKPIPE) (depth {_tree_depth('sacu'):.1f})")
+    L.append(f"├── roxy [nor_latch] — Fine Scroll Done (depth 0, registered)")
+    L.append(f"└── segu [not_x4] — CLKPIPE buffer (depth {_tree_depth('segu'):.1f})")
+    L.append(f"    └── tyfa [and3] — CLKPIPE gate (depth {_tree_depth('tyfa'):.1f})")
+    L.append(f"        ├── poky [nor_latch] — Pixel Pipe Done (depth 0, registered)")
+    L.append(f"        ├── socy (depth {_tree_depth('socy'):.1f}) — through reset inverter chain")
+    L.append(f"        │   └── ... xapo [Video Reset] → pyry → rydy → sylo → tomu → socy")
+    L.append(f"        │   (stable during rendering — only changes on LCDC toggle/reset)")
+    L.append(f"        └── vybo [nor3] (depth {_tree_depth('vybo'):.1f}) — OPERATIONAL path, active every dot:")
+    L.append(f"            ├── fepo [or2] — sprite X priority match (depth {_tree_depth('fepo'):.1f})")
+    L.append(f"            │   └── 10 sprite X comparators (NAND5+NAND3 trees)")
+    L.append(f"            ├── myvo — PPU clock phase (depth {_tree_depth('myvo'):.1f})")
+    L.append(f"            └── wodu [and2] — H-blank gate (depth {_tree_depth('wodu'):.1f})")
+    L.append(f"                └── pixel counter X == 160 check (NAND5)")
     L.append("```")
     L.append("")
     L.append("During normal rendering, the reset chain (`socy`) is stable — it only")
     L.append("changes on system reset or LCDC bit 7 toggle. The actual per-dot delay")
     L.append("comes from `vybo`, which combines three signals that change every dot:")
     L.append("the sprite X priority match result, the PPU clock phase, and the H-blank")
-    L.append("detection. The sprite X priority path (depth 10) is the deepest of these —")
-    L.append("it must check all 10 stored sprite X positions against the current pixel")
-    L.append("counter before CLKPIPE can fire.")
+    L.append("detection.")
     L.append("")
 
     if clkpipe_late:
@@ -2008,12 +2522,12 @@ def format_report(paths, G, races):
         deepest_d, deepest_p = deepest
         adders_in_deepest = [n for n in deepest_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
 
-        L.append(f"### 2. Deepest Operational Path: {deepest_d} Gate-equivalents")
+        L.append(f"### 2. Deepest Operational Path: {deepest_d:.1f} Effective Gate-equivalents")
         L.append("")
         L.append(f"The longest operational combinatorial chain runs from {_friendly(names, deepest_p[0])}")
         L.append(f"to {_friendly(names, deepest_p[-1])}, passing through")
         L.append(f"{len(adders_in_deepest)} adder cells and {len(deepest_p)-2} total combinatorial gates.")
-        L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN}-{deepest_d*GATE_DELAY_MAX} ns")
+        L.append(f"Worst-case delay: {deepest_d*GATE_DELAY_MIN:.0f}-{deepest_d*GATE_DELAY_MAX:.0f} ns")
         L.append(f"({deepest_d*GATE_DELAY_MAX/HALF_TCYCLE_NS*100:.0f}% of half T-cycle).")
         L.append("")
         L.append("This path fires once per scanline (when LY increments), not per dot.")
@@ -2030,9 +2544,9 @@ def format_report(paths, G, races):
         L.append("```")
         L.append("")
         if len(adders_in_deepest) >= 4:
-            L.append(f"The {len(adders_in_deepest)}-stage ripple carry adder chain dominates this path.")
-            L.append(f"Each full_add costs 4 gate-equivalents, accounting for")
-            L.append(f"{len(adders_in_deepest)*4} of the {deepest_d} total depth.")
+            adder_ge = sum(G.nodes[n].get('gate_equiv', 1.0) for n in adders_in_deepest)
+            L.append(f"The {len(adders_in_deepest)}-stage ripple carry adder chain dominates this path,")
+            L.append(f"contributing {adder_ge:.1f} of the {deepest_d:.1f} total effective ge.")
             L.append("")
 
     # VRAM address adder
@@ -2041,36 +2555,37 @@ def format_report(paths, G, races):
     if vram_addr_paths:
         vp_d, vp_p = vram_addr_paths[0]
         vp_adders = [n for n in vp_p if G.nodes.get(n, {}).get('cell_type') in ('half_add', 'full_add')]
-        L.append(f"### 3. VRAM Address Adder ({vp_d} ge)")
+        L.append(f"### 3. VRAM Address Adder ({vp_d:.1f} ge)")
         L.append("")
         L.append(f"The VRAM tile map address is computed from LY + SCY (or pixel X + SCX)")
-        L.append(f"via an 8-bit ripple carry adder ({len(vp_adders)} adder stages, depth {vp_d} ge).")
+        L.append(f"via an 8-bit ripple carry adder ({len(vp_adders)} adder stages, depth {vp_d:.1f} ge).")
         L.append(f"The carry chain means the high address bits settle last —")
-        L.append(f"the VRAM address may not be valid until {vp_d*GATE_DELAY_MIN}-{vp_d*GATE_DELAY_MAX} ns")
+        L.append(f"the VRAM address may not be valid until {vp_d*GATE_DELAY_MIN:.0f}-{vp_d*GATE_DELAY_MAX:.0f} ns")
         L.append(f"after the inputs change. In practice, LY and SCY are stable for the full")
         L.append(f"scanline so the address settles well before fetch begins. But mid-scanline")
         L.append(f"SCX writes (used for split-scroll effects) may take 2+ dots to propagate.")
         L.append("")
         L.append(f"> **Emulator guidance:** Don't apply mid-scanline SCX writes instantly.")
-        L.append(f"> The VRAM address takes {vp_d*GATE_DELAY_MIN}-{vp_d*GATE_DELAY_MAX} ns to settle,")
+        L.append(f"> The VRAM address takes {vp_d*GATE_DELAY_MIN:.0f}-{vp_d*GATE_DELAY_MAX:.0f} ns to settle,")
         L.append(f"> so the new scroll value won't affect tile fetch for 2+ dots.")
         L.append("")
 
     objreg_races = [r for r in races if r['category'] == 'ppu-objreg']
     if objreg_races:
         max_diff = max(r['depth_diff'] for r in objreg_races)
-        L.append(f"### 4. Sprite Store Races (diff={max_diff}, all 10 stores identical)")
+        L.append(f"### 4. Sprite Store Races (diff={max_diff:.1f} ge, all 10 stores identical)")
         L.append("")
         late_cat = objreg_races[0]['inputs'][0].get('category', '')
         late_name = objreg_races[0]['inputs'][0].get('name', '')
+        max_d = objreg_races[0]['max_depth']
         L.append(f"All 10 sprite stores exhibit identical timing races. The store write-enable")
-        L.append(f"signal ({_friendly(names, late_name)}, depth {objreg_races[0]['max_depth']})")
+        L.append(f"signal ({_friendly(names, late_name)}, depth {max_d:.1f} ge)")
         L.append(f"propagates through the sprite Y comparator carry chain and sprite control")
         L.append(f"decode logic before reaching the store latches, while OAM data arrives")
         L.append(f"at the data pin at depth 0 (direct from the OAM bus).")
         L.append(f"")
         L.append(f"At scanline boundaries when the stores are being loaded during OAM scan,")
-        L.append(f"the write-enable arrives {objreg_races[0]['max_depth']*GATE_DELAY_MIN}-{objreg_races[0]['max_depth']*GATE_DELAY_MAX} ns")
+        L.append(f"the write-enable arrives {max_d*GATE_DELAY_MIN:.0f}-{max_d*GATE_DELAY_MAX:.0f} ns")
         L.append(f"after the data. During this window the latch may capture data from the")
         L.append(f"wrong OAM entry — the previous sprite's data instead of the current one.")
         L.append("")
@@ -2082,11 +2597,11 @@ def format_report(paths, G, races):
     xcomp_races = [r for r in races if r['category'] == 'ppu-xcomp']
     if xcomp_races:
         max_diff = max(r['depth_diff'] for r in xcomp_races)
-        L.append(f"### 5. Sprite X Match ({len(xcomp_races)} races, max diff={max_diff})")
+        L.append(f"### 5. Sprite X Match ({len(xcomp_races)} races, max diff={max_diff:.1f} ge)")
         L.append("")
         L.append(f"The sprite X comparators check each sprite's stored X position against the")
         L.append(f"pixel counter on every dot. The comparator result depends on the pixel counter,")
-        L.append(f"which is clocked by CLKPIPE (depth {sacu_depth}). The X match output settles")
+        L.append(f"which is clocked by CLKPIPE (depth {sacu_depth:.1f} ge). The X match output settles")
         L.append(f"at a different time than the fetch control signals, causing sprites to")
         L.append(f"potentially trigger fetch one dot early or late.")
         L.append("")
@@ -2098,7 +2613,7 @@ def format_report(paths, G, races):
     win_races = [r for r in races if r['category'] == 'ppu-window']
     if win_races:
         max_diff = max(r['depth_diff'] for r in win_races)
-        L.append(f"### 6. Window Trigger Races ({len(win_races)} races, max diff={max_diff})")
+        L.append(f"### 6. Window Trigger Races ({len(win_races)} races, max diff={max_diff:.1f} ge)")
         L.append("")
         L.append(f"The WX/WY comparison and window activation signals race against the rendering")
         L.append(f"pipeline. Window content may shift one pixel right. Affects games that use the")
@@ -2119,8 +2634,8 @@ def format_report(paths, G, races):
         max_d = cat_paths[0][0]
         race_count = len(race_by_cat.get(cat, []))
         max_race = max((r['depth_diff'] for r in race_by_cat.get(cat, [])), default=0)
-        race_str = f"diff={max_race} ({race_count} races)" if race_count else "—"
-        L.append(f"| {cat} | {len(cat_paths)} | {max_d} ge | {max_d*GATE_DELAY_MAX} ns | {race_str} |")
+        race_str = f"diff={max_race:.1f} ({race_count} races)" if race_count else "—"
+        L.append(f"| {cat} | {len(cat_paths)} | {max_d:.1f} ge | {max_d*GATE_DELAY_MAX:.0f} ns | {race_str} |")
     L.append("")
 
     # === High fan-out signals ===
@@ -2179,7 +2694,7 @@ def format_report(paths, G, races):
                 ct = nd.get('cell_type', '')
                 cat_n = nd.get('category', '')
                 ds = nd.get('drive_strength', 1)
-                ge = nd.get('gate_equiv', 1)
+                ge = nd.get('gate_equiv', 1.0)
                 fo = fanout.get(node, 0)
                 nt = nd.get('node_type', '')
                 if nt in ('registered', 'bus', 'boundary', 'pad'):
@@ -2289,9 +2804,17 @@ def main():
             all_wires.extend(wires)
             print(f"  {dirname}/{fpath.name}: {len(cells)} cells, {len(wires)} wires")
 
+    # Step 3.5: Parse dmg-sim for per-instance wire lengths (Elmore delay model)
+    print("\nLoading per-instance wire lengths from dmg-sim...")
+    sim_params = parse_dmg_sim_params()
+    if sim_params:
+        print(f"  {len(sim_params)} gate instances with Elmore delay parameters")
+    else:
+        print("  dmg-sim not found — using integer gate-equivalent fallback")
+
     # Step 4: Build the graph
     print("\nBuilding signal dependency graph...")
-    nodes, edges = build_graph(cell_types, all_cells, all_wires)
+    nodes, edges = build_graph(cell_types, all_cells, all_wires, sim_params=sim_params)
     edges = dedup_edges(edges)
 
     # Step 5: Statistics
@@ -2302,20 +2825,22 @@ def main():
     G = build_networkx_graph(nodes, edges)
     print(f"  {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
-    print("Computing combinatorial depths...")
+    print("Computing combinatorial depths (Elmore-based effective ge)...")
     depth, _ = compute_depths(G)
     max_depth = max(depth.values())
-    print(f"  Max depth: {max_depth} gate-equivalents")
+    print(f"  Max depth: {max_depth:.1f} effective gate-equivalents")
 
     print("Finding critical paths...")
     paths = find_critical_paths(G)
     print(f"  {len(paths)} critical paths found")
     if paths:
-        print(f"  Deepest: {paths[0][0]} gate-equivalents")
+        print(f"  Deepest: {paths[0][0]:.1f} effective ge")
         op_paths = [(d, p) for d, p in paths if not is_reset_path_schematic(p, G)]
         rst_paths = [(d, p) for d, p in paths if is_reset_path_schematic(p, G)]
-        print(f"  Operational: {len(op_paths)} (max depth {op_paths[0][0] if op_paths else 0})")
-        print(f"  Reset-only: {len(rst_paths)} (max depth {rst_paths[0][0] if rst_paths else 0})")
+        op_max_d = f"{op_paths[0][0]:.1f}" if op_paths else "0"
+        rst_max_d = f"{rst_paths[0][0]:.1f}" if rst_paths else "0"
+        print(f"  Operational: {len(op_paths)} (max depth {op_max_d})")
+        print(f"  Reset-only: {len(rst_paths)} (max depth {rst_max_d})")
 
     print("Finding signal race pairs...")
     races = find_race_pairs(G)

@@ -1,66 +1,66 @@
 # Reset-Only Paths
 
-Total: 64 paths (max depth 45)
+Total: 33 paths (max depth 101.57000000000001)
 
 These paths only fire on LCDC toggle or system reset, not during
 normal per-dot rendering.
 
-### Path 1: depth 45 — APU CH1 (Square+Sweep)
+### Path 1: depth 101.57000000000001 — APU CH1 (Square+Sweep)
 `avaf` → `axan`
 
-### Path 2: depth 41 — APU CH1 (Square+Sweep)
-`avaf` → `evab`
-
-### Path 3: depth 37 — APU CH1 (Square+Sweep)
-`avaf` → `dygy`
-
-### Path 4: depth 33 — APU CH1 (Square+Sweep)
-`avaf` → `hopo`
-
-### Path 5: depth 29 — APU CH1 (Square+Sweep)
-`avaf` → `hyxu`
-
-### Path 6: depth 28 — Clock Distribution
-`adyk` → `wave_ram`
-
-### Path 7: depth 25 — APU CH1 (Square+Sweep)
-`avaf` → `holu`
-
-### Path 8: depth 24 — LCD Output
-`afer` → `cp`
-
-### Path 9: depth 24 — Sprite Y Compare
+### Path 2: depth 100.79 — Sprite Y Compare
 `afer` → `sobu`
 
-### Path 10: depth 24 — LCD Output
-`afer` → `st`
-
-### Path 11: depth 22 — BG/Win Cycles
+### Path 3: depth 99.10000000000001 — BG/Win Cycles
 `afer` → `lovy`
 
-### Path 12: depth 22 — BG/Win Cycles
+### Path 4: depth 99.10000000000001 — BG/Win Cycles
 `afer` → `nyka`
 
-### Path 13: depth 21 — APU CH1 (Square+Sweep)
+### Path 5: depth 94.29 — APU CH1 (Square+Sweep)
+`avaf` → `evab`
+
+### Path 6: depth 92.46000000000001 — LCD Output
+`afer` → `st`
+
+### Path 7: depth 83.77000000000001 — APU CH1 (Square+Sweep)
+`avaf` → `dygy`
+
+### Path 8: depth 75.34 — APU CH1 (Square+Sweep)
+`avaf` → `hopo`
+
+### Path 9: depth 59.33 — APU CH1 (Square+Sweep)
+`avaf` → `hyxu`
+
+### Path 10: depth 41.36 — APU CH1 (Square+Sweep)
+`avaf` → `holu`
+
+### Path 11: depth 38.660000000000004 — BG/Win Cycles
+`afer` → `sovy`
+
+### Path 12: depth 36.75 — APU CH1 (Square+Sweep)
 `avaf` → `fely`
 
-### Path 14: depth 20 — Clock Distribution
-`adyk` → `wave_ram`
+### Path 13: depth 36.339999999999996 — Bus
+`afur` → `bus:d0`
 
-### Path 15: depth 17 — APU CH1 (Square+Sweep)
-`avaf` → `edul`
+### Path 14: depth 36.339999999999996 — Bus
+`afur` → `bus:d1`
 
-### Path 16: depth 13 — APU CH1 (Square+Sweep)
-`avaf` → `havo`
+### Path 15: depth 36.339999999999996 — Bus
+`afur` → `bus:d2`
 
-### Path 17: depth 13 — Clock Distribution
-`adyk` → `high_ram`
+### Path 16: depth 36.339999999999996 — Bus
+`afur` → `bus:d3`
 
-### Path 18: depth 13 — Clock Distribution
-`adyk` → `wave_ram`
+### Path 17: depth 36.339999999999996 — Bus
+`afur` → `bus:d4`
 
-### Path 19: depth 12 — DMA
-`adyk` → `luvy`
+### Path 18: depth 36.339999999999996 — Bus
+`afur` → `bus:d5`
 
-### Path 20: depth 11 — Address Bus
-`afur` → `a15`
+### Path 19: depth 36.339999999999996 — Bus
+`afur` → `bus:d6`
+
+### Path 20: depth 36.339999999999996 — Bus
+`afur` → `bus:d7`
