@@ -4,24 +4,24 @@ Static analysis of the Game Boy's DMG-CPU B gate-level netlist to identify deep 
 
 ## Motivation
 
-Behavioral Game Boy emulators resolve all combinatorial logic instantaneously within a single tick. On real DMG silicon, signals propagate through chains of gates with finite delay (5–15 ns per gate on Sharp's ~5 µm CMOS process). When a signal chain exceeds ~8 gates, the total delay can consume a significant fraction of a half T-cycle (~119 ns at 4.194 MHz), causing the hardware to capture different values than an emulator expects.
+Behavioral Game Boy emulators resolve all combinatorial logic instantaneously within a single tick. On real DMG silicon, signals propagate through chains of gates with finite delay. When a signal chain is deep enough, the total delay can consume a significant fraction of a T-cycle (~238 ns at 4.194 MHz), causing the hardware to capture different values than an emulator expects.
 
-This project extracts the chip's netlist as a dependency graph, finds the longest combinatorial paths between clocked elements, and ranks them by depth — producing a guide for emulator developers investigating timing discrepancies.
+This project extracts the chip's netlist as a dependency graph, computes per-instance propagation delays using an Elmore RC model (with wire lengths and transistor sizing from [msinger/dmg-sim](https://github.com/msinger/dmg-sim)), and identifies which signal races actually matter for emulator accuracy by classifying each race by its effective timing domain.
 
 ## Key Results
 
-- **4,102 nodes** (974 registered, 2,970 combinatorial, 83 bus, 70 I/O pad, 5 boundary) and **9,458 edges** extracted
-- **2,368 paths** with depth > 1 gate-equivalent identified (1,687 operational, 681 reset-only)
-- Deepest operational path: **32 gate-equivalents** (~480 ns worst-case, 403% of half T-cycle)
-  - This is an 8-bit ripple carry adder (LY + SCY → VRAM address)
-  - Gate-equivalent counting: NOT=1, AND/OR=2, MUX=3, XOR=3, full_add=4
-- **864 signal race points** where inputs to a single register differ by ≥ 3 gate-equivalent depths
-- **2,106 PPU nodes** across 15 functional categories with drive strength (x1–x6) annotations
+- **4,102 nodes** (974 registered, 2,968 combinatorial, 83 bus, 70 I/O pad, 7 boundary) and **9,458 edges** extracted
+- **1,063 signal race pairs** where inputs to a register arrive at significantly different depths
+- Races classified by effective timing domain (based on how often the critical path's source register changes):
+  - **13 truly per-dot** — critical path fed by registers that change every pixel (fetch state, FIFO shift). These are the races that directly affect emulator pixel accuracy.
+  - **224 per-line** — critical path fed by registers that change once per scanline (LY counter, mode transitions). Races fire at line boundaries only.
+  - **473 per-frame** — bus transfers, APU. Plenty of slack.
+  - **353 static** — critical path through reset/LCDC logic. Never races during rendering.
 
-The dominant sources of late-arriving signals:
-1. **VRAM address adder** (half_add + 7 full_adds) — carry chain from LY/SCY through BG scroll computation
-2. **Sprite Y comparator** — 4-stage full_adder carry chain through sprite control to sprite store (depth 28)
-3. **SACU / CLKPIPE** (pixel pipe shift clock) — fan-out 53, drives BG/sprite FIFOs and all X matchers
+The most timing-critical signals (truly per-dot, tightest deadline):
+1. **BG fetch cycle races** (ppu-cycles) — max diff 22.2 effective ge, deadline 238 ns
+2. **BG FIFO shift races** (ppu-bgfifo) — max diff 16.2 effective ge, deadline 238 ns
+3. **SACU / CLKPIPE** (pixel pipe shift clock) — fan-out 53, depth 63.8 ge, but critical path is through static reset chain (effectively settled before rendering begins)
 
 See [`output/critical_paths_report.md`](output/critical_paths_report.md) for the full findings.
 
@@ -49,8 +49,8 @@ output/
 Browse the analysis interactively at **[ajoneil.github.io/gmb-ppu-analysis](https://ajoneil.github.io/gmb-ppu-analysis/)**.
 
 Features:
-- **Race Pairs** — sortable/filterable table with expandable detail panels showing observable effects
-- **Critical Paths** — browse all 2,368 paths by category, depth; click to see full gate chain with drive strength and gate-equivalent annotations
+- **Race Pairs** — sortable/filterable table with timing domain classification, expandable detail panels showing observable effects
+- **Critical Paths** — browse all paths by category, depth; click to see full gate chain with per-instance Elmore delays and drive strength annotations
 - **Search** — find any signal by die name or Pan Docs register name (LCDC, SCX, LY, etc.)
 - **Graph Explorer** — click any signal to see its inputs, outputs, category, drive strength, and all paths flowing through it
 - **External links** — each signal links to the [die photo viewer](https://iceboy.a-singer.de/dmg_cpu_b_map/), [netlist](https://iceboy.a-singer.de/doc/dmg_cpu_b_netlist.html), [cell type docs](https://iceboy.a-singer.de/doc/dmg_cells.html), and [Pan Docs](https://gbdev.io/pandocs/)
@@ -82,11 +82,11 @@ The parser reads the machine-readable netlists from `dmg-schematics/netlist/` to
 
 - **Nodes** are cell instances — flip-flops, latches, combinatorial gates, tri-state buffers, bus nodes, and I/O pads
 - **Edges** represent signal connections with explicit types (data, clock, reset) derived from destination pin names
-- Each node carries its exact cell type, drive strength, gate-equivalent delay cost, physical coordinates, and functional category annotation from the schematic authors
+- Each node carries its exact cell type, drive strength, physical coordinates, and functional category annotation from the schematic authors
 
-Multi-driver wires (shared buses) are modeled as intermediate bus nodes to avoid O(n×m) edge inflation while preserving real data paths.
+**Delay model:** Per-instance propagation delays are computed using an Elmore RC model matching [msinger/dmg-sim](https://github.com/msinger/dmg-sim)'s `timing-default.sv`. Each gate's delay accounts for its transistor sizing (NMOS/PMOS stack depth, driver width) and physical wire length from the layout. Delays are normalized to "effective gate equivalents" where 1.0 ge = one minimum inverter at median wire length, preserving compatibility with a 5–15 ns per ge estimation range for Sharp's ~5 µm CMOS process.
 
-Feedback loops (916 back-edges) are broken to form a DAG. Longest-path analysis then ranks all register-to-register paths by gate-equivalent depth, giving more realistic delay estimates than simple gate counting.
+**Slack-aware ranking:** Race pairs are classified by *effective* timing domain — not just how often the destination register samples, but how often the source register on the critical path actually changes. A path through the reset chain has effectively infinite slack even if the destination samples every dot, because the reset signal is static during rendering.
 
 ## Data Source
 

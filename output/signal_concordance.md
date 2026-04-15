@@ -4,6 +4,12 @@ Cross-reference between die cell names (4-char identifiers from the DMG-CPU B
 silicon) and standard Game Boy documentation (Pan Docs, Gekkio's gb-ctr,
 Furrtek's DMG-CPU-Inside).
 
+> **Note:** Depth values in this document are approximate integer gate counts
+> from an earlier analysis. The current analysis uses per-instance Elmore RC
+> delays (effective gate-equivalents) which give different, more accurate
+> values. See `critical_paths_report.md` and `race_pairs.json` for precise
+> Elmore-based depths and timing domain classifications.
+
 ## Die Cell Name Format
 
 Each cell on the DMG-CPU B die has a unique 4-character name (e.g., `muwy`,

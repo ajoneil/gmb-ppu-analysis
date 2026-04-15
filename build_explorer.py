@@ -798,6 +798,16 @@ input[type="search"] {{ width: 260px; }}
         <option value="15">15+</option>
       </select>
     </div>
+    <div class="filter-group">
+      <label>Timing</label>
+      <select id="race-domain-filter">
+        <option value="">All</option>
+        <option value="per-dot">Per-dot only</option>
+        <option value="per-line">Per-line</option>
+        <option value="per-frame">Per-frame</option>
+        <option value="static">Static</option>
+      </select>
+    </div>
     <div class="filter-group" style="display:none">
       <select id="race-phase-filter"><option value="">All</option></select>
     </div>
@@ -810,7 +820,7 @@ input[type="search"] {{ width: 260px; }}
     <thead><tr>
       <th data-sort="display_name">Node</th>
       <th data-sort="category">Category</th>
-      <th data-sort="reg_type">Type</th>
+      <th data-sort="effective_domain">Timing</th>
       <th data-sort="depth_diff" class="sorted-desc">Diff</th>
       <th data-sort="max_depth">Max</th>
       <th data-sort="min_depth">Min</th>
@@ -972,7 +982,8 @@ function phaseBadge(phase) {{
 
 function depthBadge(d) {{
   const cls = d >= 12 ? 'high' : d >= 8 ? 'mid' : 'low';
-  return `<span class="badge-depth ${{cls}}">${{d}}</span>`;
+  const fmt = typeof d === 'number' ? d.toFixed(1) : d;
+  return `<span class="badge-depth ${{cls}}">${{fmt}}</span>`;
 }}
 
 function catBadge(cat) {{
@@ -1241,21 +1252,21 @@ function observableEffect(r) {{
   if (['ryfa','roge'].some(x => name === x))
     return `Window Y match fires one dot late. The WY comparison (depth ${{maxD}}) races against rendering control, potentially delaying window activation by one dot. Affects games with split-screen effects using the window.`;
   if (['rene','nuko','pyco','nopa','sovy'].some(x => name === x))
-    return `Window trigger fires one dot late (${{diff}}-gate differential). Window content may shift one pixel right, affecting status bars and dialogue boxes in games that use the window layer.`;
+    return `Window trigger fires one dot late (${{diff}} ge differential). Window content may shift one pixel right, affecting status bars and dialogue boxes in games that use the window layer.`;
 
   // Sprite fetcher
   if (['taka','sobu','texy','wuty'].some(x => name === x))
-    return `Sprite fetch timing shifted by one dot (${{diff}}-gate differential). May cause sprite fetch to start or complete one dot off, affecting mode 3 duration and sprite X positioning.`;
+    return `Sprite fetch timing shifted by one dot (${{diff}} ge differential). May cause sprite fetch to start or complete one dot off, affecting mode 3 duration and sprite X positioning.`;
 
   // Pixel counter vs CLKPIPE
   if (['xeho','savy','xodu','xydo','tuhu','tuky','tako','sybe'].some(x => name === x))
-    return `Pixel counter races CLKPIPE (${{diff}}-gate differential). The pixel X counter increments late relative to the pipe shift clock, shifting the X coordinate at which sprite/window comparisons trigger by one dot.`;
+    return `Pixel counter races CLKPIPE (${{diff}} ge differential). The pixel X counter increments late relative to the pipe shift clock, shifting the X coordinate at which sprite/window comparisons trigger by one dot.`;
 
   // Mode transitions
   if (['xymu'].includes(name))
     return `Rendering mode latch (mode 3) transitions one dot off. Affects when the CPU can access VRAM/OAM and when H-blank begins. Games using mid-scanline STAT tricks are most affected.`;
   if (['voga','wodu'].some(x => name === x))
-    return `H-blank/mode flag transitions one dot off (${{diff}}-gate differential). Shifts when the CPU regains VRAM/OAM access.`;
+    return `H-blank/mode flag transitions one dot off (${{diff}} ge differential). Shifts when the CPU regains VRAM/OAM access.`;
 
   // DMA
   if (['matu','lara','loky'].some(x => name === x))
@@ -1263,7 +1274,7 @@ function observableEffect(r) {{
 
   // LY match
   if (['ropo','rupo'].some(x => name === x))
-    return `LY=LYC match fires one dot early/late (${{diff}}-gate differential). The STAT interrupt may trigger at a different dot than expected, affecting raster effects (palette changes, wobble).`;
+    return `LY=LYC match fires one dot early/late (${{diff}} ge differential). The STAT interrupt may trigger at a different dot than expected, affecting raster effects (palette changes, wobble).`;
 
   // === Category-based matches with detailed descriptions ===
 
@@ -1272,75 +1283,75 @@ function observableEffect(r) {{
     return `${{what}} — reset arrives late at line boundary. Line-end reset (depth ${{maxD}}) arrives long after OAM data (depth ${{minD}}). At scanline boundaries, the latch may hold stale data instead of clearing. Visible as wrong sprite position, tile, or attributes at the start of a scanline.`;
   }}
   if (cat === 'ppu-xcomp')
-    return `Sprite X match off by one dot (${{diff}}-gate differential). The X comparison that triggers sprite fetching settles at a different time than CLKPIPE, causing the sprite to appear one pixel left or right of its correct position.`;
+    return `Sprite X match off by one dot (${{diff}} ge differential). The X comparison that triggers sprite fetching settles at a different time than CLKPIPE, causing the sprite to appear one pixel left or right of its correct position.`;
   if (cat === 'ppu-bgfifo')
     return `BG pixel data shifted one dot late relative to CLKPIPE. The pixel pipe effectively shifts one propagation delay after data settles. BG pixels may appear one dot to the right.`;
   if (cat === 'ppu-objfifo')
     return `Sprite pixel data shifted one dot late relative to CLKPIPE. Sprite pixels may appear one dot offset from their correct position.`;
   if (cat === 'ppu-bgscroll')
-    return `Scroll address computation delayed (${{diff}}-gate differential). The BG scroll adder (LY+SCY or pixel+SCX) carry chain propagates through ${{maxD}} gate-equivalents. VRAM address may be ready late.`;
+    return `Scroll address computation delayed (${{diff}} ge differential). The BG scroll adder (LY+SCY or pixel+SCX) carry chain propagates through ${{maxD}} effective ge. VRAM address may be ready late.`;
   if (cat === 'ppu-stat')
-    return `STAT/LY timing off by one dot (${{diff}}-gate differential). May affect STAT interrupt timing or LY match flag, causing raster effects to trigger at the wrong position.`;
+    return `STAT/LY timing off by one dot (${{diff}} ge differential). May affect STAT interrupt timing or LY match flag, causing raster effects to trigger at the wrong position.`;
   if (cat === 'ppu-window')
-    return `Window trigger fires one dot late (${{diff}}-gate differential). Window content may shift one pixel right, affecting games with status bars or dialogue boxes.`;
+    return `Window trigger fires one dot late (${{diff}} ge differential). Window content may shift one pixel right, affecting games with status bars or dialogue boxes.`;
   if (cat === 'ppu-cycles')
-    return `BG/window fetch cycle timing race (${{diff}}-gate differential). May cause one extra or one fewer fetch cycle, shifting all subsequent pixel output timing.`;
+    return `BG/window fetch cycle timing race (${{diff}} ge differential). May cause one extra or one fewer fetch cycle, shifting all subsequent pixel output timing.`;
   if (cat === 'ppu-objctl')
-    return `Sprite control timing race (${{diff}}-gate differential). May affect which sprite store slot captures OAM data, or when sprite fetch begins.`;
+    return `Sprite control timing race (${{diff}} ge differential). May affect which sprite store slot captures OAM data, or when sprite fetch begins.`;
   if (cat === 'ppu-ycomp')
-    return `Sprite Y comparison delayed (${{diff}}-gate differential). The 8-bit Y comparator carry chain takes ${{maxD}} gate-equivalents. At line boundaries, the wrong sprites may pass the Y test.`;
+    return `Sprite Y comparison delayed (${{diff}} ge differential). The 8-bit Y comparator carry chain takes ${{maxD}} effective ge. At line boundaries, the wrong sprites may pass the Y test.`;
   if (cat === 'ppu-vram')
-    return `VRAM interface timing race (${{diff}}-gate differential). May affect VRAM address/data bus timing during tile fetch.`;
+    return `VRAM interface timing race (${{diff}} ge differential). May affect VRAM address/data bus timing during tile fetch.`;
   if (cat === 'ppu-oam')
-    return `OAM access timing race (${{diff}}-gate differential). May affect OAM data latch timing during sprite scan.`;
+    return `OAM access timing race (${{diff}} ge differential). May affect OAM data latch timing during sprite scan.`;
   if (cat === 'ppu-dma')
-    return `DMA timing off by one cycle (${{diff}}-gate differential). May affect when DMA releases the OAM bus back to the PPU.`;
+    return `DMA timing off by one cycle (${{diff}} ge differential). May affect when DMA releases the OAM bus back to the PPU.`;
   if (cat === 'ppu-lcd')
-    return `LCD pixel output timing race (${{diff}}-gate differential). May affect the LCD data/clock signal timing.`;
+    return `LCD pixel output timing race (${{diff}} ge differential). May affect the LCD data/clock signal timing.`;
   if (cat === 'ppu-pal')
-    return `Palette latch timing race (${{diff}}-gate differential). May affect which palette value is applied to the current pixel.`;
+    return `Palette latch timing race (${{diff}} ge differential). May affect which palette value is applied to the current pixel.`;
   if (cat === 'ppu-mux')
-    return `Pixel mux timing race (${{diff}}-gate differential). May affect sprite/BG priority decision for the current pixel.`;
+    return `Pixel mux timing race (${{diff}} ge differential). May affect sprite/BG priority decision for the current pixel.`;
   if (cat === 'ppu-xprio')
-    return `Sprite X priority timing race (${{diff}}-gate differential). May affect which sprite wins when multiple sprites overlap at the same X position.`;
+    return `Sprite X priority timing race (${{diff}} ge differential). May affect which sprite wins when multiple sprites overlap at the same X position.`;
   if (cat === 'ppu-decode')
-    return `PPU address decode timing race (${{diff}}-gate differential). May affect register read/write timing.`;
+    return `PPU address decode timing race (${{diff}} ge differential). May affect register read/write timing.`;
 
   // Bus node races — these are real: the address/data must settle before the bus is sampled
   if (cat === 'bus' || name.startsWith('bus:')) {{
     if (name.includes('ma') || name.includes('~ma'))
       return `VRAM address bus bit — carry chain from scroll adder (depth ${{maxD}}) means the address may not settle within one dot. The VRAM may read from the wrong tile/map address for one cycle.`;
     if (name.includes('oam'))
-      return `OAM bus — data arrives at different depths (${{diff}}-gate differential). May affect which sprite data is latched during OAM scan.`;
+      return `OAM bus — data arrives at different depths (${{diff}} ge differential). May affect which sprite data is latched during OAM scan.`;
     if (name.startsWith('bus:d'))
-      return `CPU data bus — register read data from multiple sources arrives at different depths (${{diff}}-gate differential). May affect CPU read timing for memory-mapped registers.`;
-    return `Bus timing race (${{diff}}-gate differential). Multiple drivers settle at different times.`;
+      return `CPU data bus — register read data from multiple sources arrives at different depths (${{diff}} ge differential). May affect CPU read timing for memory-mapped registers.`;
+    return `Bus timing race (${{diff}} ge differential). Multiple drivers settle at different times.`;
   }}
 
   // Non-PPU categories
   if (cat.startsWith('apu-'))
-    return `APU timing race (${{diff}}-gate differential). Audio channel register/counter may sample stale data.`;
+    return `APU timing race (${{diff}} ge differential). Audio channel register/counter may sample stale data.`;
   if (cat === 'clocks')
-    return `Clock distribution timing race (${{diff}}-gate differential). Clock phase signal may arrive late relative to the data it gates.`;
+    return `Clock distribution timing race (${{diff}} ge differential). Clock phase signal may arrive late relative to the data it gates.`;
   if (cat === 'timer')
-    return `Timer timing race (${{diff}}-gate differential). DIV/TIMA counter may increment or overflow one cycle off.`;
+    return `Timer timing race (${{diff}} ge differential). DIV/TIMA counter may increment or overflow one cycle off.`;
   if (cat === 'serial')
-    return `Serial link timing race (${{diff}}-gate differential). Shift clock or data may be sampled one cycle off.`;
+    return `Serial link timing race (${{diff}} ge differential). Shift clock or data may be sampled one cycle off.`;
   if (cat === 'int')
-    return `Interrupt flag timing race (${{diff}}-gate differential). IRQ flag may be set or cleared one cycle off, affecting interrupt timing.`;
+    return `Interrupt flag timing race (${{diff}} ge differential). IRQ flag may be set or cleared one cycle off, affecting interrupt timing.`;
   if (cat === 'joypad')
-    return `Joypad read timing race (${{diff}}-gate differential). Button state may be sampled one cycle off.`;
+    return `Joypad read timing race (${{diff}} ge differential). Button state may be sampled one cycle off.`;
   if (cat === 'bus-adr')
-    return `Address bus timing race (${{diff}}-gate differential). Address decode may settle late, affecting which register is accessed.`;
+    return `Address bus timing race (${{diff}} ge differential). Address decode may settle late, affecting which register is accessed.`;
   if (cat === 'bus-data')
-    return `Data bus timing race (${{diff}}-gate differential). Read data from multiple sources settles at different times.`;
+    return `Data bus timing race (${{diff}} ge differential). Read data from multiple sources settles at different times.`;
   if (cat === 'test')
-    return `Test mode register timing race (${{diff}}-gate differential). Only affects debug/test hardware.`;
+    return `Test mode register timing race (${{diff}} ge differential). Only affects debug/test hardware.`;
   if (cat === 'bootrom')
-    return `Boot ROM timing race (${{diff}}-gate differential). Only affects the boot sequence.`;
+    return `Boot ROM timing race (${{diff}} ge differential). Only affects the boot sequence.`;
 
   const catName = categoryNames[cat] || cat;
-  return catName ? catName + ` timing race (${{diff}}-gate differential)` : `timing race (${{diff}}-gate differential)`;
+  return catName ? catName + ` timing race (${{diff}} ge differential)` : `timing race (${{diff}} ge differential)`;
 }}
 
 // =====================================================================
@@ -1370,6 +1381,7 @@ function getFilteredRaces() {{
   const cat = document.getElementById('race-cat-filter').value;
   const minDiff = parseInt(document.getElementById('race-diff-filter').value) || 0;
   const phase = document.getElementById('race-phase-filter').value;
+  const domain = document.getElementById('race-domain-filter').value;
   const search = document.getElementById('race-search').value.toUpperCase();
 
   let filtered = races.filter(r => {{
@@ -1377,6 +1389,7 @@ function getFilteredRaces() {{
     if (cat && cat !== 'ppu' && r.category !== cat) return false;
     if (r.depth_diff < minDiff) return false;
     if (phase && r.phase !== phase) return false;
+    if (domain && (r.effective_domain || r.timing_domain) !== domain) return false;
     if (search && !r.display_name.toUpperCase().includes(search)) return false;
     return true;
   }});
@@ -1416,10 +1429,11 @@ function renderRaceDetail(r) {{
     const isEarly = inp.depth === r.min_depth;
     const cls = isLate ? 'late' : isEarly ? 'early' : '';
     const role = isLate ? 'LATE' : isEarly ? 'early' : 'mid';
-    const delay = inp.depth > 0 ? `${{inp.depth*5}}-${{inp.depth*15}} ns` : '0 ns';
+    const d = typeof inp.depth === 'number' ? inp.depth : 0;
+    const delay = d > 0 ? `${{(d*5).toFixed(0)}}-${{(d*15).toFixed(0)}} ns` : '0 ns';
     return `<tr class="${{cls}}">
       <td>${{signalLink(inp.name, true)}}</td>
-      <td>${{inp.depth}}</td>
+      <td>${{typeof d === 'number' ? d.toFixed(1) : d}}</td>
       <td>${{delay}}</td>
       <td>${{gateFuncLink(inp.gate_func) || escHtml(inp.gate_func || inp.node_type)}}</td>
       <td>${{role}}</td>
@@ -1427,10 +1441,17 @@ function renderRaceDetail(r) {{
   }}).join('');
 
   const effect = observableEffect(r);
-  const diffMin = r.depth_diff * 5, diffMax = r.depth_diff * 15;
-  const pct = (diffMax / 119.2 * 100).toFixed(0);
+  const diffMin = (r.depth_diff * 5).toFixed(0), diffMax = (r.depth_diff * 15).toFixed(0);
+  const pct = (r.depth_diff * 15 / 119.2 * 100).toFixed(0);
   const earlyPct = (r.min_depth / maxDepth * 100).toFixed(0);
   const latePct = (r.max_depth / maxDepth * 100).toFixed(0);
+
+  const effDomain = r.effective_domain || r.timing_domain || 'unknown';
+  const critSrc = r.critical_source || '';
+  const critFreq = r.critical_source_freq || '';
+  const deadlineNs = r.effective_deadline_ns || r.deadline_ns || '';
+  const domainInfo = critSrc ?
+    `<span class="muted">Critical path source: <strong>${{signalLink(critSrc, true)}}</strong> (${{critFreq}})</span>` : '';
 
   return `<div class="detail-panel">
     <div class="detail-section">
@@ -1439,18 +1460,20 @@ function renderRaceDetail(r) {{
       <p class="muted" style="margin-top:4px">
         Late signal arrives <strong>${{diffMin}}-${{diffMax}} ns</strong> after earliest input
         (${{pct}}% of half T-cycle).
+        Effective timing: <strong>${{effDomain}}</strong>${{deadlineNs ? ` (deadline: ${{deadlineNs.toFixed ? deadlineNs.toFixed(0) : deadlineNs}} ns)` : ''}}.
+        ${{domainInfo}}
       </p>
     </div>
     <div class="detail-section">
       <h4>Depth Comparison</h4>
       <div class="depth-bar">
-        <span class="depth-bar-label text-green">Early: ${{r.min_depth}}</span>
+        <span class="depth-bar-label text-green">Early: ${{typeof r.min_depth === 'number' ? r.min_depth.toFixed(1) : r.min_depth}} ge</span>
         <div class="depth-bar-track">
           <div class="depth-bar-fill early" style="width:${{earlyPct}}%"></div>
         </div>
       </div>
       <div class="depth-bar">
-        <span class="depth-bar-label text-warn">Late: ${{r.max_depth}}</span>
+        <span class="depth-bar-label text-warn">Late: ${{typeof r.max_depth === 'number' ? r.max_depth.toFixed(1) : r.max_depth}} ge</span>
         <div class="depth-bar-track">
           <div class="depth-bar-fill late" style="width:${{latePct}}%"></div>
         </div>
@@ -1486,13 +1509,15 @@ function renderRaces() {{
 
     const tr = document.createElement('tr');
     tr.className = 'data-row';
+    const domainCls = r.effective_domain === 'per-dot' ? 'high' : r.effective_domain === 'per-line' ? 'mid' : 'low';
+    const domainLabel = r.effective_domain || r.timing_domain || '';
     tr.innerHTML = `
       <td class="mono">${{count > 1 ? groupLabel : signalLink(r.display_name, true)}} ${{countBadge}}</td>
       <td>${{catBadge(r.category)}}</td>
-      <td class="mono">${{cellTypeLink(r.reg_type) || escHtml(r.reg_type)}}</td>
+      <td><span class="badge-depth ${{domainCls}}" style="font-size:11px">${{domainLabel}}</span></td>
       <td>${{depthBadge(r.depth_diff)}}</td>
-      <td class="mono muted">${{r.max_depth}}</td>
-      <td class="mono muted">${{r.min_depth}}</td>
+      <td class="mono muted">${{typeof r.max_depth === 'number' ? r.max_depth.toFixed(1) : r.max_depth}}</td>
+      <td class="mono muted">${{typeof r.min_depth === 'number' ? r.min_depth.toFixed(1) : r.min_depth}}</td>
       <td class="muted" style="font-size:12px">${{escHtml(observableEffect(r))}}</td>
     `;
     const detailTr = document.createElement('tr');
@@ -1544,7 +1569,7 @@ document.querySelectorAll('#race-table th[data-sort]').forEach(th => {{
   }});
 }});
 
-['race-cat-filter', 'race-diff-filter', 'race-phase-filter', 'race-search'].forEach(id => {{
+['race-cat-filter', 'race-diff-filter', 'race-phase-filter', 'race-domain-filter', 'race-search'].forEach(id => {{
   document.getElementById(id).addEventListener('input', renderRaces);
   document.getElementById(id).addEventListener('change', renderRaces);
 }});
@@ -1595,7 +1620,8 @@ function renderChain(nodes) {{
     const connector = i === 0 ? '' : '<div class="chain-connector">\\u2193</div>';
     const fo = nd.fan_out >= 10 ? `<span class="chain-fanout">(fan-out: ${{nd.fan_out}})</span>` : '';
     const ds = nd.drive_strength > 1 ? `<span class="badge badge-cat" style="font-size:9px">x${{nd.drive_strength}}</span>` : '';
-    const ge = nd.gate_equiv > 1 ? `<span class="chain-fanout">ge=${{nd.gate_equiv}}</span>` : '';
+    const geVal = typeof nd.gate_equiv === 'number' ? nd.gate_equiv.toFixed(1) : nd.gate_equiv;
+    const ge = nd.gate_equiv > 1.5 ? `<span class="chain-fanout">${{geVal}} ge</span>` : '';
     return `${{connector}}
       <div class="chain-node">
         <span class="chain-type ${{typeClass}}">${{escHtml(label)}}</span>
@@ -1617,7 +1643,7 @@ function renderPathDetail(p) {{
     </div>` : '';
   return `<div class="detail-panel">
     <div class="detail-section">
-      <h4>Gate Chain (${{p.depth}} combinatorial gates)</h4>
+      <h4>Gate Chain (${{typeof p.depth === 'number' ? p.depth.toFixed(1) : p.depth}} effective ge)</h4>
       <div class="chain">${{renderChain(p.nodes)}}</div>
     </div>
     ${{clockInfo}}

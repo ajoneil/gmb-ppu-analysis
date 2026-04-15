@@ -2845,11 +2845,44 @@ def format_report(paths, G, races):
     lines.append("# Signal Race Pair Analysis\n")
     lines.append(f"Total race pairs identified: {len(races)}\n")
     lines.append("Race pairs are registered nodes where data inputs arrive at significantly")
-    lines.append("different combinatorial depths (diff >= 3 gates, max >= 4). On real hardware,")
-    lines.append("the late-arriving signal may not settle before the register samples, causing")
-    lines.append("behavior to differ from behavioral emulation by one dot.\n")
+    lines.append("different combinatorial depths. On real hardware, the late-arriving signal")
+    lines.append("may not settle before the register samples, causing behavior to differ from")
+    lines.append("behavioral emulation.\n")
+    lines.append("Delays computed using Elmore RC model with per-instance wire lengths from")
+    lines.append("dmg-sim. Depths are in effective gate-equivalents (1.0 ge = NOT_x1 at")
+    lines.append("median wire length). Effective timing domain is based on how often the")
+    lines.append("critical path's source register actually changes during rendering.\n")
 
-    # Group by category
+    # Summary by effective domain
+    by_domain = {}
+    for r in races:
+        d = r.get('effective_domain', r.get('timing_domain', 'unknown'))
+        if d not in by_domain:
+            by_domain[d] = []
+        by_domain[d].append(r)
+
+    lines.append("## Timing Domain Summary\n")
+    lines.append("| Domain | Races | Max Diff | Deadline | Description |")
+    lines.append("|--------|-------|----------|----------|-------------|")
+    domain_desc = {
+        'per-dot': 'Source changes every pixel — tightest timing',
+        'per-line': 'Source changes once per scanline',
+        'per-frame': 'Bus transfers, APU — plenty of slack',
+        'static': 'Reset/LCDC paths — never races during rendering',
+    }
+    for d in ['per-dot', 'per-line', 'per-frame', 'static']:
+        if d in by_domain:
+            dr = by_domain[d]
+            max_diff = max(r['depth_diff'] for r in dr)
+            deadline = dr[0].get('effective_deadline_ns', '')
+            desc = domain_desc.get(d, '')
+            lines.append(f"| **{d}** | {len(dr)} | {max_diff:.1f} ge | {deadline:.0f} ns | {desc} |")
+    lines.append("")
+
+    ppu_races = sum(1 for r in races if r.get('category', '').startswith('ppu-'))
+    lines.append(f"PPU-related races: {ppu_races}\n")
+
+    # Group by category, sorted by effective domain then depth
     race_by_cat = {}
     for r in races:
         cat = CATEGORY_DISPLAY.get(r['category'], r['category'] or 'Other')
@@ -2857,22 +2890,24 @@ def format_report(paths, G, races):
             race_by_cat[cat] = []
         race_by_cat[cat].append(r)
 
-    ppu_races = 0
-    for r in races:
-        if r.get('category', '').startswith('ppu-'):
-            ppu_races += 1
-    lines.append(f"PPU-related races: {ppu_races}\n")
-
-    for cat in sorted(race_by_cat, key=lambda c: -max(r['depth_diff'] for r in race_by_cat[c])):
+    domain_order = {'per-dot': 0, 'per-line': 1, 'per-frame': 2, 'static': 3}
+    for cat in sorted(race_by_cat, key=lambda c: (
+        domain_order.get(race_by_cat[c][0].get('effective_domain', ''), 4),
+        -max(r['depth_diff'] for r in race_by_cat[c])
+    )):
         cat_races = race_by_cat[cat]
-        lines.append(f"\n## {cat} ({len(cat_races)} races)\n")
+        eff_domain = cat_races[0].get('effective_domain', '')
+        lines.append(f"\n## {cat} ({len(cat_races)} races) — {eff_domain}\n")
         for r in cat_races[:15]:
-            lines.append(f"### `{r['display_name']}` ({r['cell_type']}) — diff={r['depth_diff']}, max={r['max_depth']}")
-            lines.append(f"Category: {r['category']}\n")
-            lines.append("| Input | Depth | Type | Category |")
-            lines.append("|-------|-------|------|----------|")
+            src = r.get('critical_source', '')
+            src_freq = r.get('critical_source_freq', '')
+            src_info = f" | source: `{src}` ({src_freq})" if src else ""
+            lines.append(f"### `{r['display_name']}` ({r['cell_type']}) — diff={r['depth_diff']:.1f} ge, max={r['max_depth']:.1f} ge{src_info}")
+            lines.append(f"Category: {r['category']} | Effective: {r.get('effective_domain', '')}\n")
+            lines.append("| Input | Depth (ge) | Type | Category |")
+            lines.append("|-------|-----------|------|----------|")
             for inp in r['inputs']:
-                lines.append(f"| `{inp['name']}` | {inp['depth']} | {inp['cell_type']} | {inp.get('category','')} |")
+                lines.append(f"| `{inp['name']}` | {inp['depth']:.1f} | {inp['cell_type']} | {inp.get('category','')} |")
             lines.append("")
     sections['race_pairs_report.md'] = '\n'.join(lines)
 
