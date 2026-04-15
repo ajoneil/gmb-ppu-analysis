@@ -26,7 +26,7 @@ Data source: [msinger/dmg-schematics](https://github.com/msinger/dmg-schematics)
 | **Operational** | 1076 | 103.1 ge | 1546 ns (1297% half T-cycle) |
 | Reset-only | 33 | 101.6 ge | 1524 ns |
 | **Total paths** | 1109 | | |
-| **Race pairs** | 1063 (510 PPU) | max diff 98.77 ge | |
+| **Race pairs** | 1063 (510 PPU) | max diff 22.16 ge | |
 
 ## Key Findings
 

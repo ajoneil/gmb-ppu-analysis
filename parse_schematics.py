@@ -1516,6 +1516,84 @@ DEADLINE_BY_CATEGORY = {
 DEFAULT_DEADLINE_NS = MCYCLE_NS
 
 
+# Source register update frequency classification.
+# Used to determine the *effective* timing domain of a race by checking
+# how often the registered source on the critical path actually changes.
+#
+# Per-dot:     changes every pixel during rendering (pixel counter, fetch state)
+# Per-line:    changes once per scanline (LY, mode transitions, OAM scan)
+# Per-frame:   changes once per frame or on CPU write
+# Static:      only changes on reset or LCDC toggle
+
+# Categories whose registers update per-dot during rendering
+_SOURCE_FREQ_PER_DOT = {
+    'ppu-cycles',      # BG/sprite fetch state machine
+    'ppu-bgfifo',      # pixel FIFO shift state
+    'ppu-objfifo',     # sprite FIFO shift state
+    'ppu-mux',         # pixel output mux
+}
+
+# Categories whose registers update per-line (at scanline boundaries)
+_SOURCE_FREQ_PER_LINE = {
+    'ppu-stat',        # LY counter, mode flags, STAT register
+    'ppu-ycomp',       # sprite Y comparator (re-evaluated each line)
+    'ppu-objctl',      # sprite control (OAM scan, once per line)
+    'ppu-objreg',      # sprite store latches (loaded during OAM scan)
+    'ppu-oam',         # OAM interface
+    'ppu-dma',         # DMA (transfers once initiated, per-line timing)
+    'ppu-control',     # rendering mode transitions
+    'ppu-window',      # window Y match (checked at line start)
+    'ppu-lcd',         # LCD timing signals
+    'ppu-bgscroll',    # scroll registers (written by CPU, but per-line effect)
+    'ppu-vram',        # VRAM interface
+    'ppu-decode',      # PPU address decode
+    'ppu-pal',         # palette data
+    'ppu-xcomp',       # sprite X match (per-dot check, but store data is per-line)
+    'ppu-xprio',       # sprite X priority
+}
+
+# Source categories that are static during rendering
+_SOURCE_FREQ_STATIC = {
+    'clocks',          # system reset, clock distribution
+    'test',            # test mode pins
+}
+
+# Source types that imply bus/CPU-write frequency
+_SOURCE_FREQ_BUS = {'bus', 'bus-data', 'bus-adr'}
+
+SCANLINE_NS = TCYCLE_NS * 456    # ~456 dots per scanline ≈ 108,710 ns
+
+
+def _classify_source_frequency(source_name, G):
+    """Classify how often a registered source changes during rendering.
+
+    Returns (frequency_label, effective_deadline_ns).
+    """
+    nd = G.nodes.get(source_name, {})
+    cat = nd.get('category', '')
+    nt = nd.get('node_type', '')
+
+    # Pad nodes (crystal clock, test pins) — classify by name
+    if nt == 'pad':
+        return 'per-dot', TCYCLE_NS
+
+    # Bus nodes
+    if nt == 'bus' or cat in _SOURCE_FREQ_BUS:
+        return 'per-frame', MCYCLE_NS * 4
+
+    if cat in _SOURCE_FREQ_PER_DOT:
+        return 'per-dot', TCYCLE_NS
+
+    if cat in _SOURCE_FREQ_PER_LINE:
+        return 'per-line', MCYCLE_NS
+
+    if cat in _SOURCE_FREQ_STATIC:
+        return 'static', MCYCLE_NS * 16
+
+    # APU, timer, serial, joypad, etc. — loose
+    return 'per-frame', MCYCLE_NS * 4
+
+
 def find_race_pairs(G):
     """Find signal races: registered nodes where inputs arrive at different depths.
 
@@ -1524,11 +1602,15 @@ def find_race_pairs(G):
     captures. For example, a latch's enable signal (classified as 'clock')
     races against its data input.
 
-    Each race includes a slack estimate: deadline_ge - max_depth, where
-    deadline_ge is the timing budget in effective gate-equivalents.
-    Lower (or negative) slack = more critical.
+    Each race gets two timing domain classifications:
+    - timing_domain: based on the destination register's category (worst-case)
+    - effective_domain: based on how often the critical path's source register
+      actually changes (more accurate — a path through static reset logic has
+      infinite slack even if the destination samples every dot)
+
+    The effective_deadline determines the actual slack.
     """
-    depth, _ = compute_depths(G)
+    depth, path = compute_depths(G)
 
     races = []
     for n in sorted(G.nodes()):
@@ -1550,14 +1632,42 @@ def find_race_pairs(G):
         # Thresholds scaled for Elmore model where a typical gate ≈ 1.3 ge
         if diff >= 4.0 and max_d >= 5.0:
             cat = G.nodes[n].get('category', '')
+
+            # Destination-based deadline (worst-case)
             deadline_ns = DEADLINE_BY_CATEGORY.get(cat, DEFAULT_DEADLINE_NS)
-            # Timing domain label
             if deadline_ns <= TCYCLE_NS:
                 timing_domain = 'per-dot'
             elif deadline_ns <= MCYCLE_NS:
                 timing_domain = 'per-line'
             else:
                 timing_domain = 'loose'
+
+            # Effective deadline: trace the deepest input's critical path
+            # back to its registered source and check how often it changes.
+            deepest_input = pred_depths[0][0]
+            crit_path = path.get(deepest_input, [])
+            if crit_path:
+                source = crit_path[0]
+                src_freq, src_deadline = _classify_source_frequency(source, G)
+            else:
+                source = deepest_input
+                src_freq = timing_domain
+                src_deadline = deadline_ns
+
+            # Effective deadline is the LONGER of:
+            # - destination sampling rate (how often the register latches)
+            # - source update rate (how often the input actually changes)
+            # If the source only changes per-line but destination samples per-dot,
+            # the signal has already settled by the time it's sampled each dot.
+            effective_deadline = max(deadline_ns, src_deadline)
+            if effective_deadline <= TCYCLE_NS:
+                effective_domain = 'per-dot'
+            elif effective_deadline <= MCYCLE_NS:
+                effective_domain = 'per-line'
+            elif effective_deadline <= MCYCLE_NS * 4:
+                effective_domain = 'per-frame'
+            else:
+                effective_domain = 'static'
 
             races.append({
                 'node': n,
@@ -1572,6 +1682,11 @@ def find_race_pairs(G):
                 'min_depth': round(min_d, 2),
                 'deadline_ns': deadline_ns,
                 'timing_domain': timing_domain,
+                'effective_deadline_ns': effective_deadline,
+                'effective_domain': effective_domain,
+                'critical_source': source,
+                'critical_source_category': G.nodes.get(source, {}).get('category', ''),
+                'critical_source_freq': src_freq,
                 'inputs': [
                     {
                         'name': p,
@@ -1585,9 +1700,9 @@ def find_race_pairs(G):
                 ],
             })
 
-    # Sort by timing criticality: per-dot races first, then by depth_diff descending
-    domain_order = {'per-dot': 0, 'per-line': 1, 'loose': 2}
-    races.sort(key=lambda x: (domain_order.get(x['timing_domain'], 3),
+    # Sort by effective timing criticality, then by depth_diff
+    domain_order = {'per-dot': 0, 'per-line': 1, 'per-frame': 2, 'static': 3, 'loose': 3}
+    races.sort(key=lambda x: (domain_order.get(x['effective_domain'], 4),
                                -x['depth_diff'], -x['max_depth']))
     return races
 

@@ -161,628 +161,401 @@ Category: apu-ch1
 
 ## Bus (79 races)
 
-### `bus:d0` () — diff=103.08, max=103.08
+### `bus:oam_render_a2` () — diff=49.15, max=84.92
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `buzu` | 103.08 | not_if0 | apu-control |
-| `atel` | 101.75 | not_if0 | apu-ch4 |
-| `juvy` | 101.68 | not_if0 | apu-ch3 |
-| `akod` | 99.22 | not_if0 | apu-control |
-| `huna` | 98.97 | not_if0 | apu-ch2 |
-| `xary` | 96.25 | not_if0 | ppu-pal |
-| `amyd` | 96.23 | not_if0 | apu-ch1 |
-| `demy` | 93.11 | not_if0 | apu-ch4 |
-| `kamo` | 92.26 | not_if0 | apu-ch4 |
-| `coto` | 90.7 | not_if0 | apu-control |
-| `jyne` | 90.27 | not_if0 | apu-ch1 |
-| `fava` | 88.87 | not_if0 | apu-ch2 |
-| `cugy` | 88.43 | not_if1 | serial |
-| `jofo` | 88.27 | not_if0 | apu-ch3 |
-| `foru` | 88.08 | not_if0 | apu-ch1 |
-| `huvu` | 87.89 | not_if0 | apu-ch2 |
-| `dopa` | 87.81 | not_if0 | apu-ch1 |
-| `poly` | 87.68 | not_if1 | ppu-dma |
-| `raro` | 87.57 | not_if0 | ppu-pal |
-| `fapy` | 86.46 | not_if0 | apu-ch3 |
-| `kema` | 86.12 | not_if0 | joypad |
-| `punu` | 84.34 | not_if0 | ppu-window |
-| `ware` | 83.27 | not_if0 | ppu-bgscroll |
-| `vega` | 82.82 | not_if0 | ppu-stat |
-| `core` | 82.28 | not_if1 | serial |
-| `lova` | 82.11 | not_if0 | ppu-window |
-| `sete` | 82.02 | not_if1 | timer |
-| `edos` | 81.27 | not_if0 | ppu-bgscroll |
-| `laju` | 80.9 | not_if0 | ppu-pal |
-| `nela` | 80.9 | not_if1 | int |
-| `tawu` | 80.79 | not_if1 | clocks |
-| `soku` | 80.72 | not_if1 | timer |
-| `retu` | 80.69 | not_if0 | ppu-stat |
-| `wypo` | 79.86 | not_if0 | ppu-control |
-| `teby` | 79.2 | not_if1 | ppu-stat |
-| `dugu` | 78.61 | not_if1 | apu-ch3 |
-| `ryla` | 77.41 | not_if1 | timer |
-| `ruga` | 71.77 | not_if1 | ppu-vram |
-| `sypu` | 69.93 | not_if1 | bootrom |
-| `xaca` | 69.05 | buf_if0 | ppu-xcomp |
-| `yfap` | 67.19 | buf_if0 | ppu-ycomp |
-| `ryma` | 65.5 | not_if0 | bus-data |
-| `tuty` | 64.23 | buf_if0 | bus-data |
-| `romy` | 49.69 | not_if1 | bus-data |
-| `anoc` | 36.34 | not_if0 |  |
-| `tovu` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `zaro` | 84.92 | not_if0 | ppu-objreg |
+| `apoc` | 75.21 | not_if0 | ppu-objreg |
+| `wako` | 75.15 | not_if0 | ppu-objreg |
+| `wato` | 72.6 | not_if0 | ppu-objreg |
+| `wuxu` | 71.98 | not_if0 | ppu-objreg |
+| `dobo` | 70.04 | not_if0 | ppu-objreg |
+| `enap` | 67.18 | not_if0 | ppu-objreg |
+| `zedy` | 65.92 | not_if0 | ppu-objreg |
+| `cube` | 65.4 | not_if0 | ppu-objreg |
+| `cubo` | 61.03 | not_if0 | ppu-objreg |
+| `wuzy` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:oam_render_a3` () — diff=49.15, max=84.92
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `zojy` | 84.92 | not_if0 | ppu-objreg |
+| `akyh` | 75.21 | not_if0 | ppu-objreg |
+| `wygo` | 75.15 | not_if0 | ppu-objreg |
+| `wywy` | 72.6 | not_if0 | ppu-objreg |
+| `wepy` | 71.98 | not_if0 | ppu-objreg |
+| `dyny` | 70.04 | not_if0 | ppu-objreg |
+| `dygo` | 67.18 | not_if0 | ppu-objreg |
+| `zumu` | 65.92 | not_if0 | ppu-objreg |
+| `afoz` | 65.4 | not_if0 | ppu-objreg |
+| `celu` | 61.03 | not_if0 | ppu-objreg |
+| `wyse` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:oam_render_a4` () — diff=49.15, max=84.92
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `ynev` | 84.92 | not_if0 | ppu-objreg |
+| `afen` | 75.21 | not_if0 | ppu-objreg |
+| `elep` | 75.15 | not_if0 | ppu-objreg |
+| `ezoc` | 72.6 | not_if0 | ppu-objreg |
+| `weru` | 71.98 | not_if0 | ppu-objreg |
+| `waga` | 70.04 | not_if0 | ppu-objreg |
+| `dowa` | 67.18 | not_if0 | ppu-objreg |
+| `woko` | 65.92 | not_if0 | ppu-objreg |
+| `apon` | 65.4 | not_if0 | ppu-objreg |
+| `cegy` | 61.03 | not_if0 | ppu-objreg |
+| `zysu` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:oam_render_a5` () — diff=49.15, max=84.92
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `xyra` | 84.92 | not_if0 | ppu-objreg |
+| `apyv` | 75.21 | not_if0 | ppu-objreg |
+| `etad` | 75.15 | not_if0 | ppu-objreg |
+| `wabo` | 72.6 | not_if0 | ppu-objreg |
+| `xyre` | 71.98 | not_if0 | ppu-objreg |
+| `duza` | 70.04 | not_if0 | ppu-objreg |
+| `dony` | 67.18 | not_if0 | ppu-objreg |
+| `zave` | 65.92 | not_if0 | ppu-objreg |
+| `cuvu` | 65.4 | not_if0 | ppu-objreg |
+| `bety` | 61.03 | not_if0 | ppu-objreg |
+| `wyda` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:oam_render_a6` () — diff=49.15, max=84.92
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `yrad` | 84.92 | not_if0 | ppu-objreg |
+| `apob` | 75.21 | not_if0 | ppu-objreg |
+| `waba` | 75.15 | not_if0 | ppu-objreg |
+| `elyc` | 72.6 | not_if0 | ppu-objreg |
+| `woxy` | 71.98 | not_if0 | ppu-objreg |
+| `daly` | 70.04 | not_if0 | ppu-objreg |
+| `efud` | 67.18 | not_if0 | ppu-objreg |
+| `zece` | 65.92 | not_if0 | ppu-objreg |
+| `cyro` | 65.4 | not_if0 | ppu-objreg |
+| `cyby` | 61.03 | not_if0 | ppu-objreg |
+| `wuco` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:oam_render_a7` () — diff=49.15, max=84.92
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `yhal` | 84.92 | not_if0 | ppu-objreg |
+| `adyb` | 75.21 | not_if0 | ppu-objreg |
+| `evyt` | 75.15 | not_if0 | ppu-objreg |
+| `wocy` | 72.6 | not_if0 | ppu-objreg |
+| `waja` | 71.98 | not_if0 | ppu-objreg |
+| `dalo` | 70.04 | not_if0 | ppu-objreg |
+| `dezu` | 67.18 | not_if0 | ppu-objreg |
+| `zetu` | 65.92 | not_if0 | ppu-objreg |
+| `axec` | 65.4 | not_if0 | ppu-objreg |
+| `bemo` | 61.03 | not_if0 | ppu-objreg |
+| `weza` | 35.77 | not_if0 | ppu-oam |
+
+### `bus:a0` () — diff=37.8, max=37.8
+Category: bus
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `kejo` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d1` () — diff=103.08, max=103.08
+### `bus:a1` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `capu` | 103.08 | not_if0 | apu-control |
-| `jura` | 101.68 | not_if0 | apu-ch3 |
-| `awed` | 99.22 | not_if0 | apu-control |
-| `jaro` | 98.97 | not_if0 | apu-ch2 |
-| `xoke` | 96.25 | not_if0 | ppu-pal |
-| `atax` | 96.23 | not_if0 | apu-ch1 |
-| `coce` | 93.11 | not_if0 | apu-ch4 |
-| `kaku` | 92.26 | not_if0 | apu-ch4 |
-| `efus` | 91.01 | not_if0 | apu-control |
-| `jaca` | 90.27 | not_if0 | apu-ch1 |
-| `fajy` | 88.87 | not_if0 | apu-ch2 |
-| `dude` | 88.43 | not_if1 | serial |
-| `kafu` | 88.27 | not_if0 | apu-ch3 |
-| `gefu` | 88.08 | not_if0 | apu-ch1 |
-| `hyre` | 87.89 | not_if0 | apu-ch2 |
-| `demu` | 87.81 | not_if0 | apu-ch1 |
-| `rofo` | 87.68 | not_if1 | ppu-dma |
-| `paba` | 87.57 | not_if0 | ppu-pal |
-| `faro` | 86.46 | not_if0 | apu-ch3 |
-| `kuro` | 86.12 | not_if0 | joypad |
-| `poda` | 84.34 | not_if0 | ppu-window |
-| `goba` | 83.27 | not_if0 | ppu-bgscroll |
-| `wuva` | 82.82 | not_if0 | ppu-stat |
-| `muka` | 82.11 | not_if0 | ppu-window |
-| `pyre` | 82.02 | not_if1 | timer |
-| `ekob` | 81.27 | not_if0 | ppu-bgscroll |
-| `lepa` | 80.9 | not_if0 | ppu-pal |
-| `nabo` | 80.9 | not_if1 | int |
-| `taku` | 80.79 | not_if1 | clocks |
-| `racy` | 80.72 | not_if1 | timer |
-| `vojo` | 80.69 | not_if0 | ppu-stat |
-| `xero` | 79.86 | not_if0 | ppu-control |
-| `wuga` | 79.2 | not_if1 | ppu-stat |
-| `desy` | 78.61 | not_if1 | apu-ch3 |
-| `rote` | 77.41 | not_if1 | timer |
-| `rota` | 71.77 | not_if1 | ppu-vram |
-| `xagu` | 69.05 | buf_if0 | ppu-xcomp |
-| `xele` | 67.19 | buf_if0 | ppu-ycomp |
-| `ruvo` | 65.5 | not_if0 | bus-data |
-| `sywa` | 64.23 | buf_if0 | bus-data |
-| `ryne` | 49.69 | not_if1 | bus-data |
-| `ataj` | 36.34 | not_if0 |  |
-| `sosa` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `byxe` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d2` () — diff=103.08, max=103.08
+### `bus:a10` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `caga` | 103.08 | not_if0 | apu-control |
-| `hufo` | 101.68 | not_if0 | apu-ch3 |
-| `avud` | 99.22 | not_if0 | apu-control |
-| `jeke` | 98.97 | not_if0 | apu-ch2 |
-| `xuno` | 96.25 | not_if0 | ppu-pal |
-| `azyp` | 96.23 | not_if0 | apu-ch1 |
-| `cuzu` | 93.11 | not_if0 | apu-ch4 |
-| `kyro` | 92.26 | not_if0 | apu-ch4 |
-| `fate` | 91.17 | not_if0 | apu-control |
-| `joku` | 90.27 | not_if0 | apu-ch1 |
-| `fegu` | 88.87 | not_if0 | apu-ch2 |
-| `detu` | 88.43 | not_if1 | serial |
-| `kesy` | 88.27 | not_if0 | apu-ch3 |
-| `kyvu` | 88.08 | not_if0 | apu-ch1 |
-| `havu` | 87.89 | not_if0 | apu-ch2 |
-| `dexo` | 87.81 | not_if0 | apu-ch1 |
-| `rema` | 87.68 | not_if1 | ppu-dma |
-| `redo` | 87.57 | not_if0 | ppu-pal |
-| `fote` | 86.46 | not_if0 | apu-ch3 |
-| `kuve` | 86.12 | not_if0 | joypad |
-| `pygu` | 84.34 | not_if0 | ppu-window |
-| `gonu` | 83.27 | not_if0 | ppu-bgscroll |
-| `lyco` | 82.82 | not_if0 | ppu-stat |
-| `moko` | 82.11 | not_if0 | ppu-window |
-| `nola` | 82.02 | not_if1 | timer |
-| `cuga` | 81.27 | not_if0 | ppu-bgscroll |
-| `lode` | 80.9 | not_if0 | ppu-pal |
-| `rova` | 80.9 | not_if1 | int |
-| `temu` | 80.79 | not_if1 | clocks |
-| `ravy` | 80.72 | not_if1 | timer |
-| `razu` | 80.69 | not_if0 | ppu-stat |
-| `wyju` | 79.86 | not_if0 | ppu-decode |
-| `sego` | 79.2 | not_if1 | ppu-stat |
-| `baty` | 78.61 | not_if1 | apu-ch3 |
-| `supe` | 77.41 | not_if1 | timer |
-| `rybu` | 71.77 | not_if1 | ppu-vram |
-| `xepu` | 69.05 | buf_if0 | ppu-xcomp |
-| `ypon` | 67.19 | buf_if0 | ppu-ycomp |
-| `ryko` | 65.5 | not_if0 | bus-data |
-| `sugu` | 64.23 | buf_if0 | bus-data |
-| `rejy` | 49.69 | not_if1 | bus-data |
-| `ajec` | 36.34 | not_if0 |  |
-| `sedu` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `rala` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d3` () — diff=103.08, max=103.08
+### `bus:a11` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `boca` | 103.08 | not_if0 | apu-control |
-| `gome` | 99.54 | not_if0 | apu-ch4 |
-| `axem` | 99.22 | not_if0 | apu-control |
-| `xuby` | 96.25 | not_if0 | ppu-pal |
-| `afox` | 96.23 | not_if0 | apu-ch1 |
-| `hono` | 91.76 | not_if0 | apu-ch1 |
-| `koge` | 90.88 | not_if0 | apu-control |
-| `keta` | 90.71 | not_if0 | apu-ch4 |
-| `fose` | 88.87 | not_if0 | apu-ch2 |
-| `daso` | 88.43 | not_if1 | serial |
-| `jude` | 88.27 | not_if0 | apu-ch3 |
-| `kumo` | 88.08 | not_if0 | apu-ch1 |
-| `pane` | 87.68 | not_if1 | ppu-dma |
-| `lobe` | 87.57 | not_if0 | ppu-pal |
-| `gene` | 87.0 | not_if0 | apu-ch2 |
-| `fana` | 86.46 | not_if0 | apu-ch3 |
-| `jeku` | 86.12 | not_if0 | joypad |
-| `loka` | 84.34 | not_if0 | ppu-window |
-| `godo` | 83.27 | not_if0 | ppu-bgscroll |
-| `wojy` | 82.82 | not_if0 | ppu-stat |
-| `puzo` | 82.39 | not_if0 | ppu-stat |
-| `lole` | 82.11 | not_if0 | ppu-window |
-| `salu` | 82.02 | not_if1 | timer |
-| `wony` | 81.27 | not_if0 | ppu-bgscroll |
-| `lyza` | 80.9 | not_if0 | ppu-pal |
-| `pado` | 80.9 | not_if1 | int |
-| `tuse` | 80.79 | not_if1 | clocks |
-| `sosy` | 80.72 | not_if1 | timer |
-| `redy` | 80.69 | not_if0 | ppu-stat |
-| `wuka` | 79.86 | not_if0 | ppu-control |
-| `bade` | 78.61 | not_if1 | apu-ch3 |
-| `raju` | 71.77 | not_if1 | ppu-vram |
-| `xygu` | 69.05 | buf_if0 | ppu-xcomp |
-| `xuvo` | 67.19 | buf_if0 | ppu-ycomp |
-| `tavo` | 65.5 | not_if0 | bus-data |
-| `tawo` | 64.23 | buf_if0 | bus-data |
-| `rase` | 49.69 | not_if1 | bus-data |
-| `asuz` | 36.34 | not_if0 |  |
-| `taxo` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `lora` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d4` () — diff=103.08, max=103.08
+### `bus:a12` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `cavu` | 103.08 | not_if0 | apu-control |
-| `heda` | 99.54 | not_if0 | apu-ch4 |
-| `amad` | 99.22 | not_if0 | apu-control |
-| `xaju` | 96.25 | not_if0 | ppu-pal |
-| `avek` | 96.23 | not_if0 | apu-ch1 |
-| `geda` | 93.91 | not_if0 | apu-ch4 |
-| `howu` | 91.76 | not_if0 | apu-ch1 |
-| `gero` | 88.87 | not_if0 | apu-ch2 |
-| `dame` | 88.43 | not_if1 | serial |
-| `juke` | 88.27 | not_if0 | apu-ch3 |
-| `kary` | 88.08 | not_if0 | apu-ch1 |
-| `pare` | 87.68 | not_if1 | ppu-dma |
-| `lace` | 87.57 | not_if0 | ppu-pal |
-| `hupe` | 87.0 | not_if0 | apu-ch2 |
-| `fera` | 86.46 | not_if0 | apu-ch3 |
-| `koce` | 86.12 | not_if0 | joypad |
-| `mega` | 84.34 | not_if0 | ppu-window |
-| `cusa` | 83.27 | not_if0 | ppu-bgscroll |
-| `vyne` | 82.82 | not_if0 | ppu-stat |
-| `pofo` | 82.39 | not_if0 | ppu-stat |
-| `mele` | 82.11 | not_if0 | ppu-window |
-| `supo` | 82.02 | not_if1 | timer |
-| `cedu` | 81.27 | not_if0 | ppu-bgscroll |
-| `luky` | 80.9 | not_if0 | ppu-pal |
-| `pegy` | 80.9 | not_if1 | int |
-| `upug` | 80.79 | not_if1 | clocks |
-| `somu` | 80.72 | not_if1 | timer |
-| `race` | 80.69 | not_if0 | ppu-stat |
-| `voke` | 79.86 | not_if0 | ppu-control |
-| `bune` | 78.61 | not_if1 | apu-ch3 |
-| `tyja` | 71.77 | not_if1 | ppu-vram |
-| `xuna` | 69.05 | buf_if0 | ppu-xcomp |
-| `zysa` | 67.19 | buf_if0 | ppu-ycomp |
-| `tepe` | 65.5 | not_if0 | bus-data |
-| `tute` | 64.23 | buf_if0 | bus-data |
-| `reka` | 49.69 | not_if1 | bus-data |
-| `benu` | 36.34 | not_if0 |  |
-| `tahy` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `lyna` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d5` () — diff=103.08, max=103.08
+### `bus:a13` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `cudu` | 103.08 | not_if0 | apu-control |
-| `godu` | 99.54 | not_if0 | apu-ch4 |
-| `arux` | 99.22 | not_if0 | apu-control |
-| `xobo` | 96.25 | not_if0 | ppu-pal |
-| `akux` | 96.23 | not_if0 | apu-ch1 |
-| `gype` | 93.91 | not_if0 | apu-ch4 |
-| `hewa` | 91.76 | not_if0 | apu-ch1 |
-| `gaky` | 88.87 | not_if0 | apu-ch2 |
-| `evok` | 88.43 | not_if1 | serial |
-| `jeza` | 88.27 | not_if0 | apu-ch3 |
-| `gode` | 88.08 | not_if0 | apu-ch1 |
-| `raly` | 87.68 | not_if1 | ppu-dma |
-| `lyka` | 87.57 | not_if0 | ppu-pal |
-| `here` | 87.0 | not_if0 | apu-ch2 |
-| `cudy` | 86.12 | not_if0 | joypad |
-| `pela` | 84.34 | not_if0 | ppu-window |
-| `gyzo` | 83.27 | not_if0 | ppu-bgscroll |
-| `wama` | 82.82 | not_if0 | ppu-stat |
-| `sasy` | 82.39 | not_if0 | ppu-stat |
-| `mufe` | 82.11 | not_if0 | ppu-window |
-| `sotu` | 82.02 | not_if1 | timer |
-| `cata` | 81.27 | not_if0 | ppu-bgscroll |
-| `luga` | 80.9 | not_if0 | ppu-pal |
-| `sepu` | 80.79 | not_if1 | clocks |
-| `suro` | 80.72 | not_if1 | timer |
-| `vazu` | 80.69 | not_if0 | ppu-stat |
-| `hamu` | 80.38 | not_if0 | apu-ch3 |
-| `vato` | 79.86 | not_if0 | ppu-control |
-| `bava` | 78.61 | not_if1 | apu-ch3 |
-| `rexu` | 71.77 | not_if1 | ppu-vram |
-| `deve` | 69.05 | buf_if0 | ppu-xcomp |
-| `yweg` | 67.19 | buf_if0 | ppu-ycomp |
-| `safo` | 65.5 | not_if0 | bus-data |
-| `sajo` | 64.23 | buf_if0 | bus-data |
-| `rowe` | 49.69 | not_if1 | bus-data |
-| `akaj` | 36.34 | not_if0 |  |
-| `tesu` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `lefy` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d6` () — diff=103.08, max=103.08
+### `bus:a14` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `cada` | 103.08 | not_if0 | apu-control |
-| `cury` | 103.03 | not_if0 | apu-ch4 |
-| `hoge` | 99.54 | not_if0 | apu-ch4 |
-| `bocy` | 99.22 | not_if0 | apu-control |
-| `xaxa` | 96.25 | not_if0 | ppu-pal |
-| `awos` | 96.23 | not_if0 | apu-ch1 |
-| `haca` | 95.38 | not_if0 | apu-ch3 |
-| `gojy` | 94.8 | not_if0 | apu-ch2 |
-| `gaka` | 93.91 | not_if0 | apu-ch4 |
-| `heve` | 91.76 | not_if0 | apu-ch1 |
-| `gadu` | 88.87 | not_if0 | apu-ch2 |
-| `efab` | 88.43 | not_if1 | serial |
-| `kora` | 88.27 | not_if0 | apu-ch3 |
-| `goje` | 88.08 | not_if0 | apu-ch1 |
-| `resu` | 87.68 | not_if1 | ppu-dma |
-| `lody` | 87.57 | not_if0 | ppu-pal |
-| `horo` | 87.0 | not_if0 | apu-ch2 |
-| `bytu` | 85.97 | not_if0 | apu-ch1 |
-| `polo` | 84.34 | not_if0 | ppu-window |
-| `gune` | 83.27 | not_if0 | ppu-bgscroll |
-| `wavo` | 82.82 | not_if0 | ppu-stat |
-| `bowo` | 82.67 | not_if0 | apu-ch1 |
-| `pote` | 82.39 | not_if0 | ppu-stat |
-| `cecy` | 82.26 | not_if0 | apu-ch2 |
-| `muly` | 82.11 | not_if0 | ppu-window |
-| `reva` | 82.02 | not_if1 | timer |
-| `doxe` | 81.27 | not_if0 | ppu-bgscroll |
-| `leba` | 80.9 | not_if0 | ppu-pal |
-| `sawa` | 80.79 | not_if1 | clocks |
-| `rowu` | 80.72 | not_if1 | timer |
-| `vafe` | 80.69 | not_if0 | ppu-stat |
-| `huco` | 80.38 | not_if0 | apu-ch3 |
-| `vaha` | 79.86 | not_if0 | ppu-control |
-| `desa` | 78.61 | not_if1 | apu-ch3 |
-| `rupy` | 71.77 | not_if1 | ppu-vram |
-| `zeha` | 69.05 | buf_if0 | ppu-xcomp |
-| `xabu` | 67.19 | buf_if0 | ppu-ycomp |
-| `sevu` | 65.5 | not_if0 | bus-data |
-| `temy` | 64.23 | buf_if0 | bus-data |
-| `ryke` | 49.69 | not_if1 | bus-data |
-| `arar` | 36.34 | not_if0 |  |
-| `tazu` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `nefe` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:d7` () — diff=103.08, max=103.08
+### `bus:a2` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `cere` | 103.08 | not_if0 | apu-control |
-| `hacu` | 99.54 | not_if0 | apu-ch4 |
-| `atum` | 99.22 | not_if0 | apu-control |
-| `xawo` | 96.25 | not_if0 | ppu-pal |
-| `hapy` | 93.91 | not_if0 | apu-ch4 |
-| `jyse` | 91.76 | not_if0 | apu-ch1 |
-| `hope` | 91.01 | not_if0 | apu-control |
-| `gazo` | 88.87 | not_if0 | apu-ch2 |
-| `etak` | 88.43 | not_if1 | serial |
-| `kamy` | 88.27 | not_if0 | apu-ch3 |
-| `foze` | 88.08 | not_if0 | apu-ch1 |
-| `nuvy` | 87.68 | not_if1 | ppu-dma |
-| `lary` | 87.57 | not_if0 | ppu-pal |
-| `hyry` | 87.0 | not_if0 | apu-ch2 |
-| `mera` | 84.34 | not_if0 | ppu-window |
-| `geko` | 83.81 | not_if0 | apu-ch3 |
-| `gyza` | 83.27 | not_if0 | ppu-bgscroll |
-| `weze` | 82.82 | not_if0 | ppu-stat |
-| `cuda` | 82.67 | not_if0 | apu-ch1 |
-| `eluv` | 82.28 | not_if1 | serial |
-| `ceka` | 82.26 | not_if0 | apu-ch2 |
-| `mara` | 82.11 | not_if0 | ppu-window |
-| `sapu` | 82.02 | not_if1 | timer |
-| `casy` | 81.27 | not_if0 | ppu-bgscroll |
-| `lelu` | 80.9 | not_if0 | ppu-pal |
-| `tatu` | 80.79 | not_if1 | clocks |
-| `puso` | 80.72 | not_if1 | timer |
-| `pufy` | 80.69 | not_if0 | ppu-stat |
-| `xebu` | 79.86 | not_if0 | ppu-control |
-| `bezu` | 78.61 | not_if1 | apu-ch3 |
-| `toku` | 71.77 | not_if1 | ppu-vram |
-| `fyra` | 69.05 | buf_if0 | ppu-xcomp |
-| `ytux` | 67.19 | buf_if0 | ppu-ycomp |
-| `taju` | 65.5 | not_if0 | bus-data |
-| `ropa` | 64.23 | buf_if0 | bus-data |
-| `raru` | 49.69 | not_if1 | bus-data |
-| `beda` | 36.34 | not_if0 |  |
-| `tewa` | 26.8 | buf_if0 | bus-data |
-| `boot_rom` | 0.0 | boot_rom |  |
+| `akan` | 37.8 | buf_if0 | bus-adr |
 | `cpu` | 0.0 | sm83 |  |
-| `high_ram` | 0.0 | high_ram |  |
 
-### `bus:~oam_a_d3` () — diff=91.53, max=91.53
+### `bus:a3` () — diff=37.8, max=37.8
 Category: bus
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `zozo` | 91.53 | not_if0 | ppu-oam |
-| `cetu` | 54.47 | not_if0 | ppu-oam |
-| `cyme` | 53.11 | not_if0 | ppu-dma |
-| `oam_a` | 0.0 | oam |  |
-
-### `bus:~oam_a_d4` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zufo` | 91.53 | not_if0 | ppu-oam |
-| `aryn` | 54.47 | not_if0 | ppu-oam |
-| `baxu` | 53.11 | not_if0 | ppu-dma |
-| `oam_a` | 0.0 | oam |  |
-
-### `bus:~oam_a_d5` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zato` | 91.53 | not_if0 | ppu-oam |
-| `acot` | 54.47 | not_if0 | ppu-oam |
-| `bupy` | 53.11 | not_if0 | ppu-dma |
-| `oam_a` | 0.0 | oam |  |
-
-### `bus:~oam_a_d6` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `yvuc` | 91.53 | not_if0 | ppu-oam |
-| `cuje` | 54.47 | not_if0 | ppu-oam |
-| `byny` | 53.11 | not_if0 | ppu-dma |
-| `oam_a` | 0.0 | oam |  |
-
-### `bus:~oam_a_d7` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zufe` | 91.53 | not_if0 | ppu-oam |
-| `ater` | 54.47 | not_if0 | ppu-oam |
-| `bypy` | 53.11 | not_if0 | ppu-dma |
-| `oam_a` | 0.0 | oam |  |
-
-### `bus:~oam_b_d0` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zamy` | 91.53 | not_if0 | ppu-oam |
-| `wowa` | 54.47 | not_if0 | ppu-oam |
-| `wejo` | 53.11 | not_if0 | ppu-dma |
-| `oam_b` | 0.0 | oam |  |
-
-### `bus:~oam_b_d1` () — diff=91.53, max=91.53
-Category: bus
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zopu` | 91.53 | not_if0 | ppu-oam |
-| `aveb` | 54.47 | not_if0 | ppu-oam |
-| `bomo` | 53.11 | not_if0 | ppu-dma |
-| `oam_b` | 0.0 | oam |  |
+| `anar` | 37.8 | buf_if0 | bus-adr |
+| `cpu` | 0.0 | sm83 |  |
 
 
 ## BG Pixel Shifter (32 races)
 
-### `taca` (dffsr) — diff=98.77, max=98.77
+### `legu` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `soly` | 98.77 | nand2 | ppu-bgfifo |
-| `seno` | 97.67 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `tomy` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md0` | 0.0 |  | bus |
 
-### `sohu` (dffsr) — diff=98.65, max=98.65
+### `luzo` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `raga` | 98.65 | nand2 | ppu-bgfifo |
-| `ryjy` | 97.9 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `ralu` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md3` | 0.0 |  | bus |
 
-### `rysa` (dffsr) — diff=98.43, max=98.43
+### `megu` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `ryja` | 98.43 | nand2 | ppu-bgfifo |
-| `sebo` | 98.31 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `sady` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md4` | 0.0 |  | bus |
 
-### `setu` (dffsr) — diff=98.4, max=98.4
+### `muku` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `raja` | 98.4 | nand2 | ppu-bgfifo |
-| `sywe` | 97.91 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `sobo` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md2` | 0.0 |  | bus |
 
-### `ralu` (dffsr) — diff=98.28, max=98.28
+### `myjy` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `rajo` | 98.28 | nand2 | ppu-bgfifo |
-| `supu` | 97.88 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `setu` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md5` | 0.0 |  | bus |
 
-### `sobo` (dffsr) — diff=98.17, max=98.17
+### `nasa` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `ruto` | 98.17 | nand2 | ppu-bgfifo |
-| `suca` | 98.16 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `rysa` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md6` | 0.0 |  | bus |
 
-### `sady` (dffsr) — diff=98.12, max=98.12
+### `nefo` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `ruce` | 98.12 | nand2 | ppu-bgfifo |
-| `sure` | 97.97 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `taca` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md7` | 0.0 |  | bus |
 
-### `neda` (dffsr) — diff=97.64, max=97.64
+### `nudu` (dlatch_ee_q) — diff=16.16, max=16.16
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `nute` | 97.64 | nand2 | ppu-bgfifo |
-| `nyha` | 96.68 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `modu` | 0.0 | dffsr | ppu-bgfifo |
+| `luna` | 16.16 | not_x1 | ppu-bgfifo |
+| `loma` | 11.76 | not_x1 | ppu-bgfifo |
+| `bus:md1` | 0.0 |  | bus |
 
-### `nozo` (dffsr) — diff=97.5, max=97.5
+### `poju` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `nyxo` | 97.5 | nand2 | ppu-bgfifo |
-| `nexa` | 96.98 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `myde` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md5` | 0.0 |  | bus |
 
-### `macu` (dffsr) — diff=97.24, max=97.24
+### `powy` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `lydu` | 97.24 | nand2 | ppu-bgfifo |
-| `luja` | 97.04 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `moju` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md6` | 0.0 |  | bus |
 
-### `modu` (dffsr) — diff=97.24, max=97.24
+### `poxa` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `lodo` | 97.24 | nand2 | ppu-bgfifo |
-| `leru` | 97.16 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `nepo` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md3` | 0.0 |  | bus |
 
-### `nepo` (dffsr) — diff=97.22, max=97.22
+### `pozo` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `myvy` | 97.22 | nand2 | ppu-bgfifo |
-| `mosy` | 97.12 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `macu` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md1` | 0.0 |  | bus |
 
-### `moju` (dffsr) — diff=97.11, max=97.11
+### `pulo` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `loto` | 97.11 | nand2 | ppu-bgfifo |
-| `lutu` | 96.96 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `nozo` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md4` | 0.0 |  | bus |
 
-### `pybo` (dffsr) — diff=97.11, max=97.11
+### `pyju` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `naja` | 97.11 | nand2 | ppu-bgfifo |
-| `nady` | 97.0 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `neda` | 0.0 | dffsr | ppu-bgfifo |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md7` | 0.0 |  | bus |
 
-### `tomy` (dffsr) — diff=34.64, max=98.41
+### `pyzo` (dffr_cc_q) — diff=13.95, max=13.95
 Category: ppu-bgfifo
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `tuxe` | 98.41 | nand2 | ppu-bgfifo |
-| `seja` | 97.82 | nand2 | ppu-bgfifo |
-| `sacu` | 63.77 | or2 | ppu-cycles |
+| `labu` | 13.95 | not_x2 | ppu-bgfifo |
+| `luve` | 11.39 | not_x2 | ppu-bgfifo |
+| `bus:md2` | 0.0 |  | bus |
 
 
 ## BG/Win Cycles (20 races)
+
+### `pory` (dffr) — diff=22.16, max=22.16
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `myvo` | 22.16 | not_x1 | ppu-cycles |
+| `nafy` | 6.18 | nor2 | ppu-cycles |
+| `nyka` | 0.0 | dffr | ppu-cycles |
+
+### `nyze` (dffr) — diff=16.67, max=16.67
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `moxe` | 16.67 | not_x1 | ppu-cycles |
+| `puxa` | 0.0 | dffr | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `lyzu` (dffr) — diff=16.28, max=16.28
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `alet` | 16.28 | not_x2 | ppu-control |
+| `laxu` | 0.0 | dffr | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `pygo` (dffr) — diff=16.28, max=16.28
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `alet` | 16.28 | not_x2 | ppu-control |
+| `pory` | 0.0 | dffr | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `rene` (dffr) — diff=16.28, max=16.28
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `alet` | 16.28 | not_x2 | ppu-control |
+| `ryfa` | 0.0 | dffr | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `paho` (dffr) — diff=52.13, max=52.13
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `roxo` | 52.13 | not_x1 | ppu-cycles |
+| `xydo` | 0.0 | dffr | ppu-stat |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `puxa` (dffr) — diff=52.13, max=52.13
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `roxo` | 52.13 | not_x1 | ppu-cycles |
+| `pohu` | 3.5 | not_x1 | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `ryfa` (dffr) — diff=49.4, max=49.4
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `segu` | 49.4 | not_x4 | ppu-cycles |
+| `pany` | 9.37 | nor2 | ppu-cycles |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `pyco` (dffr) — diff=44.35, max=49.95
+Category: ppu-cycles
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `roco` | 49.95 | not_x1 | ppu-cycles |
+| `xapo` | 29.35 | not_x2 | ppu-control |
+| `nuko` | 5.6 | not_x1 | ppu-window |
 
 ### `nyka` (dffr) — diff=92.92, max=99.1
 Category: ppu-cycles
@@ -834,87 +607,60 @@ Category: ppu-cycles
 | `xofo` | 53.27 | nand3 | ppu-cycles |
 | `nunu` | 0.0 | dffr | ppu-cycles |
 
-### `paho` (dffr) — diff=52.13, max=52.13
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `roxo` | 52.13 | not_x1 | ppu-cycles |
-| `xydo` | 0.0 | dffr | ppu-stat |
-| `xymu` | 0.0 | nor_latch | ppu-stat |
-
-### `puxa` (dffr) — diff=52.13, max=52.13
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `roxo` | 52.13 | not_x1 | ppu-cycles |
-| `pohu` | 3.5 | not_x1 | ppu-cycles |
-| `xymu` | 0.0 | nor_latch | ppu-stat |
-
-### `roga` (dffr) — diff=51.98, max=51.98
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `paso` | 51.98 | nor2 | ppu-cycles |
-| `ryku` | 0.0 | dffr | ppu-cycles |
-
-### `rubu` (dffr) — diff=51.98, max=51.98
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `paso` | 51.98 | nor2 | ppu-cycles |
-| `roga` | 0.0 | dffr | ppu-cycles |
-
-### `ryfa` (dffr) — diff=49.4, max=49.4
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `segu` | 49.4 | not_x4 | ppu-cycles |
-| `pany` | 9.37 | nor2 | ppu-cycles |
-| `xymu` | 0.0 | nor_latch | ppu-stat |
-
-### `pyco` (dffr) — diff=44.35, max=49.95
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `roco` | 49.95 | not_x1 | ppu-cycles |
-| `xapo` | 29.35 | not_x2 | ppu-control |
-| `nuko` | 5.6 | not_x1 | ppu-window |
-
-### `nopa` (dffr) — diff=29.35, max=29.35
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xapo` | 29.35 | not_x2 | ppu-control |
-| `alet` | 16.28 | not_x2 | ppu-control |
-| `pynu` | 0.0 | nor_latch | ppu-cycles |
-
-### `nunu` (dffr) — diff=29.35, max=29.35
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xapo` | 29.35 | not_x2 | ppu-control |
-| `mehe` | 16.69 | not_x1 | ppu-cycles |
-| `pyco` | 0.0 | dffr | ppu-cycles |
-
-### `sovy` (dffr) — diff=22.38, max=38.66
-Category: ppu-cycles
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `rydy` | 38.66 | nor3 | ppu-cycles |
-| `xapo` | 29.35 | not_x2 | ppu-control |
-| `alet` | 16.28 | not_x2 | ppu-control |
-
 
 ## Other (6 races)
+
+### `boot_rom` (boot_rom) — diff=45.86, max=45.86
+Category: 
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `zoku` | 45.86 | not_x1 | bootrom |
+| `zery` | 40.82 | not_x1 | bootrom |
+| `zyky` | 8.08 | and2 | bootrom |
+| `zyga` | 8.01 | and2 | bootrom |
+| `zovy` | 7.75 | and2 | bootrom |
+| `zuko` | 7.07 | and2 | bootrom |
+| `zabu` | 5.23 | not_x1 | bootrom |
+| `zete` | 5.18 | not_x1 | bootrom |
+| `zefu` | 4.93 | not_x1 | bootrom |
+| `zoke` | 4.91 | not_x1 | bootrom |
+| `zyro` | 4.76 | not_x1 | bootrom |
+| `zage` | 3.95 | not_x1 | bootrom |
+| `zyra` | 3.93 | not_x1 | bootrom |
+| `zapa` | 3.78 | not_x1 | bootrom |
+| `bus:a2` | 0.0 |  | bus |
+| `bus:a3` | 0.0 |  | bus |
+| `bus:a6` | 0.0 |  | bus |
+| `bus:a7` | 0.0 |  | bus |
+
+### `cpu` (sm83) — diff=30.01, max=30.01
+Category: 
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `taba` | 30.01 | or3 | clocks |
+| `syro` | 27.39 | not_x1 | sys-decode |
+| `tutu` | 23.11 | and2 | bootrom |
+| `bowa` | 15.68 | not_x6 | clocks |
+| `unor` | 15.61 | and2 | test |
+| `umut` | 15.41 | and2 | test |
+| `boma` | 14.47 | not_x6 | clocks |
+| `bedo` | 12.72 | not_x6 | clocks |
+| `boga` | 11.51 | not_x6 | clocks |
+| `buke` | 7.84 | not_x6 | clocks |
+| `afer` | 0.0 | dffr_cc | clocks |
+| `awob` | 0.0 | dlatch | joypad |
+| `bus:clk_t4` | 0.0 |  | bus |
+| `bus:data_phase` | 0.0 |  | bus |
+| `bus:~clk_t4` | 0.0 |  | bus |
+| `bus:~data_phase` | 0.0 |  | bus |
+| `lalu` | 0.0 | dffsr | int |
+| `lope` | 0.0 | dffsr | int |
+| `nybo` | 0.0 | dffsr | int |
+| `supply` | 0.0 | tie |  |
+| `ubul` | 0.0 | dffsr | int |
+| `ulak` | 0.0 | dffsr | int |
 
 ### `oam_a` (oam) — diff=89.15, max=100.99
 Category: 
@@ -1017,60 +763,58 @@ Category:
 | `bus:a5` | 0.0 |  | bus |
 | `bus:a6` | 0.0 |  | bus |
 
-### `boot_rom` (boot_rom) — diff=45.86, max=45.86
-Category: 
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `zoku` | 45.86 | not_x1 | bootrom |
-| `zery` | 40.82 | not_x1 | bootrom |
-| `zyky` | 8.08 | and2 | bootrom |
-| `zyga` | 8.01 | and2 | bootrom |
-| `zovy` | 7.75 | and2 | bootrom |
-| `zuko` | 7.07 | and2 | bootrom |
-| `zabu` | 5.23 | not_x1 | bootrom |
-| `zete` | 5.18 | not_x1 | bootrom |
-| `zefu` | 4.93 | not_x1 | bootrom |
-| `zoke` | 4.91 | not_x1 | bootrom |
-| `zyro` | 4.76 | not_x1 | bootrom |
-| `zage` | 3.95 | not_x1 | bootrom |
-| `zyra` | 3.93 | not_x1 | bootrom |
-| `zapa` | 3.78 | not_x1 | bootrom |
-| `bus:a2` | 0.0 |  | bus |
-| `bus:a3` | 0.0 |  | bus |
-| `bus:a6` | 0.0 |  | bus |
-| `bus:a7` | 0.0 |  | bus |
-
-### `cpu` (sm83) — diff=30.01, max=30.01
-Category: 
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `taba` | 30.01 | or3 | clocks |
-| `syro` | 27.39 | not_x1 | sys-decode |
-| `tutu` | 23.11 | and2 | bootrom |
-| `bowa` | 15.68 | not_x6 | clocks |
-| `unor` | 15.61 | and2 | test |
-| `umut` | 15.41 | and2 | test |
-| `boma` | 14.47 | not_x6 | clocks |
-| `bedo` | 12.72 | not_x6 | clocks |
-| `boga` | 11.51 | not_x6 | clocks |
-| `buke` | 7.84 | not_x6 | clocks |
-| `afer` | 0.0 | dffr_cc | clocks |
-| `awob` | 0.0 | dlatch | joypad |
-| `bus:clk_t4` | 0.0 |  | bus |
-| `bus:data_phase` | 0.0 |  | bus |
-| `bus:~clk_t4` | 0.0 |  | bus |
-| `bus:~data_phase` | 0.0 |  | bus |
-| `lalu` | 0.0 | dffsr | int |
-| `lope` | 0.0 | dffsr | int |
-| `nybo` | 0.0 | dffsr | int |
-| `supply` | 0.0 | tie |  |
-| `ubul` | 0.0 | dffsr | int |
-| `ulak` | 0.0 | dffsr | int |
-
 
 ## Clock Distribution (21 races)
+
+### `adyk` (drlatch_ee) — diff=16.78, max=16.78
+Category: clocks
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `upoj` | 16.78 | nand3 | test |
+| `adeh` | 3.42 | not_x1 | clocks |
+| `atal` | 1.61 | not_x2 | clocks |
+| `apuk` | 0.0 | drlatch_ee | clocks |
+
+### `afer` (dffr_cc) — diff=16.78, max=16.78
+Category: clocks
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `upoj` | 16.78 | nand3 | test |
+| `boma` | 14.47 | not_x6 | clocks |
+| `boga` | 11.51 | not_x6 | clocks |
+| `asol` | 0.0 | nor_latch | clocks |
+
+### `afur` (drlatch_ee) — diff=16.78, max=16.78
+Category: clocks
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `upoj` | 16.78 | nand3 | test |
+| `adeh` | 3.42 | not_x1 | clocks |
+| `atal` | 1.61 | not_x2 | clocks |
+| `adyk` | 0.0 | drlatch_ee | clocks |
+
+### `alef` (drlatch_ee) — diff=16.78, max=16.78
+Category: clocks
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `upoj` | 16.78 | nand3 | test |
+| `adeh` | 3.42 | not_x1 | clocks |
+| `atal` | 1.61 | not_x2 | clocks |
+| `afur` | 0.0 | drlatch_ee | clocks |
+
+### `apuk` (drlatch_ee) — diff=16.78, max=16.78
+Category: clocks
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `upoj` | 16.78 | nand3 | test |
+| `adeh` | 3.42 | not_x1 | clocks |
+| `atal` | 1.61 | not_x2 | clocks |
+| `alef` | 0.0 | drlatch_ee | clocks |
 
 ### `sola` (dffr) — diff=87.78, max=87.78
 Category: clocks
@@ -1151,46 +895,6 @@ Category: clocks
 |-------|-------|------|----------|
 | `ufol` | 87.78 | nor3 | clocks |
 | `ukup` | 0.0 | dffr | clocks |
-
-### `uket` (dffr) — diff=87.78, max=87.78
-Category: clocks
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ufol` | 87.78 | nor3 | clocks |
-| `teka` | 0.0 | dffr | clocks |
-
-### `uner` (dffr) — diff=87.78, max=87.78
-Category: clocks
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ufol` | 87.78 | nor3 | clocks |
-| `ufor` | 0.0 | dffr | clocks |
-
-### `unyk` (dffr) — diff=87.78, max=87.78
-Category: clocks
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ufol` | 87.78 | nor3 | clocks |
-| `tero` | 0.0 | dffr | clocks |
-
-### `upof` (dffr) — diff=87.78, max=87.78
-Category: clocks
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ufol` | 87.78 | nor3 | clocks |
-| `uket` | 0.0 | dffr | clocks |
-
-### `ukup` (dffr) — diff=76.27, max=87.78
-Category: clocks
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ufol` | 87.78 | nor3 | clocks |
-| `boga` | 11.51 | not_x6 | clocks |
 
 
 ## APU CH4 (Noise) (71 races)
@@ -1344,6 +1048,15 @@ Category: apu-ch4
 
 ## Sprite Control (17 races)
 
+### `dezy` (dffr) — diff=45.48, max=54.35
+Category: ppu-objctl
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `dyty` | 54.35 | not_x2 | ppu-objctl |
+| `xapo` | 29.35 | not_x2 | ppu-control |
+| `zeme` | 8.87 | not_x4 | ppu-control |
+
 ### `besu` (nor_latch) — diff=81.51, max=81.51
 Category: ppu-objctl
 
@@ -1450,15 +1163,6 @@ Category: ppu-objctl
 | `azyb` | 49.87 | not_x1 | ppu-objctl |
 | `cake` | 2.26 | or2 | ppu-objctl |
 
-### `dezy` (dffr) — diff=45.48, max=54.35
-Category: ppu-objctl
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `dyty` | 54.35 | not_x2 | ppu-objctl |
-| `xapo` | 29.35 | not_x2 | ppu-control |
-| `zeme` | 8.87 | not_x4 | ppu-control |
-
 ### `anel` (dffr) — diff=36.07, max=36.07
 Category: ppu-objctl
 
@@ -1471,133 +1175,155 @@ Category: ppu-objctl
 
 ## Sprite X Match (112 races)
 
-### `baxo` (dlatch_ee) — diff=75.49, max=75.49
+### `lyme` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `cyra` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `lamy` | 32.59 | nand2 | ppu-xcomp |
+| `lunu` | 32.42 | nand2 | ppu-xcomp |
+| `moda` | 0.0 | dffsr | ppu-xcomp |
 
-### `depo` (dlatch_ee) — diff=75.49, max=75.49
+### `moda` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `eced` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `luke` | 28.83 | nand2 | ppu-xcomp |
+| `lowa` | 28.71 | nand2 | ppu-xcomp |
+| `nuke` | 0.0 | dffsr | ppu-xcomp |
 
-### `gomo` (dlatch_ee) — diff=75.49, max=75.49
+### `nuke` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `wyno` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `mene` | 32.04 | nand2 | ppu-xcomp |
+| `pazo` | 31.65 | nand2 | ppu-xcomp |
+| `palu` | 0.0 | dffsr | ppu-xcomp |
 
-### `ylor` (dlatch_ee) — diff=75.49, max=75.49
+### `palu` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `xyky` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `rudu` | 30.75 | nand2 | ppu-xcomp |
+| `rora` | 30.41 | nand2 | ppu-xcomp |
+| `somy` | 0.0 | dffsr | ppu-xcomp |
 
-### `yzos` (dlatch_ee) — diff=75.49, max=75.49
+### `rosa` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `zuve` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `pamo` | 32.75 | nand2 | ppu-xcomp |
+| `pyzy` | 31.59 | nand2 | ppu-xcomp |
+| `sata` | 0.0 | dffsr | ppu-xcomp |
 
-### `zezy` (dlatch_ee) — diff=75.49, max=75.49
+### `sata` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `yvel` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `tafa` | 32.65 | nand2 | ppu-xcomp |
+| `soro` | 32.63 | nand2 | ppu-xcomp |
+| `rugo` | 0.0 | dffsr | ppu-xcomp |
 
-### `zyty` (dlatch_ee) — diff=75.49, max=75.49
+### `somy` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `yrum` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `suky` | 32.25 | nand2 | ppu-xcomp |
+| `towa` | 31.96 | nand2 | ppu-xcomp |
+| `rosa` | 0.0 | dffsr | ppu-xcomp |
 
-### `zyve` (dlatch_ee) — diff=75.49, max=75.49
+### `vava` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `wajy` | 75.49 | not_x1 | ppu-xcomp |
-| `xega` | 69.26 | not_x1 | ppu-xcomp |
-| `ysex` | 0.0 | dlatch | ppu-xcomp |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `tuwu` | 34.04 | nand2 | ppu-xcomp |
+| `wubu` | 32.84 | nand2 | ppu-xcomp |
+| `vumo` | 0.0 | dffsr | ppu-xcomp |
 
-### `cyra` (dlatch) — diff=73.19, max=73.19
+### `vosa` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d5` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `tyra` | 31.93 | nand2 | ppu-xcomp |
+| `tufo` | 31.88 | nand2 | ppu-xcomp |
+| `wuru` | 0.0 | dffsr | ppu-xcomp |
 
-### `eced` (dlatch) — diff=73.19, max=73.19
+### `vumo` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d7` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `tena` | 30.11 | nand2 | ppu-xcomp |
+| `tyko` | 30.03 | nand2 | ppu-xcomp |
+| `woda` | 0.0 | dffsr | ppu-xcomp |
 
-### `wyno` (dlatch) — diff=73.19, max=73.19
+### `woda` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d4` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `xely` | 32.61 | nand2 | ppu-xcomp |
+| `wuja` | 32.16 | nand2 | ppu-xcomp |
+| `xete` | 0.0 | dffsr | ppu-xcomp |
 
-### `xyky` (dlatch) — diff=73.19, max=73.19
+### `wuru` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d0` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `xala` | 34.52 | nand2 | ppu-xcomp |
+| `wede` | 32.61 | nand2 | ppu-xcomp |
+| `vezo` | 0.0 | dffsr | ppu-xcomp |
 
-### `yrum` (dlatch) — diff=73.19, max=73.19
+### `wyfu` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d1` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `xyru` | 32.82 | nand2 | ppu-xcomp |
+| `wevo` | 32.76 | nand2 | ppu-xcomp |
+| `vosa` | 0.0 | dffsr | ppu-xcomp |
 
-### `ysex` (dlatch) — diff=73.19, max=73.19
+### `xete` (dffsr) — diff=63.77, max=63.77
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d2` | 0.0 |  | bus |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `xuku` | 30.85 | nand2 | ppu-xcomp |
+| `wedy` | 30.46 | nand2 | ppu-xcomp |
+| `wyfu` | 0.0 | dffsr | ppu-xcomp |
 
-### `yvel` (dlatch) — diff=73.19, max=73.19
+### `cuvy` (drlatch_ee) — diff=58.54, max=72.63
 Category: ppu-xcomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `bode` | 73.19 | not_x1 | ppu-oam |
-| `bus:~oam_a_d3` | 0.0 |  | bus |
+| `exyr` | 72.63 | not_x1 | ppu-objctl |
+| `ejad` | 71.83 | not_x1 | ppu-xprio |
+| `cyla` | 66.5 | not_x1 | ppu-objctl |
+| `bady` | 14.09 | not_x1 | ppu-xcomp |
 
 
 ## Palettes (24 races)
@@ -1885,13 +1611,48 @@ Category: apu-ch2
 
 ## Sprite Y Compare (26 races)
 
-### `sobu` (dffr) — diff=73.46, max=100.79
+### `tobu` (dffr) — diff=27.33, max=27.33
 Category: ppu-ycomp
 
 | Input | Depth | Type | Category |
 |-------|-------|------|----------|
-| `teky` | 100.79 | and4 | ppu-ycomp |
 | `tava` | 27.33 | not_x1 | ppu-ycomp |
+| `tuly` | 0.0 | dffr | ppu-ycomp |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `vonu` (dffr) — diff=27.33, max=27.33
+Category: ppu-ycomp
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `tava` | 27.33 | not_x1 | ppu-ycomp |
+| `tobu` | 0.0 | dffr | ppu-ycomp |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `seba` (dffr) — diff=25.8, max=25.8
+Category: ppu-ycomp
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lape` | 25.8 | not_x1 | ppu-ycomp |
+| `vonu` | 0.0 | dffr | ppu-ycomp |
+| `xymu` | 0.0 | nor_latch | ppu-stat |
+
+### `suda` (dffr) — diff=25.8, max=25.8
+Category: ppu-ycomp
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lape` | 25.8 | not_x1 | ppu-ycomp |
+| `sobu` | 0.0 | dffr | ppu-ycomp |
+
+### `tyfo` (dffr) — diff=25.8, max=25.8
+Category: ppu-ycomp
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lape` | 25.8 | not_x1 | ppu-ycomp |
+| `toxe` | 0.0 | dffr | ppu-ycomp |
 
 ### `wone` (dlatch) — diff=73.19, max=73.19
 Category: ppu-ycomp
@@ -1974,42 +1735,6 @@ Category: ppu-ycomp
 | `ysum` | 70.25 | not_x1 | ppu-ycomp |
 | `ywok` | 66.77 | not_x1 | ppu-ycomp |
 | `yceb` | 0.0 | dlatch | ppu-ycomp |
-
-### `xote` (dlatch_ee) — diff=70.25, max=70.25
-Category: ppu-ycomp
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ysum` | 70.25 | not_x1 | ppu-ycomp |
-| `ywok` | 66.77 | not_x1 | ppu-ycomp |
-| `yses` | 0.0 | dlatch | ppu-ycomp |
-
-### `xuso` (dlatch_ee) — diff=70.25, max=70.25
-Category: ppu-ycomp
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ysum` | 70.25 | not_x1 | ppu-ycomp |
-| `ywok` | 66.77 | not_x1 | ppu-ycomp |
-| `ydyv` | 0.0 | dlatch | ppu-ycomp |
-
-### `xyju` (dlatch_ee) — diff=70.25, max=70.25
-Category: ppu-ycomp
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ysum` | 70.25 | not_x1 | ppu-ycomp |
-| `ywok` | 66.77 | not_x1 | ppu-ycomp |
-| `wone` | 0.0 | dlatch | ppu-ycomp |
-
-### `ybog` (dlatch_ee) — diff=70.25, max=70.25
-Category: ppu-ycomp
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `ysum` | 70.25 | not_x1 | ppu-ycomp |
-| `ywok` | 66.77 | not_x1 | ppu-ycomp |
-| `zaxe` | 0.0 | dlatch | ppu-ycomp |
 
 
 ## Serial (18 races)
@@ -3070,6 +2795,15 @@ Category: ppu-dma
 
 ## Interrupts (10 races)
 
+### `lalu` (dffsr) — diff=5.85, max=64.81
+Category: int
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `voty` | 64.81 | not_x3 | ppu-stat |
+| `mody` | 64.49 | nand3 | int |
+| `movu` | 58.96 | and3 | int |
+
 ### `ubul` (dffsr) — diff=64.97, max=64.97
 Category: int
 
@@ -3146,79 +2880,8 @@ Category: int
 | `lyta` | 59.1 | and3 | int |
 | `vypu` | 18.25 | not_x3 | ppu-stat |
 
-### `lalu` (dffsr) — diff=5.85, max=64.81
-Category: int
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `voty` | 64.81 | not_x3 | ppu-stat |
-| `mody` | 64.49 | nand3 | int |
-| `movu` | 58.96 | and3 | int |
-
 
 ## STAT/LY (32 races)
-
-### `tuky` (dffr) — diff=64.66, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `toca` | 2.22 | not_x1 | ppu-stat |
-| `sake` | 1.63 | xor | ppu-stat |
-
-### `savy` (dffr) — diff=64.58, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `rybo` | 1.71 | xor | ppu-stat |
-
-### `sybe` (dffr) — diff=64.07, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `roku` | 4.98 | xor | ppu-stat |
-| `toca` | 2.22 | not_x1 | ppu-stat |
-
-### `tako` (dffr) — diff=64.07, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `tyge` | 3.69 | xor | ppu-stat |
-| `toca` | 2.22 | not_x1 | ppu-stat |
-
-### `tuhu` (dffr) — diff=64.07, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `toca` | 2.22 | not_x1 | ppu-stat |
-
-### `xodu` (dffr) — diff=63.22, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `xegy` | 3.07 | xor | ppu-stat |
-
-### `xydo` (dffr) — diff=60.78, max=66.29
-Category: ppu-stat
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `tady` | 66.29 | nor2 | ppu-stat |
-| `sacu` | 63.77 | or2 | ppu-cycles |
-| `xora` | 5.51 | xor | ppu-stat |
 
 ### `raha` (drlatch_ee) — diff=57.76, max=57.76
 Category: ppu-stat
@@ -3299,6 +2962,72 @@ Category: ppu-stat
 | `wane` | 53.84 | not_x1 | ppu-stat |
 | `wesy` | 24.82 | not_x2 | ppu-stat |
 | `bus:d1` | 0.0 |  | bus |
+
+### `refe` (drlatch_ee) — diff=53.81, max=53.81
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `pupu` | 53.81 | not_x1 | ppu-stat |
+| `ryve` | 51.95 | not_x1 | ppu-stat |
+| `wesy` | 24.82 | not_x2 | ppu-stat |
+| `bus:d5` | 0.0 |  | bus |
+
+### `roxe` (drlatch_ee) — diff=53.81, max=53.81
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `pupu` | 53.81 | not_x1 | ppu-stat |
+| `ryve` | 51.95 | not_x1 | ppu-stat |
+| `wesy` | 24.82 | not_x2 | ppu-stat |
+| `bus:d3` | 0.0 |  | bus |
+
+### `rufo` (drlatch_ee) — diff=53.81, max=53.81
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `pupu` | 53.81 | not_x1 | ppu-stat |
+| `ryve` | 51.95 | not_x1 | ppu-stat |
+| `wesy` | 24.82 | not_x2 | ppu-stat |
+| `bus:d4` | 0.0 |  | bus |
+
+### `rugu` (drlatch_ee) — diff=53.81, max=53.81
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `pupu` | 53.81 | not_x1 | ppu-stat |
+| `ryve` | 51.95 | not_x1 | ppu-stat |
+| `wesy` | 24.82 | not_x2 | ppu-stat |
+| `bus:d6` | 0.0 |  | bus |
+
+### `rupo` (nor_latch) — diff=53.54, max=53.54
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `pago` | 53.54 | or2 | ppu-stat |
+| `ropo` | 0.0 | dffr | ppu-stat |
+
+### `tuky` (dffr) — diff=64.66, max=66.29
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `tady` | 66.29 | nor2 | ppu-stat |
+| `toca` | 2.22 | not_x1 | ppu-stat |
+| `sake` | 1.63 | xor | ppu-stat |
+
+### `savy` (dffr) — diff=64.58, max=66.29
+Category: ppu-stat
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `tady` | 66.29 | nor2 | ppu-stat |
+| `sacu` | 63.77 | or2 | ppu-cycles |
+| `rybo` | 1.71 | xor | ppu-stat |
 
 
 ## Sprite Pixel Shifter (32 races)
@@ -3455,38 +3184,6 @@ Category: ppu-objfifo
 
 ## Window Logic (31 races)
 
-### `wobo` (dffr) — diff=59.92, max=59.92
-Category: ppu-window
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xaco` | 59.92 | not_x1 | ppu-cycles |
-| `wody` | 0.0 | dffr | ppu-window |
-
-### `wody` (dffr) — diff=59.92, max=59.92
-Category: ppu-window
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xaco` | 59.92 | not_x1 | ppu-cycles |
-| `wyka` | 0.0 | dffr | ppu-window |
-
-### `wyko` (dffr) — diff=59.92, max=59.92
-Category: ppu-window
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xaco` | 59.92 | not_x1 | ppu-cycles |
-| `wobo` | 0.0 | dffr | ppu-window |
-
-### `xolo` (dffr) — diff=59.92, max=59.92
-Category: ppu-window
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `xaco` | 59.92 | not_x1 | ppu-cycles |
-| `wyko` | 0.0 | dffr | ppu-window |
-
 ### `mela` (drlatch_ee) — diff=59.57, max=59.57
 Category: ppu-window
 
@@ -3596,6 +3293,46 @@ Category: ppu-window
 | `voxu` | 55.39 | not_x1 | ppu-window |
 | `walu` | 25.83 | not_x2 | ppu-window |
 | `bus:d5` | 0.0 |  | bus |
+
+### `mypa` (drlatch_ee) — diff=58.67, max=58.67
+Category: ppu-window
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `mare` | 58.67 | not_x1 | ppu-window |
+| `voxu` | 55.39 | not_x1 | ppu-window |
+| `walu` | 25.83 | not_x2 | ppu-window |
+| `bus:d0` | 0.0 |  | bus |
+
+### `mypu` (drlatch_ee) — diff=58.67, max=58.67
+Category: ppu-window
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `mare` | 58.67 | not_x1 | ppu-window |
+| `voxu` | 55.39 | not_x1 | ppu-window |
+| `walu` | 25.83 | not_x2 | ppu-window |
+| `bus:d4` | 0.0 |  | bus |
+
+### `nofe` (drlatch_ee) — diff=58.67, max=58.67
+Category: ppu-window
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `mare` | 58.67 | not_x1 | ppu-window |
+| `voxu` | 55.39 | not_x1 | ppu-window |
+| `walu` | 25.83 | not_x2 | ppu-window |
+| `bus:d1` | 0.0 |  | bus |
+
+### `noke` (drlatch_ee) — diff=58.67, max=58.67
+Category: ppu-window
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `mare` | 58.67 | not_x1 | ppu-window |
+| `voxu` | 55.39 | not_x1 | ppu-window |
+| `walu` | 25.83 | not_x2 | ppu-window |
+| `bus:d2` | 0.0 |  | bus |
 
 
 ## PPU Control (8 races)
@@ -4070,70 +3807,6 @@ Category: bootrom
 
 ## Data Bus (16 races)
 
-### `raxy` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d2` | 0.0 | pad_bidir_pu | bus-data |
-
-### `rony` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d1` | 0.0 | pad_bidir_pu | bus-data |
-
-### `rupa` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d6` | 0.0 | pad_bidir_pu | bus-data |
-
-### `sago` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d5` | 0.0 | pad_bidir_pu | bus-data |
-
-### `sazy` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d7` | 0.0 | pad_bidir_pu | bus-data |
-
-### `selo` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d3` | 0.0 | pad_bidir_pu | bus-data |
-
-### `sody` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d4` | 0.0 | pad_bidir_pu | bus-data |
-
-### `soma` (dlatch) — diff=38.05, max=38.05
-Category: bus-data
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `lavo` | 38.05 | nand3 | bus-data |
-| `d0` | 0.0 | pad_bidir_pu | bus-data |
-
 ### `d5` (pad_bidir_pu) — diff=11.56, max=58.65
 Category: bus-data
 
@@ -4197,8 +3870,153 @@ Category: bus-data
 | `lula` | 56.13 | not_x1 | bus-data |
 | `suly` | 54.27 | nor2 | bus-data |
 
+### `d1` (pad_bidir_pu) — diff=7.38, max=63.51
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `ruja` | 63.51 | nand2 | bus-data |
+| `rypu` | 58.73 | nor2 | bus-data |
+| `lula` | 56.13 | not_x1 | bus-data |
+
+### `raxy` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d2` | 0.0 | pad_bidir_pu | bus-data |
+
+### `rony` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d1` | 0.0 | pad_bidir_pu | bus-data |
+
+### `rupa` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d6` | 0.0 | pad_bidir_pu | bus-data |
+
+### `sago` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d5` | 0.0 | pad_bidir_pu | bus-data |
+
+### `sazy` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d7` | 0.0 | pad_bidir_pu | bus-data |
+
+### `selo` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d3` | 0.0 | pad_bidir_pu | bus-data |
+
+### `sody` (dlatch) — diff=38.05, max=38.05
+Category: bus-data
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `lavo` | 38.05 | nand3 | bus-data |
+| `d4` | 0.0 | pad_bidir_pu | bus-data |
+
 
 ## Address Bus (26 races)
+
+### `a2` (pad_bidir) — diff=11.96, max=54.33
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `bajo` | 54.33 | nor2 | bus-adr |
+| `boku` | 42.37 | nand2 | bus-adr |
+
+### `a1` (pad_bidir) — diff=10.54, max=50.15
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `cotu` | 50.15 | nor2 | bus-adr |
+| `caba` | 39.61 | nand2 | bus-adr |
+
+### `a0` (pad_bidir) — diff=10.17, max=55.78
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `koty` | 55.78 | nor2 | bus-adr |
+| `kupo` | 45.61 | nand2 | bus-adr |
+
+### `a4` (pad_bidir) — diff=9.39, max=49.4
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `bevo` | 49.4 | nor2 | bus-adr |
+| `byla` | 40.01 | nand2 | bus-adr |
+
+### `a10` (pad_bidir) — diff=8.64, max=45.02
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `rore` | 45.02 | nor2 | bus-adr |
+| `roxu` | 36.38 | nand2 | bus-adr |
+
+### `a3` (pad_bidir) — diff=8.46, max=47.81
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `bola` | 47.81 | nor2 | bus-adr |
+| `boty` | 39.35 | nand2 | bus-adr |
+
+### `a8` (pad_bidir) — diff=7.28, max=44.28
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `mego` | 44.28 | nor2 | bus-adr |
+| `myny` | 37.0 | nand2 | bus-adr |
+
+### `a9` (pad_bidir) — diff=6.81, max=42.91
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `meny` | 42.91 | nor2 | bus-adr |
+| `mune` | 36.1 | nand2 | bus-adr |
+
+### `a5` (pad_bidir) — diff=6.14, max=40.41
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `ajav` | 40.41 | nor2 | bus-adr |
+| `badu` | 34.27 | nand2 | bus-adr |
+
+### `a7` (pad_bidir) — diff=5.84, max=49.47
+Category: bus-adr
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `colo` | 49.47 | nor2 | bus-adr |
+| `defy` | 43.63 | nand2 | bus-adr |
 
 ### `alor` (dlatch) — diff=33.0, max=33.0
 Category: bus-adr
@@ -4240,97 +4058,8 @@ Category: bus-adr
 | `mate` | 33.0 | not_x1 | bus-adr |
 | `bus:a6` | 0.0 |  | bus |
 
-### `arym` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a7` | 0.0 |  | bus |
-
-### `atev` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a5` | 0.0 |  | bus |
-
-### `avys` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a4` | 0.0 |  | bus |
-
-### `lobu` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a12` | 0.0 |  | bus |
-
-### `lonu` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a13` | 0.0 |  | bus |
-
-### `lumy` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a11` | 0.0 |  | bus |
-
-### `luno` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a8` | 0.0 |  | bus |
-
-### `lysa` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a9` | 0.0 |  | bus |
-
-### `nyre` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a14` | 0.0 |  | bus |
-
-### `pate` (dlatch) — diff=33.0, max=33.0
-Category: bus-adr
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `mate` | 33.0 | not_x1 | bus-adr |
-| `bus:a10` | 0.0 |  | bus |
-
 
 ## OAM Interface (3 races)
-
-### `maka` (dffr) — diff=10.09, max=16.5
-Category: ppu-oam
-
-| Input | Depth | Type | Category |
-|-------|-------|------|----------|
-| `cunu` | 16.5 | not_x2 | ppu-control |
-| `zeme` | 8.87 | not_x4 | ppu-control |
-| `caty` | 6.41 | not_x1 | ppu-oam |
 
 ### `xedy` (dffr_cc) — diff=5.47, max=14.09
 Category: ppu-oam
@@ -4349,6 +4078,15 @@ Category: ppu-oam
 | `yzet` | 12.68 | not_x1 | ppu-oam |
 | `wuda` | 10.4 | not_x2 | ppu-oam |
 | `cyke` | 8.62 | not_x2 | ppu-oam |
+
+### `maka` (dffr) — diff=10.09, max=16.5
+Category: ppu-oam
+
+| Input | Depth | Type | Category |
+|-------|-------|------|----------|
+| `cunu` | 16.5 | not_x2 | ppu-control |
+| `zeme` | 8.87 | not_x4 | ppu-control |
+| `caty` | 6.41 | not_x1 | ppu-oam |
 
 
 ## VRAM Interface (7 races)
